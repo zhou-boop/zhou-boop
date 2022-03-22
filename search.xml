@@ -1222,6 +1222,13 @@
 <p>需要我们自己在文章中添加</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;!-- more --&gt;</span><br></pre></td></tr></table></figure>
 
+<h2 id="文末版权"><a href="#文末版权" class="headerlink" title="文末版权"></a>文末版权</h2><ul>
+<li>主题配置文件，关键字：<strong>creative_commons</strong></li>
+</ul>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">creative_commons:</span></span><br><span class="line">  <span class="attr">license:</span> <span class="string">by-nc-sa</span> <span class="comment">#协议</span></span><br><span class="line">  <span class="attr">sidebar:</span> <span class="literal">true</span>  </span><br><span class="line">  <span class="attr">post:</span> <span class="literal">true</span>  <span class="comment">#是否开启</span></span><br><span class="line">  <span class="attr">language:</span>  <span class="comment">#语言</span></span><br></pre></td></tr></table></figure>
+
+
+
 <h2 id="文本居中方式"><a href="#文本居中方式" class="headerlink" title="文本居中方式"></a>文本居中方式</h2><ul>
 <li>关键字：<strong>text_align</strong></li>
 </ul>
