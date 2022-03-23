@@ -95,203 +95,186 @@
       </tags>
   </entry>
   <entry>
-    <title>Misc小合集（一）</title>
-    <url>/2022/Misc%E5%B0%8F%E5%90%88%E9%9B%861/</url>
-    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>记一次杂项小训练</p>
-<p><strong>Misc 1</strong> - <strong>Misc 10</strong></p>
-<span id="more"></span>
+    <title>dirsearch-路径扫描</title>
+    <url>/2022/dirsearch/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>这一款高级命令行工具，旨在暴力破解网络服务器中的目录和文件，AKA 网络路径扫描器。</p>
+<p>dirsearch进行高精度，可以扩展的扫描，可以根据自己的需求定义，相对于御剑，我个人认为更好点。</p>
+<p><a href="https://github.com/maurosoria/dirsearch">dirsearch工具地址</a></p>
+<span id="more"></span>    
 
-<h1 id="Misc-1"><a href="#Misc-1" class="headerlink" title="Misc 1"></a>Misc 1</h1><p>[ACTF新生赛2020]frequency</p>
-<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><ul>
-<li>strings</li>
-<li>word隐藏文字</li>
-<li>字频统计</li>
+<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><ul>
+<li>使用 git 安装：<code>git clone https://github.com/maurosoria/dirsearch.git</code></li>
+<li>使用 ZIP 文件安装：<a href="https://github.com/maurosoria/dirsearch/archive/master.zip">在此处下载</a></li>
+<li>使用 Docker 安装：（<code>docker build -t &quot;dirsearch:v0.4.1&quot;</code>更多<a href="https://github.com/maurosoria/dirsearch#support-docker">信息</a>）</li>
+<li>使用 Kali Linux 安装：<code>sudo apt-get install dirsearch</code></li>
+<li>使用 PyPi 安装：<code>pip3 install dirsearch</code></li>
 </ul>
-<h2 id="解题过程"><a href="#解题过程" class="headerlink" title="解题过程"></a>解题过程</h2><p>首先用string命令查看文件，得到两段可疑代码</p>
-<p>使用下面的一段，看起来像base64码</p>
-<p><img src="/image-20220312124955095.png"></p>
+<p>安装库</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git clone https://github.com/maurosoria/dirsearch.git</span><br><span class="line">cd dirsearch</span><br><span class="line">pip3 install -r requirements.txt</span><br><span class="line">python3 dirsearch.py -u &lt;URL&gt; -e &lt;EXTENSIONS&gt;</span><br></pre></td></tr></table></figure>
+
+<p>requirements.txt 中包含了 dirsearch 中需要的库。</p>
+<h1 id="选项"><a href="#选项" class="headerlink" title="选项"></a>选项</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Usage: dirsearch.py [-u|--url] target [-e|--extensions] extensions [options]</span><br><span class="line"></span><br><span class="line">Options:</span><br><span class="line">  --version             显示程序的版本号并退出</span><br><span class="line">  -h, --<span class="built_in">help</span>            显示此帮助消息并退出</span><br><span class="line"></span><br><span class="line">  Mandatory: <span class="comment">#强制性的</span></span><br><span class="line">    -u URL, --url=URL   目标网址</span><br><span class="line">    -l FILE, --url-list=FILE</span><br><span class="line">                        目标URL列表文件</span><br><span class="line">    --stdin             来自STDIN的目标URL列表</span><br><span class="line">    --cidr=CIDR         目标CIDR</span><br><span class="line">    --raw=FILE          从文件加载原始HTTP请求 (use `--scheme` flag to <span class="built_in">set</span> the scheme)</span><br><span class="line">    -e EXTENSIONS, --extensions=EXTENSIONS</span><br><span class="line">                        用逗号分隔的扩展列表 (Example: php,asp)</span><br><span class="line">    -X EXTENSIONS, --exclude-extensions=EXTENSIONS</span><br><span class="line">                        排除由逗号分隔的扩展列表 (Example: asp,jsp)</span><br><span class="line">    -f, --force-extensions</span><br><span class="line">                        为每个单词列表条目添加扩展名。默认情况下dirsearch仅将%EXT%关键字替换为扩展</span><br><span class="line"></span><br><span class="line">  Dictionary Settings: <span class="comment">#字典设置</span></span><br><span class="line">    -w WORDLIST, --wordlists=WORDLIST</span><br><span class="line">                        自定义词表 (用逗号分隔)</span><br><span class="line">    --prefixes=PREFIXES</span><br><span class="line">                        向所有单词列表条目添加自定义前缀 (用逗号分隔)</span><br><span class="line">    --suffixes=SUFFIXES</span><br><span class="line">                        向所有单词列表条目添加自定义后缀，忽略目录(用逗号分隔)</span><br><span class="line">    --only-selected     删除路径与选定路径具有不同的扩展名通过`-e的` (保留条目没有扩展名)</span><br><span class="line">    --remove-extensions</span><br><span class="line">                        删除所有路径中的扩展 (Example: admin.php -&gt; admin)</span><br><span class="line">    -U, --uppercase     Uppercase wordlist</span><br><span class="line">    -L, --lowercase     Lowercase wordlist</span><br><span class="line">    -C, --capital       Capital wordlist</span><br><span class="line"></span><br><span class="line">  General Settings: <span class="comment">#一般设置</span></span><br><span class="line">    -t THREADS, --threads=THREADS  线程数</span><br><span class="line">    -r, --recursive     暴力循环</span><br><span class="line">    --deep-recursive    对每个目录深度执行递归扫描</span><br><span class="line">                        (Example: api/users -&gt; api/)</span><br><span class="line">    --force-recursive   对每个找到的路径进行递归暴力，而不是只有路径以斜线结尾</span><br><span class="line">    --recursion-depth=DEPTH 最大递归深度</span><br><span class="line">    --recursion-status=CODES</span><br><span class="line">                        执行递归扫描的有效状态代码，支持范围 (用逗号分隔)</span><br><span class="line">    --subdirs=SUBDIRS   扫描给定URL的子目录 (用逗号分隔)</span><br><span class="line">    --exclude-subdirs=SUBDIRS</span><br><span class="line">                        在递归过程中排除以下子目录扫描 (用逗号分隔)</span><br><span class="line">    -i CODES, --include-status=CODES</span><br><span class="line">                        包括状态代码，用逗号分隔，支持范围 (Example: 200,300-399)</span><br><span class="line">    -x CODES, --exclude-status=CODES</span><br><span class="line">                        排除状态代码，用逗号分隔，支持范围 (Example: 301,500-599)</span><br><span class="line">    --exclude-sizes=SIZES</span><br><span class="line">                        按大小排除响应，以逗号分隔 (Example: 123B,4KB)</span><br><span class="line">    --exclude-texts=TEXTS</span><br><span class="line">                        按文本排除回复，用逗号分隔 (Example: <span class="string">&#x27;Not found&#x27;</span>, <span class="string">&#x27;Error&#x27;</span>)</span><br><span class="line">    --exclude-regexps=REGEXPS</span><br><span class="line">                        通过regexp排除响应，用逗号分隔</span><br><span class="line">                        (Example: <span class="string">&#x27;Not foun[a-z]&#123;1&#125;&#x27;</span>, <span class="string">&#x27;^Error$&#x27;</span>)</span><br><span class="line">    --exclude-redirects=REGEXPS</span><br><span class="line">                        通过重定向正则表达式或文本排除响应,</span><br><span class="line">                        用逗号分隔 (Example: <span class="string">&#x27;https://okta.com/*&#x27;</span>)</span><br><span class="line">    --exclude-content=PATH</span><br><span class="line">                        按此路径的响应内容排除响应</span><br><span class="line">    --skip-on-status=CODES</span><br><span class="line">                        无论何时命中其中一个状态码，跳过目标，用逗号分隔，支持范围</span><br><span class="line">    --minimal=LENGTH    最小响应长度</span><br><span class="line">    --maximal=LENGTH    最大响应长度</span><br><span class="line">    --max-time=SECONDS  扫描的最大运行时间</span><br><span class="line">    -q, --quiet-mode    安静模式</span><br><span class="line">    --full-url          输出中的完整URL (在中自动启用安静模式)</span><br><span class="line">    --no-color          没有彩色输出</span><br><span class="line"></span><br><span class="line">  Request Settings: <span class="comment">#请求设置</span></span><br><span class="line">    -m METHOD, --http-method=METHOD HTTP方法 (default: GET)</span><br><span class="line">    -d DATA, --data=DATA HTTP请求数据</span><br><span class="line">    -H HEADERS, --header=HEADERS</span><br><span class="line">                        HTTP请求头，支持多个标志 (Example:</span><br><span class="line">                        -H <span class="string">&#x27;Referer: example.com&#x27;</span>)</span><br><span class="line">    --header-list=FILE  文件包含HTTP请求头</span><br><span class="line">    -F, --follow-redirects</span><br><span class="line">                        遵循HTTP重定向</span><br><span class="line">    --random-agent      为每个请求选择一个随机用户代理</span><br><span class="line">    --auth-type=TYPE    身份验证类型 (basic, digest, bearer, ntlm)</span><br><span class="line">    --auth=CREDENTIAL   认证凭证 (user:password or bearer token)</span><br><span class="line">    --user-agent=USERAGENT</span><br><span class="line">    --cookie=COOKIE</span><br><span class="line"></span><br><span class="line">  Connection Settings: <span class="comment">#连接设置</span></span><br><span class="line">    --<span class="built_in">timeout</span>=TIMEOUT   连接超时</span><br><span class="line">    -s DELAY, --delay=DELAY</span><br><span class="line">                        请求之间的延迟</span><br><span class="line">    --proxy=PROXY       代理URL，支持HTTP和SOCKS代理 (Example:</span><br><span class="line">                        localhost:8080, socks5://localhost:8088)</span><br><span class="line">    --proxy-list=FILE   文件包含代理服务器</span><br><span class="line">    --replay-proxy=PROXY</span><br><span class="line">                        要使用找到的路径重播的代理</span><br><span class="line">    --scheme=SCHEME     默认方案 (对于原始请求或如果没有URL中的方案)</span><br><span class="line">    --max-rate=RATE     每秒最大请求数</span><br><span class="line">    --retries=RETRIES   失败请求的重试次数</span><br><span class="line">    -b, --request-by-hostname</span><br><span class="line">                        默认情况下，通过IP搜索速度请求。这将强制dirsearch按主机名请求</span><br><span class="line">    --ip=IP             服务器IP地址</span><br><span class="line">    --exit-on-error     每当发生错误时退出</span><br><span class="line"></span><br><span class="line">  Reports:</span><br><span class="line">    -o FILE, --output=FILE</span><br><span class="line">                        输出文件</span><br><span class="line">    --format=FORMAT     报告格式 (Available: simple, plain, json, xml,</span><br><span class="line">                        md, csv, html)</span><br></pre></td></tr></table></figure>
+
+<h1 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h1><p>dirsearch 工具可以根据自己的需求进行配置，配置文件为 default.conf 。选择带 <code>#</code> 的进行配置。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># If you want to edit dirsearch default configurations, you can</span><br><span class="line"># edit values in this file. Everything after `#` is a comment</span><br><span class="line"># and won&#x27;t be applied</span><br><span class="line"></span><br><span class="line">[mandatory]</span><br><span class="line">default-extensions = php,aspx,jsp,html,js</span><br><span class="line">force-extensions = False</span><br><span class="line"># exclude-extensions = old,log</span><br><span class="line"></span><br><span class="line">[general]</span><br><span class="line">threads = 30</span><br><span class="line">recursive = False</span><br><span class="line">deep-recursive = False</span><br><span class="line">force-recursive = False</span><br><span class="line">recursion-depth = 0</span><br><span class="line">exclude-subdirs = %%ff/</span><br><span class="line">random-user-agents = False</span><br><span class="line">max-time = 0</span><br><span class="line">full-url = False</span><br><span class="line">quiet-mode = False</span><br><span class="line">color = True</span><br><span class="line">recursion-status = 200-399,401,403</span><br><span class="line"># include-status = 200-299,401</span><br><span class="line"># exclude-status = 400,500-999</span><br><span class="line"># exclude-sizes = 0b,123gb</span><br><span class="line"># exclude-texts = &quot;Not found&quot;</span><br><span class="line"># exclude-regexps = &quot;403 [a-z]&#123;1,25&#125;&quot;</span><br><span class="line"># exclude-content = 404.html</span><br><span class="line"># skip-on-status = 429,999</span><br><span class="line"></span><br><span class="line">[reports]</span><br><span class="line">report-format = plain</span><br><span class="line">autosave-report = True</span><br><span class="line"># report-output-folder = /home/user</span><br><span class="line"># logs-location = /tmp</span><br><span class="line">## Supported: plain, simple, json, xml, md, csv, html</span><br><span class="line"></span><br><span class="line">[dictionary]</span><br><span class="line">lowercase = False</span><br><span class="line">uppercase = False</span><br><span class="line">capitalization = False</span><br><span class="line"># prefixes = .,admin</span><br><span class="line"># suffixes = ~,.bak</span><br><span class="line"># wordlist = db/dicc.txt</span><br><span class="line"></span><br><span class="line">[request]</span><br><span class="line">httpmethod = get</span><br><span class="line">## Lowercase only</span><br><span class="line">follow-redirects = False</span><br><span class="line"># headers-file = headers.txt</span><br><span class="line"># user-agent = MyUserAgent</span><br><span class="line"># cookie = SESSIONID=123</span><br><span class="line"></span><br><span class="line">[connection]</span><br><span class="line">timeout = 5</span><br><span class="line">delay = 0</span><br><span class="line">scheme = http</span><br><span class="line">maxrate = 0</span><br><span class="line">retries = 2</span><br><span class="line">request-by-hostname = False</span><br><span class="line">exit-on-error = False</span><br><span class="line"># proxy = localhost:8080</span><br><span class="line"># proxy-list = proxies.txt</span><br><span class="line"># replay-proxy = localhost:8000</span><br></pre></td></tr></table></figure>
+
+<h1 id="命令-使用"><a href="#命令-使用" class="headerlink" title="命令-使用"></a>命令-使用</h1><h2 id="简单扫描"><a href="#简单扫描" class="headerlink" title="简单扫描"></a>简单扫描</h2><p>对 URL 进行扫描</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -u https://target</span><br></pre></td></tr></table></figure>
+
+<p>扫描固定后缀文件的 URL</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target</span><br></pre></td></tr></table></figure>
+
+<p>定义字典扫描</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target -w /path/to/wordlist</span><br></pre></td></tr></table></figure>
+
+<h2 id="暂停扫描"><a href="#暂停扫描" class="headerlink" title="暂停扫描"></a>暂停扫描</h2><p>dirsearch 允许您使用 CTRL+C 暂停扫描进度，从这里，您可以保存进度（稍后继续）、跳过当前目标或跳过当前子目录。</p>
+<p><img src="/pause.png"></p>
 
 
-<p>在Word里面，显示隐藏文字和解除隐藏。文字无法复制，但是我发现可以通过剪切出。</p>
-<p><img src="/image-20220312125607111.png"></p>
-
-
-<p>也可以通过解除隐藏复制</p>
-<p><img src="/image-20220312125914279.png"></p>
-
-
-<p>将它们组合起来</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">a2draGxmY290bnRpdWZwZ2hodGN3dWprY2ttb3ducGNrbXdseWd0bHBtZmtneWFhaWh1Y2RsYXRveXVjb2lnZ3JwbGt2a2Ftcmt0cXp4ZW1taXdrbGh1YWVrY2VvbHBvY2ZtdGFobWdmbWF2YWpuYmNwbWx0anRwdWZqY2FwY3RvanBqYmZmYmpid2h1YWxnZ3lqbmFtY2JmeWFjamJheGtpeGxtbXFpa3NtcHRxeW9qZXJ0ZmVrdGR4ZHh4YnRyeGNhbmd5bXNpbWh2dXdrdGV4c2dscnRwZ2FrdGJtZnVjZ3ZubXRqdWZvZWt5bXRsaW14ZGlqanB4eWl0YWJwbWt1Y2NubGtwb2V0Z2NkY3Bvc2tpenZ5eHJ0enhyYXh0bm9paHFjeGZvYWFhbHBhanlja2VrYnljZnZqb21sbGthamd5bWdmZGNycGVxa2xmc2NtZWppY3BqaWtjcHBhY3h5ZXZma3ljcHBia2R6Y2ZsbGlrcW5pdGNrYmhqb3JuZGhzb21mdHlwYWhwcW94cnlpbWhmbGNoY21rb3JldG1yb3RrYXJjanRobWZ0aWxpam55a3V0aWhienR0dW1zbmdmdGxtcmJmZmx0ZndjbmptZmF0bGZiemxva3RscHBsbWZpY29rcHBucGFjbWZ1Z21wdW5kdnRvbXdldmNqc2dhamdmZXF1dXBhaWV0eW5mamJicGpzbHZ5bmFmdG1scHBka3R0b2Z1emppanhpdGJmaXJtb3ZwemVraXJic2Zqc2d6bHVrb2x5dm9obXZnY3BrdGhzeGZ6bW1ibm1sZHp5dWljZHZrbXpiYXlidG9yY2ZvdHRkYW1jY25iYXBucmd4bGN5cGh5Zm5jZXhidmRubG9rZ295aWxwcmxvbnNodGNranR4bmFiamhsbWJwZGNtaGtqbmxnbXRnam5qYWtyaXpsbHBtbWFscHhhbXVuaW51cGtwZGlhcHNzbXZrZGp2Z2l5b2R1bXBuYXBsamtqYmNmaHRoc2tpb2twZ3R0eWhubmRzeGtxanp2dmRvc2VwcG9pZ3l0bW5uYXZjdG9wZHlpeHZiZG9zb2JtY3ViaXVhanhoeWZrdnJremdjdXlpbHB2YXdheW5xYWFwbGJrd2lpeHJjdGN0bGt4ZmpscGVhbW1qbmF1amNvdWlmbXZpa2ZpbXJvYXF0Y3RjZm1hdWJnYWdva2FyZnFmaGVtb3NydHlmb3B1a3VkY2FhaW1oZGZvZ25oa3JjZWxwY2F0Y3RweWpsYXZva2xnY2xhdGx0bXR6eWdwZWhma3poY3R6bmdtb2ZjaXpsdm54dG5sdWFqbHRvdmNqYWp1YnphdHBlaGhma25uZ2dwbHlsaXZmZWFpZHJteWp0YWNhbXhjbmtmeXN0d2ZuZmx5bmJta2NrYXJ4YWlzcGpsa3ZjdHZrbHh1bmNmcGJ4dmlyaXFleXBtdXZ1bHZsamNrY3lwcHRwdmV0b3hobWlwYmlsbmplb3drd3VjdG9rbmFmcHdvYXBmdGNsemhwaHhjY2F0dGh1bXZ3aHpvbWFmd3Fxbmxzb3lhYnV0bHpwaWF0Zm1tYWprcmR2bGN6d2pwc3Nwb2FiaWZpcGhrb2NocHRrYXRrYWZlb255YmZpdmVjbGR6b2ZhdGV0Z2FsaGFmYW1vYXlvc291bm5hZmlhdGNqdGl3b29sYWNya2N1YWRwdXRreWxweXBiZ2ZlcHdwc25jd2tjd2xsYXJ5anNjYW5id3BkcHpicHR1dG5sbm9wd3BpdGJsb3RsbHppZmtsYWF1cmpwaWFqZnB0a2ZteHBic3VjdmpzZ21jYWxhbnRyc2NrYmt1eWZnYWFrZmFjbmxkdXZxZXR5amdqbW5hZWFjbmdheGNuYW1qbWlna2tpdW1sbmR3Y2ttdWFuYW52cnJiZnp4enl1dWVob25lbWxjanp1dm9hanVmZGdqampjZ21ucHRmdXVjdWJjdGpoYW1sb2xmaG9pZnZia2themNwb3pjeXVjYnJnb2picG5haGNneXV0dGR2bXR0dndqbWhic2ptYmJhdmNkbHlob3Fqb21wY3B2aHRrb2FpcnZ0bWtmZnlhdGttcHR1dW9vb2xncG5udWVsaGZodnZpc3Vrd3lubWlhY25sbHVtaHRqZWt1YXV1cGxyeGtpZXB1anhsaWNma2NiY2htbmdsZ3BsaWhteWNybnNvbWF3dWZ1b29tdXVuaGRvb2FydWRhbW9hbW9ocW9vY2Z1cGp1aWFieHh1dnl2bm9zb3Vvb3Zha2xjZmt0eXJmYWdmYXl2cHVmdnBiZ3RhZmVraXBpY292dGZ0bnV4c2phdmpkcWt2ZnVpa2x0bWRrYmJua3BhZnhycXBmZ2N0dmFzY3VqamN1Y2h1YXpjaXVtdHRkbmF3aWhtbW9qZmJoeHZvbXRmcGJmaHR2aXdsYXVlb2dwcG1qc3BjYWxmaGNhcmtsYmlzcGh0anBhbmhsaXNwbnRza2tjbGpnZ2tjenRmaG5lY25wdGlmZnRyZG10amZla2ZpdGthc2RnbmVscHVoYmZpbXB1Y2JrcGtjbXhsZmtwaWlqdmh0amtzeWx6cm9vZmFjeGNscGpuaGJpcmN5ZGp0Y2xqZG9ibHlyeW1hdGdoaWZvam1qanNla29vbW9mY2FjdGF2ZmN5Zm11Znhoc3Rqd3VwYmpreW9nbnlyeXBseXBxbGF5eW1veHRhbnFkcHVyYnd6cGxsb2traGhtYW5kam5hdGNibGtjb3Rna2x1dHR3YmRhdHFybWF6cHJ2YXd6anhlZmhqdGRraWt1cmxsY2xjam9naG1sd3RhbWRkY2NucXVyb3Jha2N5b2JsYXJ6YWNtbnFjbWV0dHVheWF1eWl2c21ma25uYW5sdGNtaWdmcmdhYmlwdG50aG1tdXRwaWJ5bHJhdGhqY2doY2ZtbG92cGNudHFwZW96bG90ZGtlaW9jZmtjaXZ1eWx6Ympvb3hjc2FjbmdkdXZ4dG50aGphZXBhdX1rbGFocGNtdnppY2twYWFwaG9jZ2lvZ2p0dnB0Z2poZG9udW5scGFvbG5kcWJxZmRtYnBqam94Ym9tbGlreXVpcG54cXh6Y2lmb3JhaGhldXl5dHpoanV0Z2Z3dHVscmpjZnhvaWFneWpmYnBqaWFrZ3l0eGJmbnBsZnBxd3RkaXFuaXR2dmF1amRqbGlmamlvcnltdmZ4bXhnb3JpY3ljZGZob2ZiYnlnZmxhdGlyamRpZGFkcXZpa2pvY2l5ZmR6aHJvZ255eWlia2dubnZobWpsb2xhdndmaWpjZ2dma3B0a3BnY3FmYWZheXNpdHltYWN2a3FweWxoaGJ1Ymh4c2x1emN5dmxvcmlwdGxwZmxjdWljcG5mc2hpeXh2a2tiY2p5dWtvdGFsZmNpcGhjZGd4aWZ0a2xkZ29wanNtdXJ0eWp5cGhia2JmbmJ3YnNvZmlheHRsdWhwbXJmZGFrdWx1cGVhcHZyeXhtYWVwaGF5bmV4emZsbmV2am1pYndvcml0aGh4YmJ5cG1tYWJvYmZuZmNvanR0Y3Jram1naXJ2bWlzdW5mbHVodGVudHJodGVvamtjaGtwZnBhZXNnd2dscWRrdnZudWx1bnF7bG1sdGFscGhvdWZqcGlhbGNmbGZ5ZHZmd3lkb2ZraGFpeWF3bGx3Y2pvYXJxdnpqbGZmZ2xjdGNsYmxwa2JzZmxocnRqZGFvd3ByZGJjdWJmbHlveWJodmh3ZndvZWl0Z254YnpuaWZwbGx4bXN0a251aWhvYmZlZWZra2FreW5uYWNra2NkdWFtZ3N2bnBoY3RmZ3NybnJvZWh2ZW5kYmZpb21xZm14Ym1paWl1bGF2b2dma2dhY2lrYWFtcHBybGpmbXBqY3VhYXNja2l1cWlmY2liamx1dGNtcGF0b2pyanZmeGdsenBvcGpkZ2NoanVqbGtuZnd0cG5qZnBhY3JrcHRmaGNzamdyaXBjcmZjZGFsem5ob25mZGNvaG9zZmhvaGVha250aXRtamZsbmJvcGNsY3hjdWlnb3hja3JiYWxyYWVidGFhcml0ZWZtemNxaWRvZmd0ZnFnYmFkaWNubWhvdGlvbm9iZnlubGdvenRkYXZ2aW14b2JvdGlra2Z4d2lyb3JwZmNjdXpob3BoZmRjaWVrY2p5b21lamtjZ2Zmam51bmhvcGFkdGZndG1sdA==</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>进行base64解码</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">kgkhlfcotntiufpghhtcwujkckmownpckmwlygtlpmfkgyaaihucdlatoyucoiggrplkvkamrktqzxemmiwklhuaekceolpocfmtahmgfmavajnbcpmltjtpufjcapctojpjbffbjbwhualggyjnamcbfyacjbaxkixlmmqiksmptqyojertfektdxdxxbtrxcangymsimhvuwktexsglrtpgaktbmfucgvnmtjufoekymtlimxdijjpxyitabpmkuccnlkpoetgcdcposkizvyxrtzxraxtnoihqcxfoaaalpajyckekbycfvjomllkajgymgfdcrpeqklfscmejicpjikcppacxyevfkycppbkdzcfllikqnitckbhjorndhsomftypahpqoxryimhflchcmkoretmrotkarcjthmftilijnykutihbzttumsngftlmrbffltfwcnjmfatlfbzloktlpplmficokppnpacmfugmpundvtomwevcjsgajgfequupaietynfjbbpjslvynaftmlppdkttofuzjijxitbfirmovpzekirbsfjsgzlukolyvohmvgcpkthsxfzmmbnmldzyuicdvkmzbaybtorcfottdamccnbapnrgxlcyphyfncexbvdnlokgoyilprlonshtckjtxnabjhlmbpdcmhkjnlgmtgjnjakrizllpmmalpxamuninupkpdiapssmvkdjvgiyodumpnapljkjbcfhthskiokpgttyhnndsxkqjzvvdoseppoigytmnnavctopdyixvbdosobmcubiuajxhyfkvrkzgcuyilpvawaynqaaplbkwiixrctctlkxfjlpeammjnaujcouifmvikfimroaqtctcfmaubgagokarfqfhemosrtyfopukudcaaimhdfognhkrcelpcatctpyjlavoklgclatltmtzygpehfkzhctzngmofcizlvnxtnluajltovcjajubzatpehhfknnggplylivfeaidrmyjtacamxcnkfystwfnflynbmkckarxaispjlkvctvklxuncfpbxviriqeypmuvulvljckcypptpvetoxhmipbilnjeowkwuctoknafpwoapftclzhphxccatthumvwhzomafwqqnlsoyabutlzpiatfmmajkrdvlczwjpsspoabifiphkochptkatkafeonybfivecldzofatetgalhafamoayosounnafiatcjtiwoolacrkcuadputkylpypbgfepwpsncwkcwllaryjscanbwpdpzbptutnlnopwpitblotllzifklaaurjpiajfptkfmxpbsucvjsgmcalantrsckbkuyfgaakfacnlduvqetyjgjmnaeacngaxcnamjmigkkiumlndwckmuananvrrbfzxzyuuehonemlcjzuvoajufdgjjjcgmnptfuucubctjhamlolfhoifvbkkazcpozcyucbrgojbpnahcgyuttdvmttvwjmhbsjmbbavcdlyhoqjompcpvhtkoairvtmkffyatkmptuuooolgpnnuelhfhvvisukwynmiacnllumhtjekuauuplrxkiepujxlicfkcbchmnglgplihmycrnsomawufuoomuunhdooarudamoamohqoocfupjuiabxxuvyvnosouoovaklcfktyrfagfayvpufvpbgtafekipicovtftnuxsjavjdqkvfuikltmdkbbnkpafxrqpfgctvascujjcuchuazciumttdnawihmmojfbhxvomtfpbfhtviwlaueogppmjspcalfhcarklbisphtjpanhlispntskkcljggkcztfhnecnptifftrdmtjfekfitkasdgnelpuhbfimpucbkpkcmxlfkpiijvhtjksylzroofacxclpjnhbircydjtcljdoblyrymatghifojmjjsekoomofcactavfcyfmufxhstjwupbjkyognyryplypqlayymoxtanqdpurbwzpllokkhhmandjnatcblkcotgkluttwbdatqrmazprvawzjxefhjtdkikurllclcjoghmlwtamddccnqurorakcyoblarzacmnqcmettuayauyivsmfknnanltcmigfrgabiptnthmmutpibylrathjcghcfmlovpcntqpeozlotdkeiocfkcivuylzbjooxcsacngduvxtnthjaepau&#125;klahpcmvzickpaaphocgiogjtvptgjhdonunlpaolndqbqfdmbpjjoxbomlikyuipnxqxzciforahheuyytzhjutgfwtulrjcfxoiagyjfbpjiakgytxbfnplfpqwtdiqnitvvaujdjlifjiorymvfxmxgoricycdfhofbbygflatirjdidadqvikjociyfdzhrognyyibkgnnvhmjlolavwfijcggfkptkpgcqfafaysitymacvkqpylhhbubhxsluzcyvloriptlpflcuicpnfshiyxvkkbcjyukotalfciphcdgxiftkldgopjsmurtyjyphbkbfnbwbsofiaxtluhpmrfdakulupeapvryxmaephaynexzflnevjmibworithhxbbypmmabobfnfcojttcrkjmgirvmisunfluhtentrhteojkchkpfpaesgwglqdkvvnulunq&#123;lmltalphoufjpialcflfydvfwydofkhaiyawllwcjoarqvzjlffglctclblpkbsflhrtjdaowprdbcubflyoybhvhwfwoeitgnxbznifpllxmstknuihobfeefkkakynnackkcduamgsvnphctfgsrnroehvendbfiomqfmxbmiiiulavogfkgacikaampprljfmpjcuaasckiuqifcibjlutcmpatojrjvfxglzpopjdgchjujlknfwtpnjfpacrkptfhcsjgripcrfcdalznhonfdcohosfhoheakntitmjflnbopclcxcuigoxckrbalraebtaaritefmzcqidofgtfqgbadicnmhotionobfynlgoztdavvimxobotikkfxwirorpfccuzhophfdciekcjyomejkcgffjnunhopadtfgtmlt</span><br></pre></td></tr></table></figure>
-
-<p>frequency有频率的意思，猜测是字频统计</p>
-<p>借用大佬脚本</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment">#用来统计TXT文本，并统计字频</span></span><br><span class="line"><span class="comment"># 打开文件</span></span><br><span class="line">fr = <span class="built_in">open</span>(<span class="string">r&#x27;C:/Users/zxy13/Desktop/1.txt&#x27;</span>, <span class="string">&#x27;r&#x27;</span>, encoding=<span class="string">&#x27;gbk&#x27;</span>)</span><br><span class="line"><span class="comment"># 读取文件所有行</span></span><br><span class="line">content = fr.readlines()</span><br><span class="line">contentLines = <span class="string">&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line">characers = []  <span class="comment"># 存放不同字的总数</span></span><br><span class="line">rate = &#123;&#125;  <span class="comment"># 存放每个字出现的频率</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 依次迭代所有行</span></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> content:</span><br><span class="line">    <span class="comment"># 去除空格</span></span><br><span class="line">    line = line.strip()</span><br><span class="line">    <span class="comment"># 如果是空行，则跳过</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(line) == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    contentLines = contentLines + line</span><br><span class="line">    <span class="comment"># 统计每一字出现的个数</span></span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(line)):</span><br><span class="line">        <span class="comment"># 如果字符第一次出现 加入到字符数组中</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> line[x] <span class="keyword">in</span> characers:</span><br><span class="line">            characers.append(line[x])</span><br><span class="line">        <span class="comment"># 如果是字符第一次出现 加入到字典中</span></span><br><span class="line">        <span class="keyword">if</span> line[x] <span class="keyword">not</span> <span class="keyword">in</span> rate:</span><br><span class="line">            rate[line[x]] = <span class="number">1</span></span><br><span class="line">        <span class="comment"># 出现次数加一</span></span><br><span class="line">        rate[line[x]] += <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 对字典进行倒数排序 从高到低 其中e表示dict.items()中的一个元素，</span></span><br><span class="line"><span class="comment"># e[1]则表示按 值排序如果把e[1]改成e[0]，那么则是按键排序，</span></span><br><span class="line"><span class="comment"># reverse=False可以省略，默认为升序排列</span></span><br><span class="line">rate = <span class="built_in">sorted</span>(rate.items(), key=<span class="keyword">lambda</span> e: e[<span class="number">1</span>], reverse=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;全文共有%d个字&#x27;</span> % <span class="built_in">len</span>(contentLines))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;一共有%d个不同的字&#x27;</span> % <span class="built_in">len</span>(characers))</span><br><span class="line"><span class="built_in">print</span>()</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> rate:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;[&quot;</span>, i[<span class="number">0</span>], <span class="string">&quot;] 共出现 &quot;</span>, i[<span class="number">1</span>], <span class="string">&quot;次&quot;</span>)</span><br><span class="line"></span><br><span class="line">fr.close()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>得到</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">actf&#123;plokmijnuhbygvrdxeszwq&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="Misc-2"><a href="#Misc-2" class="headerlink" title="Misc 2"></a>Misc 2</h1><p>[ACTF新生赛2020]outguess</p>
-<h2 id="知识点-1"><a href="#知识点-1" class="headerlink" title="知识点"></a>知识点</h2><ul>
-<li>outguess</li>
-<li>社会主义核心价值观编码</li>
+<h2 id="递归扫描"><a href="#递归扫描" class="headerlink" title="递归扫描"></a>递归扫描</h2><ul>
+<li>通过使用**-r | –recursive**参数，dirsearch 将递归地暴力破解所有目录。</li>
 </ul>
-<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><p>在flag.txt中有，猜测是outguess隐写</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">flag在哪？</span><br><span class="line">你Guess一下啊！</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target -r</span><br></pre></td></tr></table></figure>
 
-<p>在图片的属性中发现：<code>公正民主公正文明公正和谐</code></p>
-<p>解密出来是：<code>abc</code></p>
-<p>使用outguess隐写工具</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">outguess -r mmm.jpg -t 1.txt -k abc   </span><br></pre></td></tr></table></figure>
-
-<p>得到flag：<code>ACTF&#123;gue33_Gu3Ss!2020&#125;</code></p>
-<h1 id="Misc3"><a href="#Misc3" class="headerlink" title="Misc3"></a>Misc3</h1><p>[ACTF新生赛2020]NTFS数据流</p>
-<h2 id="知识点-2"><a href="#知识点-2" class="headerlink" title="知识点"></a>知识点</h2><ul>
-<li>NTFS隐写</li>
+<ul>
+<li><strong>您可以使用–recursion-depth</strong>设置最大递归深度，使用–recursion <strong>-</strong> status 设置递归状态码</li>
 </ul>
-<h2 id="解题思路-1"><a href="#解题思路-1" class="headerlink" title="解题思路"></a>解题思路</h2><p>注意：这里解压的时候使用Win RAR解压，涉及NTFS流的都需要Win RAR解压</p>
-<p>工具：Ntfsstreamseditor.exe</p>
-<p>使用工具就可以得到flag了。</p>
-<h1 id="Misc4"><a href="#Misc4" class="headerlink" title="Misc4"></a>Misc4</h1><p>[ACTF新生赛2020]music</p>
-<h2 id="知识点-3"><a href="#知识点-3" class="headerlink" title="知识点"></a>知识点</h2><ul>
-<li>音频隐写</li>
-<li>异或处理</li>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target -r --recursion-depth 3 --recursion-status 200-399</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>还有 2 个选项：</p>
+<p><strong>–force-recursive</strong> 和 <strong>–deep-recursive</strong></p>
+<ul>
+<li><strong>强制递归</strong>：暴力递归所有找到的路径，而不仅仅是路径以<code>/</code></li>
+<li><strong>深度递归</strong>：递归暴力破解路径的所有深度（<code>a/b/c</code>&#x3D;&gt; 添加<code>a/</code>，<code>a/b/</code>）</li>
 </ul>
-<h2 id="解题思路-2"><a href="#解题思路-2" class="headerlink" title="解题思路"></a>解题思路</h2><p>音频没有办法打开，显示异常，用010查看</p>
-<p><img src="/image-20220313154611541.png"></p>
-
-
-<p>发现根本不符合格式</p>
-<p><img src="/image-20220313154714073.png"></p>
-
-
-<p>多次出行相同的字符，猜测是进行了异或，<code>工具-&gt;十六进制运算-&gt;二进制异或</code></p>
-<p>全文进行异或后得到正确文件</p>
-<p><img src="/image-20220313154858601.png"></p>
-
-
-<p>得到flag：<code>actfabcdfghijk</code></p>
-<h1 id="Misc5"><a href="#Misc5" class="headerlink" title="Misc5"></a>Misc5</h1><p>[ACTF新生赛2020]wget</p>
-<h2 id="知识点-4"><a href="#知识点-4" class="headerlink" title="知识点"></a>知识点</h2><ul>
-<li>流量分析</li>
-<li>zip伪加密</li>
+</li>
 </ul>
-<h2 id="解题思路-3"><a href="#解题思路-3" class="headerlink" title="解题思路"></a>解题思路</h2><p>我通过binwalk命令查看到流量包中有存在压缩包，我利用命令分离文件，但是文件损坏</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">foremost -T wget.pcapng </span><br></pre></td></tr></table></figure>
+<h2 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h2><p>线程号 ( <strong>-t | –threads</strong> ) 反映了分离的蛮力进程的数量。所以线程数越大，dirsearch 运行得越快。默认情况下，线程数为 30，但如果您想加快进度，可以增加它。</p>
+<p>速度仍然很大程度上取决于服务器的响应时间。如果你的线程过大可能导致Dos</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,htm,js,bak,zip,tgz,txt -u https://target -t 20</span><br></pre></td></tr></table></figure>
 
-<p>我直接在wirshark中直接保存出得到压缩包，但是压缩包需要密码。利用ZipCenOp.jar修复zip压缩包。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">java -jar .\ZipCenOp.jar r .\1.zip</span><br></pre></td></tr></table></figure>
-
-<p>解开压缩包得到flag文件</p>
-<p>使用strings命令就可以输出flag：actf{c5558bcf-26da-4f8b-b181-b61f3850b9e5}</p>
-<h1 id="Misc6"><a href="#Misc6" class="headerlink" title="Misc6"></a>Misc6</h1><p>[ACTF新生赛2021]与熊论道</p>
-<h2 id="知识点-5"><a href="#知识点-5" class="headerlink" title="知识点"></a>知识点</h2><ul>
-<li>与熊论道编码</li>
-<li>社会主义核心价值观编码</li>
-<li>bmp图片隐写</li>
+<h2 id="前缀-x2F-后缀"><a href="#前缀-x2F-后缀" class="headerlink" title="前缀&#x2F;后缀"></a>前缀&#x2F;后缀</h2><p>自定义扫描文件前缀或者后缀</p>
+<ul>
+<li><strong>–prefixes</strong>：为所有条目添加自定义前缀</li>
 </ul>
-<h2 id="解题思路-4"><a href="#解题思路-4" class="headerlink" title="解题思路"></a>解题思路</h2><p>猜测是和与禅论道一样的编码</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">熊曰：呋食性咯怎很盜溫吖盜萌嚄眠嗥吖物和我嘿襲人現擊有嚁嘿襲嗡取果盜和吖非嗷咬和取象洞家食住捕咬嗅拙喜爾常拙捕咯會呦唬沒歡肉咬哞笨註氏破吃咯噤誘嗡唬樣取偶蜜嗒我咬咬嘶盜覺歡我嗡嗅哞麼你和嗄會取喜嗡咬歡象取襲</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php -u https://target --prefixes .,admin,_</span><br></pre></td></tr></table></figure>
 
-<p><a href="http://hi.pcmoe.net/">与熊论道</a></p>
-<p>解得：<code>法治富强法治法治公正自由和谐诚信富强和谐民主和谐文明和谐和谐和谐自由和谐平等和谐公正</code></p>
-<p><a href="https://atool.vip/corevalue/">社会主义核心价值观编码</a></p>
-<p>解得：<code>pwd:123456</code></p>
-<p>密码是干嘛用的呢？</p>
-<p>有关bmp图片隐写，我找到两个工具wbStego4.3open和silenteye</p>
-<p>这题用wbStego4.3open就可以解密</p>
-<p>得到flag：ACTF{PXY_wants_@_bOyfri3nd}</p>
-<h1 id="Misc7"><a href="#Misc7" class="headerlink" title="Misc7"></a>Misc7</h1><p>[ACTF新生赛2020]你看我匀称吗？</p>
-<h2 id="知识点-6"><a href="#知识点-6" class="headerlink" title="知识点"></a>知识点</h2><ul>
-<li>LSB隐写</li>
-<li>修改图片宽高</li>
+<p>例子</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">tools</span><br><span class="line"></span><br><span class="line">生成</span><br><span class="line"></span><br><span class="line">.tools</span><br><span class="line">admintools</span><br><span class="line">_tools</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>–suffixes</strong>：为所有条目添加自定义后缀</li>
 </ul>
-<h2 id="解题思路-5"><a href="#解题思路-5" class="headerlink" title="解题思路"></a>解题思路</h2><p>两个文件一个要密码的压缩包，匀称？猜测高度有问题</p>
-<p>使用工具TweakPNG查看，发现有报错</p>
-<p><img src="/image-20220313165532165.png"></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php -u https://target --suffixes ~</span><br></pre></td></tr></table></figure>
 
+<p>例子</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">index.php</span><br><span class="line">internal</span><br><span class="line"></span><br><span class="line">生成</span><br><span class="line"></span><br><span class="line">index.php~</span><br><span class="line">internal~</span><br></pre></td></tr></table></figure>
 
-<p>用010打开图片修改</p>
-<p><img src="/image-20220313170605117.png"></p>
-
-
-<p>得到：<strong>you come</strong>。解压得到图片</p>
-<p>猜测LSB隐写</p>
-<p><img src="/image-20220313171718397.png"></p>
-
-
-<p>得到flag：**<code>ACTF&#123;llL llsb_i3_e3asY&#125;</code>**</p>
-<h1 id="Misc-8"><a href="#Misc-8" class="headerlink" title="Misc 8"></a>Misc 8</h1><p>[ACTF新生赛2020]剑龙</p>
-<h2 id="知识点-7"><a href="#知识点-7" class="headerlink" title="知识点"></a>知识点</h2><ul>
-<li>AAencode编码（颜文字）</li>
-<li>steghide隐写</li>
-<li>DES加解密</li>
-<li>stegosaurus（pyc）隐写</li>
+<h2 id="黑名单"><a href="#黑名单" class="headerlink" title="黑名单"></a>黑名单</h2><p>在<code>db/</code>文件夹内，有几个“黑名单文件”。如果这些文件中的路径与文件名中提到的状态相同，则将从扫描结果中过滤掉它们。</p>
+<p>示例：如果您添加<code>admin.php</code>到<code>db/403_blacklist.txt</code>，每当您执行<code>admin.php</code>返回 403 的扫描时，都会从结果中过滤掉。</p>
+<h2 id="过滤器"><a href="#过滤器" class="headerlink" title="过滤器"></a>过滤器</h2><p>使用**-i | –include-status<strong>和</strong>-x | –exclude-status**选择允许和不允许的响应状态码</p>
+<p>对于更高级的过滤器：</p>
+<ul>
+<li><strong>–exclude-sizes</strong></li>
 </ul>
-<h2 id="解题思路-6"><a href="#解题思路-6" class="headerlink" title="解题思路"></a>解题思路</h2><p>解开hint文件夹得到一个图片与文本</p>
-<p>文本中是颜文字；<a href="http://www.hiencode.com/aaencode.html">在线解码</a></p>
-<p>得到</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">welcom3!</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --exclude-sizes 1B,243KB</span><br></pre></td></tr></table></figure>
 
-<p>在图片信息中可以看</p>
-<p><img src="/image-20220313172549463.png"></p>
-
-
-<p>key：<code>**@#$%^&amp;%%$)**</code></p>
-<p>hh.jpg是<strong>steghide</strong>隐写</p>
-<p><img src="/image-20220313183441314.png"></p>
-
-
-<figure class="highlight tex"><table><tr><td class="code"><pre><span class="line">U2FsdGVkX1/7KeHVl5984OsGUVSanPfPednHpK9lKvp0kdrxO4Tj/Q==</span><br></pre></td></tr></table></figure>
-
-<p><a href="https://www.sojson.com/encrypt_des.html">DES解密</a></p>
-<p>得到：<strong>think about stegosaurus</strong></p>
-<p>对文件进行file命令，发现是python文件 <strong><code>O_O: python 3.6 byte-compiled</code></strong></p>
-<p>运行命令</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">./stegosaurus -x O_O.pyc </span><br></pre></td></tr></table></figure>
-
-<p><img src="/image-20220313190100195.png"></p>
-
-
-<p>得到flag：**<code>flag&#123;3teg0Sauru3_!1&#125;</code>** </p>
-<h1 id="Misc-9"><a href="#Misc-9" class="headerlink" title="Misc 9"></a>Misc 9</h1><p>[ACTF新生赛2020]明文攻击</p>
-<h2 id="知识点-8"><a href="#知识点-8" class="headerlink" title="知识点"></a>知识点</h2><ul>
-<li>CRC爆破</li>
+<ul>
+<li><strong>–exclude-texts</strong></li>
 </ul>
-<h2 id="解题思路-7"><a href="#解题思路-7" class="headerlink" title="解题思路"></a>解题思路</h2><p>提示明文攻击</p>
-<p>先看图片，在图片尾有flag.txt，补上<code>50 4B</code></p>
-<p><img src="/image-20220313202715767.png"></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --exclude-texts &quot;403 Forbidden&quot;</span><br></pre></td></tr></table></figure>
 
-
-<p>新建成压缩包</p>
-<p>对比两个包</p>
-<p><img src="/image-20220313203046943.png"></p>
-
-
-<p>两个包的CRC是一样的</p>
-<p>进行爆破</p>
-<p><img src="/image-20220313203155571.png"></p>
-
-
-<h1 id="Misc-10"><a href="#Misc-10" class="headerlink" title="Misc 10"></a>Misc 10</h1><p>[ACTF新生赛2020]近在眼前</p>
-<h2 id="知识点-9"><a href="#知识点-9" class="headerlink" title="知识点"></a>知识点</h2><ul>
-<li>base64隐写</li>
+<ul>
+<li><strong>–exclude-regexps</strong></li>
 </ul>
-<h2 id="解题思路-8"><a href="#解题思路-8" class="headerlink" title="解题思路"></a>解题思路</h2><p>脚本</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">base64chars = <span class="string">&#x27;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/&#x27;</span></span><br><span class="line"></span><br><span class="line">flag = <span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;C:/Users/zxy13/Desktop/2022311/10/近在眼前/ComeOn!.txt&#x27;</span>, <span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> f.readlines():</span><br><span class="line">        line = line[:-<span class="number">1</span>]</span><br><span class="line">        num = line.count(<span class="string">&#x27;=&#x27;</span>)</span><br><span class="line">        <span class="keyword">if</span> num == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        lastchar = line[-(num + <span class="number">1</span>)]</span><br><span class="line"></span><br><span class="line">        <span class="comment"># print(line,num,lastchar)</span></span><br><span class="line">        myindex = base64chars.index(lastchar)</span><br><span class="line">        <span class="comment"># print(myindex)</span></span><br><span class="line">        bin_str = <span class="built_in">bin</span>(myindex)[<span class="number">2</span>:].zfill(<span class="number">6</span>)</span><br><span class="line">        <span class="comment"># print(bin_str)</span></span><br><span class="line">        flag += bin_str[<span class="number">6</span> - <span class="number">2</span> * num:]</span><br><span class="line">        <span class="comment"># print(bin_str[6-2*num:])</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;&#x27;</span>.join([<span class="built_in">chr</span>(<span class="built_in">int</span>(flag[i:i + <span class="number">8</span>], <span class="number">2</span>)) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(flag), <span class="number">8</span>)]))</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --exclude-regexps &quot;^Error$&quot;</span><br></pre></td></tr></table></figure>
 
-<p>运行得到</p>
-<p><code>**ACTF&#123;6aseb4_f33!&#125;**</code></p>
+<ul>
+<li><strong>–exclude-redirects</strong></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --exclude-redirects &quot;https://(.*).okta.com/*&quot;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>-exclude-content</strong></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --exclude-content /error.html</span><br></pre></td></tr></table></figure>
+
+<h2 id="原始请求"><a href="#原始请求" class="headerlink" title="原始请求"></a>原始请求</h2><p><strong>dirsearch</strong> 允许您从文件中导入原始请求。内容看起来像这样：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">GET /admin HTTP/1.1</span><br><span class="line">Host: admin.example.com</span><br><span class="line">Cache-Control: max-age=0</span><br><span class="line">Accept: */*</span><br></pre></td></tr></table></figure>
+
+<h2 id="请求方法"><a href="#请求方法" class="headerlink" title="请求方法"></a>请求方法</h2><p>既然扫描网站，我们也可以选择使用 GET 或者 POST 方法</p>
+<p>但是在 post 方法中，POST 是万维网使用的 HTTP 支持的请求方法。POST 请求方法在设计上要求 Web 服务器接受包含在请求消息正文中的数据，最有可能存储它。它通常与 GET HTTP 方法一起使用，该方法在名称或值对中用于将表单数据附加到 URL。如果您使用 GET，则 URL 长度将受到限制。这使用户能够提交书签的结果。</p>
+<p>现在，我们正在使用此命令在 [-m] 参数的帮助下探索另一面。</p>
+<p>正如我们所知，与我们之前执行的 GET 请求方法相比，这些结果是不同且独特的。它显示了一些不同的网页和网页目录。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -u http://testphp.vulnweb.com/ -m POST</span><br></pre></td></tr></table></figure>
+
+<h2 id="延迟请求"><a href="#延迟请求" class="headerlink" title="延迟请求"></a>延迟请求</h2><p>根据规则，或者限制，延迟自己的请求，免除造成不必要的网络拥堵</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -u http://testphp.vulnweb.com/ -s 10</span><br></pre></td></tr></table></figure>
+
+<h2 id="词表格式"><a href="#词表格式" class="headerlink" title="词表格式"></a>词表格式</h2><p>支持的词表格式：大写、小写、大写</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">小写</span><br><span class="line">admin</span><br><span class="line">index.html</span><br><span class="line">大写</span><br><span class="line">ADMIN</span><br><span class="line">INDEX.HTML</span><br><span class="line">首部</span><br><span class="line">Admin</span><br><span class="line">Index.html</span><br></pre></td></tr></table></figure>
+
+<h2 id="排除扩展"><a href="#排除扩展" class="headerlink" title="排除扩展"></a>排除扩展</h2><ul>
+<li>使用**-X | –exclude-extensions**带有扩展名列表将删除单词列表中包含给定扩展名的所有路径</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -u https://target -X jsp</span><br></pre></td></tr></table></figure>
+
+<p>例子</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">admin.php</span><br><span class="line">test.jsp</span><br><span class="line"></span><br><span class="line">扫描后：</span><br><span class="line">admin.php</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>如果要排除所有扩展名，除了您在<code>-e</code>标志中选择的扩展名，请使用**–only-selected**</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e html -u https://target --only-selected</span><br></pre></td></tr></table></figure>
+
+<p>例子</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">index.html</span><br><span class="line">admin.php</span><br><span class="line">扫描后</span><br><span class="line">index.html</span><br></pre></td></tr></table></figure>
+
+<h2 id="扫描子目录"><a href="#扫描子目录" class="headerlink" title="扫描子目录"></a>扫描子目录</h2><ul>
+<li><strong>从 URL，您可以使用–subdirs</strong>扫描子目录列表。</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --subdirs admin/,folder/,/</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>它的反向版本是**–exclude-subdirs**，它可以防止 dirsearch 递归扫描给定的子目录。</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --recursive --exclude-subdirs image/,css/</span><br></pre></td></tr></table></figure>
+
+<h2 id="代理"><a href="#代理" class="headerlink" title="代理"></a>代理</h2><p>dirsearch 支持 SOCKS 和 HTTP 代理，有两个选项：代理服务器或代理服务器列表。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --proxy 127.0.0.1:8080</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --proxy socks5://10.10.0.1:8080</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --proxylist proxyservers.txt</span><br></pre></td></tr></table></figure>
+
+<h2 id="报告"><a href="#报告" class="headerlink" title="报告"></a>报告</h2><p>支持的报告格式：<strong>simple</strong>、<strong>plain</strong>、<strong>json</strong>、<strong>xml</strong>、<strong>md</strong>、<strong>csv</strong>、 <strong>html</strong></p>
+<p>将扫描变成报告输出出来</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php -l URLs.txt --format plain -o report.txt</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php -u https://target --format html -o target.json</span><br></pre></td></tr></table></figure>
+
+<h2 id="没色扫描"><a href="#没色扫描" class="headerlink" title="没色扫描"></a>没色扫描</h2><p>扫描结果是没有颜色的，看个人喜好，毕竟有人喜欢花里胡哨</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -u http://testphp.vulnweb.com/ --no-color</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="扫描方法"><a href="#扫描方法" class="headerlink" title="扫描方法"></a>扫描方法</h2><ul>
+<li>服务器有请求限制？这很糟糕，但随意绕过它，通过随机代理<code>--proxy-list</code></li>
+<li>想要找出配置文件或备份？尝试<code>--suffixes ~</code>并<code>--prefixes .</code></li>
+<li>只想查找文件夹&#x2F;目录？为什么不结合<code>--remove-extensions</code>和<code>--suffixes /</code>！</li>
+<li>使用 CIDR 进行暴力破解时，混合使用<code>--cidr</code>、和 将减少大部分噪音 + 假阴性<code>-F``-q</code></li>
+<li>扫描 URL 列表，但不想看到 429 泛滥？<code>--skip-on-status 429</code>将帮助您在返回 429 时跳过目标</li>
+<li>服务器包含会减慢扫描速度的大文件？您<em>可能</em>想使用<code>HEAD</code>HTTP 方法而不是<code>GET</code></li>
+<li>蛮力 CIDR 很慢？可能您忘记减少请求超时和请求重试。建议:<code>--timeout 3 --retries 1</code></li>
+</ul>
 ]]></content>
       <categories>
-        <category>杂项</category>
+        <category>web渗透</category>
       </categories>
       <tags>
-        <tag>Misc</tag>
+        <tag>web</tag>
+        <tag>工具</tag>
       </tags>
   </entry>
   <entry>
@@ -495,186 +478,203 @@
       </tags>
   </entry>
   <entry>
-    <title>dirsearch-路径扫描</title>
-    <url>/2022/dirsearch/</url>
-    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>这一款高级命令行工具，旨在暴力破解网络服务器中的目录和文件，AKA 网络路径扫描器。</p>
-<p>dirsearch进行高精度，可以扩展的扫描，可以根据自己的需求定义，相对于御剑，我个人认为更好点。</p>
-<p><a href="https://github.com/maurosoria/dirsearch">dirsearch工具地址</a></p>
-<span id="more"></span>    
+    <title>Misc小合集（一）</title>
+    <url>/2022/Misc%E5%B0%8F%E5%90%88%E9%9B%861/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>记一次杂项小训练</p>
+<p><strong>Misc 1</strong> - <strong>Misc 10</strong></p>
+<span id="more"></span>
 
-<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><ul>
-<li>使用 git 安装：<code>git clone https://github.com/maurosoria/dirsearch.git</code></li>
-<li>使用 ZIP 文件安装：<a href="https://github.com/maurosoria/dirsearch/archive/master.zip">在此处下载</a></li>
-<li>使用 Docker 安装：（<code>docker build -t &quot;dirsearch:v0.4.1&quot;</code>更多<a href="https://github.com/maurosoria/dirsearch#support-docker">信息</a>）</li>
-<li>使用 Kali Linux 安装：<code>sudo apt-get install dirsearch</code></li>
-<li>使用 PyPi 安装：<code>pip3 install dirsearch</code></li>
+<h1 id="Misc-1"><a href="#Misc-1" class="headerlink" title="Misc 1"></a>Misc 1</h1><p>[ACTF新生赛2020]frequency</p>
+<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><ul>
+<li>strings</li>
+<li>word隐藏文字</li>
+<li>字频统计</li>
 </ul>
-<p>安装库</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git clone https://github.com/maurosoria/dirsearch.git</span><br><span class="line">cd dirsearch</span><br><span class="line">pip3 install -r requirements.txt</span><br><span class="line">python3 dirsearch.py -u &lt;URL&gt; -e &lt;EXTENSIONS&gt;</span><br></pre></td></tr></table></figure>
-
-<p>requirements.txt 中包含了 dirsearch 中需要的库。</p>
-<h1 id="选项"><a href="#选项" class="headerlink" title="选项"></a>选项</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Usage: dirsearch.py [-u|--url] target [-e|--extensions] extensions [options]</span><br><span class="line"></span><br><span class="line">Options:</span><br><span class="line">  --version             显示程序的版本号并退出</span><br><span class="line">  -h, --<span class="built_in">help</span>            显示此帮助消息并退出</span><br><span class="line"></span><br><span class="line">  Mandatory: <span class="comment">#强制性的</span></span><br><span class="line">    -u URL, --url=URL   目标网址</span><br><span class="line">    -l FILE, --url-list=FILE</span><br><span class="line">                        目标URL列表文件</span><br><span class="line">    --stdin             来自STDIN的目标URL列表</span><br><span class="line">    --cidr=CIDR         目标CIDR</span><br><span class="line">    --raw=FILE          从文件加载原始HTTP请求 (use `--scheme` flag to <span class="built_in">set</span> the scheme)</span><br><span class="line">    -e EXTENSIONS, --extensions=EXTENSIONS</span><br><span class="line">                        用逗号分隔的扩展列表 (Example: php,asp)</span><br><span class="line">    -X EXTENSIONS, --exclude-extensions=EXTENSIONS</span><br><span class="line">                        排除由逗号分隔的扩展列表 (Example: asp,jsp)</span><br><span class="line">    -f, --force-extensions</span><br><span class="line">                        为每个单词列表条目添加扩展名。默认情况下dirsearch仅将%EXT%关键字替换为扩展</span><br><span class="line"></span><br><span class="line">  Dictionary Settings: <span class="comment">#字典设置</span></span><br><span class="line">    -w WORDLIST, --wordlists=WORDLIST</span><br><span class="line">                        自定义词表 (用逗号分隔)</span><br><span class="line">    --prefixes=PREFIXES</span><br><span class="line">                        向所有单词列表条目添加自定义前缀 (用逗号分隔)</span><br><span class="line">    --suffixes=SUFFIXES</span><br><span class="line">                        向所有单词列表条目添加自定义后缀，忽略目录(用逗号分隔)</span><br><span class="line">    --only-selected     删除路径与选定路径具有不同的扩展名通过`-e的` (保留条目没有扩展名)</span><br><span class="line">    --remove-extensions</span><br><span class="line">                        删除所有路径中的扩展 (Example: admin.php -&gt; admin)</span><br><span class="line">    -U, --uppercase     Uppercase wordlist</span><br><span class="line">    -L, --lowercase     Lowercase wordlist</span><br><span class="line">    -C, --capital       Capital wordlist</span><br><span class="line"></span><br><span class="line">  General Settings: <span class="comment">#一般设置</span></span><br><span class="line">    -t THREADS, --threads=THREADS  线程数</span><br><span class="line">    -r, --recursive     暴力循环</span><br><span class="line">    --deep-recursive    对每个目录深度执行递归扫描</span><br><span class="line">                        (Example: api/users -&gt; api/)</span><br><span class="line">    --force-recursive   对每个找到的路径进行递归暴力，而不是只有路径以斜线结尾</span><br><span class="line">    --recursion-depth=DEPTH 最大递归深度</span><br><span class="line">    --recursion-status=CODES</span><br><span class="line">                        执行递归扫描的有效状态代码，支持范围 (用逗号分隔)</span><br><span class="line">    --subdirs=SUBDIRS   扫描给定URL的子目录 (用逗号分隔)</span><br><span class="line">    --exclude-subdirs=SUBDIRS</span><br><span class="line">                        在递归过程中排除以下子目录扫描 (用逗号分隔)</span><br><span class="line">    -i CODES, --include-status=CODES</span><br><span class="line">                        包括状态代码，用逗号分隔，支持范围 (Example: 200,300-399)</span><br><span class="line">    -x CODES, --exclude-status=CODES</span><br><span class="line">                        排除状态代码，用逗号分隔，支持范围 (Example: 301,500-599)</span><br><span class="line">    --exclude-sizes=SIZES</span><br><span class="line">                        按大小排除响应，以逗号分隔 (Example: 123B,4KB)</span><br><span class="line">    --exclude-texts=TEXTS</span><br><span class="line">                        按文本排除回复，用逗号分隔 (Example: <span class="string">&#x27;Not found&#x27;</span>, <span class="string">&#x27;Error&#x27;</span>)</span><br><span class="line">    --exclude-regexps=REGEXPS</span><br><span class="line">                        通过regexp排除响应，用逗号分隔</span><br><span class="line">                        (Example: <span class="string">&#x27;Not foun[a-z]&#123;1&#125;&#x27;</span>, <span class="string">&#x27;^Error$&#x27;</span>)</span><br><span class="line">    --exclude-redirects=REGEXPS</span><br><span class="line">                        通过重定向正则表达式或文本排除响应,</span><br><span class="line">                        用逗号分隔 (Example: <span class="string">&#x27;https://okta.com/*&#x27;</span>)</span><br><span class="line">    --exclude-content=PATH</span><br><span class="line">                        按此路径的响应内容排除响应</span><br><span class="line">    --skip-on-status=CODES</span><br><span class="line">                        无论何时命中其中一个状态码，跳过目标，用逗号分隔，支持范围</span><br><span class="line">    --minimal=LENGTH    最小响应长度</span><br><span class="line">    --maximal=LENGTH    最大响应长度</span><br><span class="line">    --max-time=SECONDS  扫描的最大运行时间</span><br><span class="line">    -q, --quiet-mode    安静模式</span><br><span class="line">    --full-url          输出中的完整URL (在中自动启用安静模式)</span><br><span class="line">    --no-color          没有彩色输出</span><br><span class="line"></span><br><span class="line">  Request Settings: <span class="comment">#请求设置</span></span><br><span class="line">    -m METHOD, --http-method=METHOD HTTP方法 (default: GET)</span><br><span class="line">    -d DATA, --data=DATA HTTP请求数据</span><br><span class="line">    -H HEADERS, --header=HEADERS</span><br><span class="line">                        HTTP请求头，支持多个标志 (Example:</span><br><span class="line">                        -H <span class="string">&#x27;Referer: example.com&#x27;</span>)</span><br><span class="line">    --header-list=FILE  文件包含HTTP请求头</span><br><span class="line">    -F, --follow-redirects</span><br><span class="line">                        遵循HTTP重定向</span><br><span class="line">    --random-agent      为每个请求选择一个随机用户代理</span><br><span class="line">    --auth-type=TYPE    身份验证类型 (basic, digest, bearer, ntlm)</span><br><span class="line">    --auth=CREDENTIAL   认证凭证 (user:password or bearer token)</span><br><span class="line">    --user-agent=USERAGENT</span><br><span class="line">    --cookie=COOKIE</span><br><span class="line"></span><br><span class="line">  Connection Settings: <span class="comment">#连接设置</span></span><br><span class="line">    --<span class="built_in">timeout</span>=TIMEOUT   连接超时</span><br><span class="line">    -s DELAY, --delay=DELAY</span><br><span class="line">                        请求之间的延迟</span><br><span class="line">    --proxy=PROXY       代理URL，支持HTTP和SOCKS代理 (Example:</span><br><span class="line">                        localhost:8080, socks5://localhost:8088)</span><br><span class="line">    --proxy-list=FILE   文件包含代理服务器</span><br><span class="line">    --replay-proxy=PROXY</span><br><span class="line">                        要使用找到的路径重播的代理</span><br><span class="line">    --scheme=SCHEME     默认方案 (对于原始请求或如果没有URL中的方案)</span><br><span class="line">    --max-rate=RATE     每秒最大请求数</span><br><span class="line">    --retries=RETRIES   失败请求的重试次数</span><br><span class="line">    -b, --request-by-hostname</span><br><span class="line">                        默认情况下，通过IP搜索速度请求。这将强制dirsearch按主机名请求</span><br><span class="line">    --ip=IP             服务器IP地址</span><br><span class="line">    --exit-on-error     每当发生错误时退出</span><br><span class="line"></span><br><span class="line">  Reports:</span><br><span class="line">    -o FILE, --output=FILE</span><br><span class="line">                        输出文件</span><br><span class="line">    --format=FORMAT     报告格式 (Available: simple, plain, json, xml,</span><br><span class="line">                        md, csv, html)</span><br></pre></td></tr></table></figure>
-
-<h1 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h1><p>dirsearch 工具可以根据自己的需求进行配置，配置文件为 default.conf 。选择带 <code>#</code> 的进行配置。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># If you want to edit dirsearch default configurations, you can</span><br><span class="line"># edit values in this file. Everything after `#` is a comment</span><br><span class="line"># and won&#x27;t be applied</span><br><span class="line"></span><br><span class="line">[mandatory]</span><br><span class="line">default-extensions = php,aspx,jsp,html,js</span><br><span class="line">force-extensions = False</span><br><span class="line"># exclude-extensions = old,log</span><br><span class="line"></span><br><span class="line">[general]</span><br><span class="line">threads = 30</span><br><span class="line">recursive = False</span><br><span class="line">deep-recursive = False</span><br><span class="line">force-recursive = False</span><br><span class="line">recursion-depth = 0</span><br><span class="line">exclude-subdirs = %%ff/</span><br><span class="line">random-user-agents = False</span><br><span class="line">max-time = 0</span><br><span class="line">full-url = False</span><br><span class="line">quiet-mode = False</span><br><span class="line">color = True</span><br><span class="line">recursion-status = 200-399,401,403</span><br><span class="line"># include-status = 200-299,401</span><br><span class="line"># exclude-status = 400,500-999</span><br><span class="line"># exclude-sizes = 0b,123gb</span><br><span class="line"># exclude-texts = &quot;Not found&quot;</span><br><span class="line"># exclude-regexps = &quot;403 [a-z]&#123;1,25&#125;&quot;</span><br><span class="line"># exclude-content = 404.html</span><br><span class="line"># skip-on-status = 429,999</span><br><span class="line"></span><br><span class="line">[reports]</span><br><span class="line">report-format = plain</span><br><span class="line">autosave-report = True</span><br><span class="line"># report-output-folder = /home/user</span><br><span class="line"># logs-location = /tmp</span><br><span class="line">## Supported: plain, simple, json, xml, md, csv, html</span><br><span class="line"></span><br><span class="line">[dictionary]</span><br><span class="line">lowercase = False</span><br><span class="line">uppercase = False</span><br><span class="line">capitalization = False</span><br><span class="line"># prefixes = .,admin</span><br><span class="line"># suffixes = ~,.bak</span><br><span class="line"># wordlist = db/dicc.txt</span><br><span class="line"></span><br><span class="line">[request]</span><br><span class="line">httpmethod = get</span><br><span class="line">## Lowercase only</span><br><span class="line">follow-redirects = False</span><br><span class="line"># headers-file = headers.txt</span><br><span class="line"># user-agent = MyUserAgent</span><br><span class="line"># cookie = SESSIONID=123</span><br><span class="line"></span><br><span class="line">[connection]</span><br><span class="line">timeout = 5</span><br><span class="line">delay = 0</span><br><span class="line">scheme = http</span><br><span class="line">maxrate = 0</span><br><span class="line">retries = 2</span><br><span class="line">request-by-hostname = False</span><br><span class="line">exit-on-error = False</span><br><span class="line"># proxy = localhost:8080</span><br><span class="line"># proxy-list = proxies.txt</span><br><span class="line"># replay-proxy = localhost:8000</span><br></pre></td></tr></table></figure>
-
-<h1 id="命令-使用"><a href="#命令-使用" class="headerlink" title="命令-使用"></a>命令-使用</h1><h2 id="简单扫描"><a href="#简单扫描" class="headerlink" title="简单扫描"></a>简单扫描</h2><p>对 URL 进行扫描</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -u https://target</span><br></pre></td></tr></table></figure>
-
-<p>扫描固定后缀文件的 URL</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target</span><br></pre></td></tr></table></figure>
-
-<p>定义字典扫描</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target -w /path/to/wordlist</span><br></pre></td></tr></table></figure>
-
-<h2 id="暂停扫描"><a href="#暂停扫描" class="headerlink" title="暂停扫描"></a>暂停扫描</h2><p>dirsearch 允许您使用 CTRL+C 暂停扫描进度，从这里，您可以保存进度（稍后继续）、跳过当前目标或跳过当前子目录。</p>
-<p><img src="/pause.png"></p>
+<h2 id="解题过程"><a href="#解题过程" class="headerlink" title="解题过程"></a>解题过程</h2><p>首先用string命令查看文件，得到两段可疑代码</p>
+<p>使用下面的一段，看起来像base64码</p>
+<p><img src="/image-20220312124955095.png"></p>
 
 
-<h2 id="递归扫描"><a href="#递归扫描" class="headerlink" title="递归扫描"></a>递归扫描</h2><ul>
-<li>通过使用**-r | –recursive**参数，dirsearch 将递归地暴力破解所有目录。</li>
+<p>在Word里面，显示隐藏文字和解除隐藏。文字无法复制，但是我发现可以通过剪切出。</p>
+<p><img src="/image-20220312125607111.png"></p>
+
+
+<p>也可以通过解除隐藏复制</p>
+<p><img src="/image-20220312125914279.png"></p>
+
+
+<p>将它们组合起来</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">a2draGxmY290bnRpdWZwZ2hodGN3dWprY2ttb3ducGNrbXdseWd0bHBtZmtneWFhaWh1Y2RsYXRveXVjb2lnZ3JwbGt2a2Ftcmt0cXp4ZW1taXdrbGh1YWVrY2VvbHBvY2ZtdGFobWdmbWF2YWpuYmNwbWx0anRwdWZqY2FwY3RvanBqYmZmYmpid2h1YWxnZ3lqbmFtY2JmeWFjamJheGtpeGxtbXFpa3NtcHRxeW9qZXJ0ZmVrdGR4ZHh4YnRyeGNhbmd5bXNpbWh2dXdrdGV4c2dscnRwZ2FrdGJtZnVjZ3ZubXRqdWZvZWt5bXRsaW14ZGlqanB4eWl0YWJwbWt1Y2NubGtwb2V0Z2NkY3Bvc2tpenZ5eHJ0enhyYXh0bm9paHFjeGZvYWFhbHBhanlja2VrYnljZnZqb21sbGthamd5bWdmZGNycGVxa2xmc2NtZWppY3BqaWtjcHBhY3h5ZXZma3ljcHBia2R6Y2ZsbGlrcW5pdGNrYmhqb3JuZGhzb21mdHlwYWhwcW94cnlpbWhmbGNoY21rb3JldG1yb3RrYXJjanRobWZ0aWxpam55a3V0aWhienR0dW1zbmdmdGxtcmJmZmx0ZndjbmptZmF0bGZiemxva3RscHBsbWZpY29rcHBucGFjbWZ1Z21wdW5kdnRvbXdldmNqc2dhamdmZXF1dXBhaWV0eW5mamJicGpzbHZ5bmFmdG1scHBka3R0b2Z1emppanhpdGJmaXJtb3ZwemVraXJic2Zqc2d6bHVrb2x5dm9obXZnY3BrdGhzeGZ6bW1ibm1sZHp5dWljZHZrbXpiYXlidG9yY2ZvdHRkYW1jY25iYXBucmd4bGN5cGh5Zm5jZXhidmRubG9rZ295aWxwcmxvbnNodGNranR4bmFiamhsbWJwZGNtaGtqbmxnbXRnam5qYWtyaXpsbHBtbWFscHhhbXVuaW51cGtwZGlhcHNzbXZrZGp2Z2l5b2R1bXBuYXBsamtqYmNmaHRoc2tpb2twZ3R0eWhubmRzeGtxanp2dmRvc2VwcG9pZ3l0bW5uYXZjdG9wZHlpeHZiZG9zb2JtY3ViaXVhanhoeWZrdnJremdjdXlpbHB2YXdheW5xYWFwbGJrd2lpeHJjdGN0bGt4ZmpscGVhbW1qbmF1amNvdWlmbXZpa2ZpbXJvYXF0Y3RjZm1hdWJnYWdva2FyZnFmaGVtb3NydHlmb3B1a3VkY2FhaW1oZGZvZ25oa3JjZWxwY2F0Y3RweWpsYXZva2xnY2xhdGx0bXR6eWdwZWhma3poY3R6bmdtb2ZjaXpsdm54dG5sdWFqbHRvdmNqYWp1YnphdHBlaGhma25uZ2dwbHlsaXZmZWFpZHJteWp0YWNhbXhjbmtmeXN0d2ZuZmx5bmJta2NrYXJ4YWlzcGpsa3ZjdHZrbHh1bmNmcGJ4dmlyaXFleXBtdXZ1bHZsamNrY3lwcHRwdmV0b3hobWlwYmlsbmplb3drd3VjdG9rbmFmcHdvYXBmdGNsemhwaHhjY2F0dGh1bXZ3aHpvbWFmd3Fxbmxzb3lhYnV0bHpwaWF0Zm1tYWprcmR2bGN6d2pwc3Nwb2FiaWZpcGhrb2NocHRrYXRrYWZlb255YmZpdmVjbGR6b2ZhdGV0Z2FsaGFmYW1vYXlvc291bm5hZmlhdGNqdGl3b29sYWNya2N1YWRwdXRreWxweXBiZ2ZlcHdwc25jd2tjd2xsYXJ5anNjYW5id3BkcHpicHR1dG5sbm9wd3BpdGJsb3RsbHppZmtsYWF1cmpwaWFqZnB0a2ZteHBic3VjdmpzZ21jYWxhbnRyc2NrYmt1eWZnYWFrZmFjbmxkdXZxZXR5amdqbW5hZWFjbmdheGNuYW1qbWlna2tpdW1sbmR3Y2ttdWFuYW52cnJiZnp4enl1dWVob25lbWxjanp1dm9hanVmZGdqampjZ21ucHRmdXVjdWJjdGpoYW1sb2xmaG9pZnZia2themNwb3pjeXVjYnJnb2picG5haGNneXV0dGR2bXR0dndqbWhic2ptYmJhdmNkbHlob3Fqb21wY3B2aHRrb2FpcnZ0bWtmZnlhdGttcHR1dW9vb2xncG5udWVsaGZodnZpc3Vrd3lubWlhY25sbHVtaHRqZWt1YXV1cGxyeGtpZXB1anhsaWNma2NiY2htbmdsZ3BsaWhteWNybnNvbWF3dWZ1b29tdXVuaGRvb2FydWRhbW9hbW9ocW9vY2Z1cGp1aWFieHh1dnl2bm9zb3Vvb3Zha2xjZmt0eXJmYWdmYXl2cHVmdnBiZ3RhZmVraXBpY292dGZ0bnV4c2phdmpkcWt2ZnVpa2x0bWRrYmJua3BhZnhycXBmZ2N0dmFzY3VqamN1Y2h1YXpjaXVtdHRkbmF3aWhtbW9qZmJoeHZvbXRmcGJmaHR2aXdsYXVlb2dwcG1qc3BjYWxmaGNhcmtsYmlzcGh0anBhbmhsaXNwbnRza2tjbGpnZ2tjenRmaG5lY25wdGlmZnRyZG10amZla2ZpdGthc2RnbmVscHVoYmZpbXB1Y2JrcGtjbXhsZmtwaWlqdmh0amtzeWx6cm9vZmFjeGNscGpuaGJpcmN5ZGp0Y2xqZG9ibHlyeW1hdGdoaWZvam1qanNla29vbW9mY2FjdGF2ZmN5Zm11Znhoc3Rqd3VwYmpreW9nbnlyeXBseXBxbGF5eW1veHRhbnFkcHVyYnd6cGxsb2traGhtYW5kam5hdGNibGtjb3Rna2x1dHR3YmRhdHFybWF6cHJ2YXd6anhlZmhqdGRraWt1cmxsY2xjam9naG1sd3RhbWRkY2NucXVyb3Jha2N5b2JsYXJ6YWNtbnFjbWV0dHVheWF1eWl2c21ma25uYW5sdGNtaWdmcmdhYmlwdG50aG1tdXRwaWJ5bHJhdGhqY2doY2ZtbG92cGNudHFwZW96bG90ZGtlaW9jZmtjaXZ1eWx6Ympvb3hjc2FjbmdkdXZ4dG50aGphZXBhdX1rbGFocGNtdnppY2twYWFwaG9jZ2lvZ2p0dnB0Z2poZG9udW5scGFvbG5kcWJxZmRtYnBqam94Ym9tbGlreXVpcG54cXh6Y2lmb3JhaGhldXl5dHpoanV0Z2Z3dHVscmpjZnhvaWFneWpmYnBqaWFrZ3l0eGJmbnBsZnBxd3RkaXFuaXR2dmF1amRqbGlmamlvcnltdmZ4bXhnb3JpY3ljZGZob2ZiYnlnZmxhdGlyamRpZGFkcXZpa2pvY2l5ZmR6aHJvZ255eWlia2dubnZobWpsb2xhdndmaWpjZ2dma3B0a3BnY3FmYWZheXNpdHltYWN2a3FweWxoaGJ1Ymh4c2x1emN5dmxvcmlwdGxwZmxjdWljcG5mc2hpeXh2a2tiY2p5dWtvdGFsZmNpcGhjZGd4aWZ0a2xkZ29wanNtdXJ0eWp5cGhia2JmbmJ3YnNvZmlheHRsdWhwbXJmZGFrdWx1cGVhcHZyeXhtYWVwaGF5bmV4emZsbmV2am1pYndvcml0aGh4YmJ5cG1tYWJvYmZuZmNvanR0Y3Jram1naXJ2bWlzdW5mbHVodGVudHJodGVvamtjaGtwZnBhZXNnd2dscWRrdnZudWx1bnF7bG1sdGFscGhvdWZqcGlhbGNmbGZ5ZHZmd3lkb2ZraGFpeWF3bGx3Y2pvYXJxdnpqbGZmZ2xjdGNsYmxwa2JzZmxocnRqZGFvd3ByZGJjdWJmbHlveWJodmh3ZndvZWl0Z254YnpuaWZwbGx4bXN0a251aWhvYmZlZWZra2FreW5uYWNra2NkdWFtZ3N2bnBoY3RmZ3NybnJvZWh2ZW5kYmZpb21xZm14Ym1paWl1bGF2b2dma2dhY2lrYWFtcHBybGpmbXBqY3VhYXNja2l1cWlmY2liamx1dGNtcGF0b2pyanZmeGdsenBvcGpkZ2NoanVqbGtuZnd0cG5qZnBhY3JrcHRmaGNzamdyaXBjcmZjZGFsem5ob25mZGNvaG9zZmhvaGVha250aXRtamZsbmJvcGNsY3hjdWlnb3hja3JiYWxyYWVidGFhcml0ZWZtemNxaWRvZmd0ZnFnYmFkaWNubWhvdGlvbm9iZnlubGdvenRkYXZ2aW14b2JvdGlra2Z4d2lyb3JwZmNjdXpob3BoZmRjaWVrY2p5b21lamtjZ2Zmam51bmhvcGFkdGZndG1sdA==</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>进行base64解码</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">kgkhlfcotntiufpghhtcwujkckmownpckmwlygtlpmfkgyaaihucdlatoyucoiggrplkvkamrktqzxemmiwklhuaekceolpocfmtahmgfmavajnbcpmltjtpufjcapctojpjbffbjbwhualggyjnamcbfyacjbaxkixlmmqiksmptqyojertfektdxdxxbtrxcangymsimhvuwktexsglrtpgaktbmfucgvnmtjufoekymtlimxdijjpxyitabpmkuccnlkpoetgcdcposkizvyxrtzxraxtnoihqcxfoaaalpajyckekbycfvjomllkajgymgfdcrpeqklfscmejicpjikcppacxyevfkycppbkdzcfllikqnitckbhjorndhsomftypahpqoxryimhflchcmkoretmrotkarcjthmftilijnykutihbzttumsngftlmrbffltfwcnjmfatlfbzloktlpplmficokppnpacmfugmpundvtomwevcjsgajgfequupaietynfjbbpjslvynaftmlppdkttofuzjijxitbfirmovpzekirbsfjsgzlukolyvohmvgcpkthsxfzmmbnmldzyuicdvkmzbaybtorcfottdamccnbapnrgxlcyphyfncexbvdnlokgoyilprlonshtckjtxnabjhlmbpdcmhkjnlgmtgjnjakrizllpmmalpxamuninupkpdiapssmvkdjvgiyodumpnapljkjbcfhthskiokpgttyhnndsxkqjzvvdoseppoigytmnnavctopdyixvbdosobmcubiuajxhyfkvrkzgcuyilpvawaynqaaplbkwiixrctctlkxfjlpeammjnaujcouifmvikfimroaqtctcfmaubgagokarfqfhemosrtyfopukudcaaimhdfognhkrcelpcatctpyjlavoklgclatltmtzygpehfkzhctzngmofcizlvnxtnluajltovcjajubzatpehhfknnggplylivfeaidrmyjtacamxcnkfystwfnflynbmkckarxaispjlkvctvklxuncfpbxviriqeypmuvulvljckcypptpvetoxhmipbilnjeowkwuctoknafpwoapftclzhphxccatthumvwhzomafwqqnlsoyabutlzpiatfmmajkrdvlczwjpsspoabifiphkochptkatkafeonybfivecldzofatetgalhafamoayosounnafiatcjtiwoolacrkcuadputkylpypbgfepwpsncwkcwllaryjscanbwpdpzbptutnlnopwpitblotllzifklaaurjpiajfptkfmxpbsucvjsgmcalantrsckbkuyfgaakfacnlduvqetyjgjmnaeacngaxcnamjmigkkiumlndwckmuananvrrbfzxzyuuehonemlcjzuvoajufdgjjjcgmnptfuucubctjhamlolfhoifvbkkazcpozcyucbrgojbpnahcgyuttdvmttvwjmhbsjmbbavcdlyhoqjompcpvhtkoairvtmkffyatkmptuuooolgpnnuelhfhvvisukwynmiacnllumhtjekuauuplrxkiepujxlicfkcbchmnglgplihmycrnsomawufuoomuunhdooarudamoamohqoocfupjuiabxxuvyvnosouoovaklcfktyrfagfayvpufvpbgtafekipicovtftnuxsjavjdqkvfuikltmdkbbnkpafxrqpfgctvascujjcuchuazciumttdnawihmmojfbhxvomtfpbfhtviwlaueogppmjspcalfhcarklbisphtjpanhlispntskkcljggkcztfhnecnptifftrdmtjfekfitkasdgnelpuhbfimpucbkpkcmxlfkpiijvhtjksylzroofacxclpjnhbircydjtcljdoblyrymatghifojmjjsekoomofcactavfcyfmufxhstjwupbjkyognyryplypqlayymoxtanqdpurbwzpllokkhhmandjnatcblkcotgkluttwbdatqrmazprvawzjxefhjtdkikurllclcjoghmlwtamddccnqurorakcyoblarzacmnqcmettuayauyivsmfknnanltcmigfrgabiptnthmmutpibylrathjcghcfmlovpcntqpeozlotdkeiocfkcivuylzbjooxcsacngduvxtnthjaepau&#125;klahpcmvzickpaaphocgiogjtvptgjhdonunlpaolndqbqfdmbpjjoxbomlikyuipnxqxzciforahheuyytzhjutgfwtulrjcfxoiagyjfbpjiakgytxbfnplfpqwtdiqnitvvaujdjlifjiorymvfxmxgoricycdfhofbbygflatirjdidadqvikjociyfdzhrognyyibkgnnvhmjlolavwfijcggfkptkpgcqfafaysitymacvkqpylhhbubhxsluzcyvloriptlpflcuicpnfshiyxvkkbcjyukotalfciphcdgxiftkldgopjsmurtyjyphbkbfnbwbsofiaxtluhpmrfdakulupeapvryxmaephaynexzflnevjmibworithhxbbypmmabobfnfcojttcrkjmgirvmisunfluhtentrhteojkchkpfpaesgwglqdkvvnulunq&#123;lmltalphoufjpialcflfydvfwydofkhaiyawllwcjoarqvzjlffglctclblpkbsflhrtjdaowprdbcubflyoybhvhwfwoeitgnxbznifpllxmstknuihobfeefkkakynnackkcduamgsvnphctfgsrnroehvendbfiomqfmxbmiiiulavogfkgacikaampprljfmpjcuaasckiuqifcibjlutcmpatojrjvfxglzpopjdgchjujlknfwtpnjfpacrkptfhcsjgripcrfcdalznhonfdcohosfhoheakntitmjflnbopclcxcuigoxckrbalraebtaaritefmzcqidofgtfqgbadicnmhotionobfynlgoztdavvimxobotikkfxwirorpfccuzhophfdciekcjyomejkcgffjnunhopadtfgtmlt</span><br></pre></td></tr></table></figure>
+
+<p>frequency有频率的意思，猜测是字频统计</p>
+<p>借用大佬脚本</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment">#用来统计TXT文本，并统计字频</span></span><br><span class="line"><span class="comment"># 打开文件</span></span><br><span class="line">fr = <span class="built_in">open</span>(<span class="string">r&#x27;C:/Users/zxy13/Desktop/1.txt&#x27;</span>, <span class="string">&#x27;r&#x27;</span>, encoding=<span class="string">&#x27;gbk&#x27;</span>)</span><br><span class="line"><span class="comment"># 读取文件所有行</span></span><br><span class="line">content = fr.readlines()</span><br><span class="line">contentLines = <span class="string">&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line">characers = []  <span class="comment"># 存放不同字的总数</span></span><br><span class="line">rate = &#123;&#125;  <span class="comment"># 存放每个字出现的频率</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 依次迭代所有行</span></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> content:</span><br><span class="line">    <span class="comment"># 去除空格</span></span><br><span class="line">    line = line.strip()</span><br><span class="line">    <span class="comment"># 如果是空行，则跳过</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(line) == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    contentLines = contentLines + line</span><br><span class="line">    <span class="comment"># 统计每一字出现的个数</span></span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(line)):</span><br><span class="line">        <span class="comment"># 如果字符第一次出现 加入到字符数组中</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> line[x] <span class="keyword">in</span> characers:</span><br><span class="line">            characers.append(line[x])</span><br><span class="line">        <span class="comment"># 如果是字符第一次出现 加入到字典中</span></span><br><span class="line">        <span class="keyword">if</span> line[x] <span class="keyword">not</span> <span class="keyword">in</span> rate:</span><br><span class="line">            rate[line[x]] = <span class="number">1</span></span><br><span class="line">        <span class="comment"># 出现次数加一</span></span><br><span class="line">        rate[line[x]] += <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 对字典进行倒数排序 从高到低 其中e表示dict.items()中的一个元素，</span></span><br><span class="line"><span class="comment"># e[1]则表示按 值排序如果把e[1]改成e[0]，那么则是按键排序，</span></span><br><span class="line"><span class="comment"># reverse=False可以省略，默认为升序排列</span></span><br><span class="line">rate = <span class="built_in">sorted</span>(rate.items(), key=<span class="keyword">lambda</span> e: e[<span class="number">1</span>], reverse=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;全文共有%d个字&#x27;</span> % <span class="built_in">len</span>(contentLines))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;一共有%d个不同的字&#x27;</span> % <span class="built_in">len</span>(characers))</span><br><span class="line"><span class="built_in">print</span>()</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> rate:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;[&quot;</span>, i[<span class="number">0</span>], <span class="string">&quot;] 共出现 &quot;</span>, i[<span class="number">1</span>], <span class="string">&quot;次&quot;</span>)</span><br><span class="line"></span><br><span class="line">fr.close()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>得到</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">actf&#123;plokmijnuhbygvrdxeszwq&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="Misc-2"><a href="#Misc-2" class="headerlink" title="Misc 2"></a>Misc 2</h1><p>[ACTF新生赛2020]outguess</p>
+<h2 id="知识点-1"><a href="#知识点-1" class="headerlink" title="知识点"></a>知识点</h2><ul>
+<li>outguess</li>
+<li>社会主义核心价值观编码</li>
 </ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target -r</span><br></pre></td></tr></table></figure>
+<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><p>在flag.txt中有，猜测是outguess隐写</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">flag在哪？</span><br><span class="line">你Guess一下啊！</span><br></pre></td></tr></table></figure>
 
-<ul>
-<li><strong>您可以使用–recursion-depth</strong>设置最大递归深度，使用–recursion <strong>-</strong> status 设置递归状态码</li>
+<p>在图片的属性中发现：<code>公正民主公正文明公正和谐</code></p>
+<p>解密出来是：<code>abc</code></p>
+<p>使用outguess隐写工具</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">outguess -r mmm.jpg -t 1.txt -k abc   </span><br></pre></td></tr></table></figure>
+
+<p>得到flag：<code>ACTF&#123;gue33_Gu3Ss!2020&#125;</code></p>
+<h1 id="Misc3"><a href="#Misc3" class="headerlink" title="Misc3"></a>Misc3</h1><p>[ACTF新生赛2020]NTFS数据流</p>
+<h2 id="知识点-2"><a href="#知识点-2" class="headerlink" title="知识点"></a>知识点</h2><ul>
+<li>NTFS隐写</li>
 </ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target -r --recursion-depth 3 --recursion-status 200-399</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p>还有 2 个选项：</p>
-<p><strong>–force-recursive</strong> 和 <strong>–deep-recursive</strong></p>
-<ul>
-<li><strong>强制递归</strong>：暴力递归所有找到的路径，而不仅仅是路径以<code>/</code></li>
-<li><strong>深度递归</strong>：递归暴力破解路径的所有深度（<code>a/b/c</code>&#x3D;&gt; 添加<code>a/</code>，<code>a/b/</code>）</li>
+<h2 id="解题思路-1"><a href="#解题思路-1" class="headerlink" title="解题思路"></a>解题思路</h2><p>注意：这里解压的时候使用Win RAR解压，涉及NTFS流的都需要Win RAR解压</p>
+<p>工具：Ntfsstreamseditor.exe</p>
+<p>使用工具就可以得到flag了。</p>
+<h1 id="Misc4"><a href="#Misc4" class="headerlink" title="Misc4"></a>Misc4</h1><p>[ACTF新生赛2020]music</p>
+<h2 id="知识点-3"><a href="#知识点-3" class="headerlink" title="知识点"></a>知识点</h2><ul>
+<li>音频隐写</li>
+<li>异或处理</li>
 </ul>
-</li>
+<h2 id="解题思路-2"><a href="#解题思路-2" class="headerlink" title="解题思路"></a>解题思路</h2><p>音频没有办法打开，显示异常，用010查看</p>
+<p><img src="/image-20220313154611541.png"></p>
+
+
+<p>发现根本不符合格式</p>
+<p><img src="/image-20220313154714073.png"></p>
+
+
+<p>多次出行相同的字符，猜测是进行了异或，<code>工具-&gt;十六进制运算-&gt;二进制异或</code></p>
+<p>全文进行异或后得到正确文件</p>
+<p><img src="/image-20220313154858601.png"></p>
+
+
+<p>得到flag：<code>actfabcdfghijk</code></p>
+<h1 id="Misc5"><a href="#Misc5" class="headerlink" title="Misc5"></a>Misc5</h1><p>[ACTF新生赛2020]wget</p>
+<h2 id="知识点-4"><a href="#知识点-4" class="headerlink" title="知识点"></a>知识点</h2><ul>
+<li>流量分析</li>
+<li>zip伪加密</li>
 </ul>
-<h2 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h2><p>线程号 ( <strong>-t | –threads</strong> ) 反映了分离的蛮力进程的数量。所以线程数越大，dirsearch 运行得越快。默认情况下，线程数为 30，但如果您想加快进度，可以增加它。</p>
-<p>速度仍然很大程度上取决于服务器的响应时间。如果你的线程过大可能导致Dos</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,htm,js,bak,zip,tgz,txt -u https://target -t 20</span><br></pre></td></tr></table></figure>
+<h2 id="解题思路-3"><a href="#解题思路-3" class="headerlink" title="解题思路"></a>解题思路</h2><p>我通过binwalk命令查看到流量包中有存在压缩包，我利用命令分离文件，但是文件损坏</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">foremost -T wget.pcapng </span><br></pre></td></tr></table></figure>
 
-<h2 id="前缀-x2F-后缀"><a href="#前缀-x2F-后缀" class="headerlink" title="前缀&#x2F;后缀"></a>前缀&#x2F;后缀</h2><p>自定义扫描文件前缀或者后缀</p>
-<ul>
-<li><strong>–prefixes</strong>：为所有条目添加自定义前缀</li>
+<p>我直接在wirshark中直接保存出得到压缩包，但是压缩包需要密码。利用ZipCenOp.jar修复zip压缩包。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">java -jar .\ZipCenOp.jar r .\1.zip</span><br></pre></td></tr></table></figure>
+
+<p>解开压缩包得到flag文件</p>
+<p>使用strings命令就可以输出flag：actf{c5558bcf-26da-4f8b-b181-b61f3850b9e5}</p>
+<h1 id="Misc6"><a href="#Misc6" class="headerlink" title="Misc6"></a>Misc6</h1><p>[ACTF新生赛2021]与熊论道</p>
+<h2 id="知识点-5"><a href="#知识点-5" class="headerlink" title="知识点"></a>知识点</h2><ul>
+<li>与熊论道编码</li>
+<li>社会主义核心价值观编码</li>
+<li>bmp图片隐写</li>
 </ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php -u https://target --prefixes .,admin,_</span><br></pre></td></tr></table></figure>
+<h2 id="解题思路-4"><a href="#解题思路-4" class="headerlink" title="解题思路"></a>解题思路</h2><p>猜测是和与禅论道一样的编码</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">熊曰：呋食性咯怎很盜溫吖盜萌嚄眠嗥吖物和我嘿襲人現擊有嚁嘿襲嗡取果盜和吖非嗷咬和取象洞家食住捕咬嗅拙喜爾常拙捕咯會呦唬沒歡肉咬哞笨註氏破吃咯噤誘嗡唬樣取偶蜜嗒我咬咬嘶盜覺歡我嗡嗅哞麼你和嗄會取喜嗡咬歡象取襲</span><br></pre></td></tr></table></figure>
 
-<p>例子</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">tools</span><br><span class="line"></span><br><span class="line">生成</span><br><span class="line"></span><br><span class="line">.tools</span><br><span class="line">admintools</span><br><span class="line">_tools</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>–suffixes</strong>：为所有条目添加自定义后缀</li>
+<p><a href="http://hi.pcmoe.net/">与熊论道</a></p>
+<p>解得：<code>法治富强法治法治公正自由和谐诚信富强和谐民主和谐文明和谐和谐和谐自由和谐平等和谐公正</code></p>
+<p><a href="https://atool.vip/corevalue/">社会主义核心价值观编码</a></p>
+<p>解得：<code>pwd:123456</code></p>
+<p>密码是干嘛用的呢？</p>
+<p>有关bmp图片隐写，我找到两个工具wbStego4.3open和silenteye</p>
+<p>这题用wbStego4.3open就可以解密</p>
+<p>得到flag：ACTF{PXY_wants_@_bOyfri3nd}</p>
+<h1 id="Misc7"><a href="#Misc7" class="headerlink" title="Misc7"></a>Misc7</h1><p>[ACTF新生赛2020]你看我匀称吗？</p>
+<h2 id="知识点-6"><a href="#知识点-6" class="headerlink" title="知识点"></a>知识点</h2><ul>
+<li>LSB隐写</li>
+<li>修改图片宽高</li>
 </ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php -u https://target --suffixes ~</span><br></pre></td></tr></table></figure>
+<h2 id="解题思路-5"><a href="#解题思路-5" class="headerlink" title="解题思路"></a>解题思路</h2><p>两个文件一个要密码的压缩包，匀称？猜测高度有问题</p>
+<p>使用工具TweakPNG查看，发现有报错</p>
+<p><img src="/image-20220313165532165.png"></p>
 
-<p>例子</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">index.php</span><br><span class="line">internal</span><br><span class="line"></span><br><span class="line">生成</span><br><span class="line"></span><br><span class="line">index.php~</span><br><span class="line">internal~</span><br></pre></td></tr></table></figure>
 
-<h2 id="黑名单"><a href="#黑名单" class="headerlink" title="黑名单"></a>黑名单</h2><p>在<code>db/</code>文件夹内，有几个“黑名单文件”。如果这些文件中的路径与文件名中提到的状态相同，则将从扫描结果中过滤掉它们。</p>
-<p>示例：如果您添加<code>admin.php</code>到<code>db/403_blacklist.txt</code>，每当您执行<code>admin.php</code>返回 403 的扫描时，都会从结果中过滤掉。</p>
-<h2 id="过滤器"><a href="#过滤器" class="headerlink" title="过滤器"></a>过滤器</h2><p>使用**-i | –include-status<strong>和</strong>-x | –exclude-status**选择允许和不允许的响应状态码</p>
-<p>对于更高级的过滤器：</p>
-<ul>
-<li><strong>–exclude-sizes</strong></li>
+<p>用010打开图片修改</p>
+<p><img src="/image-20220313170605117.png"></p>
+
+
+<p>得到：<strong>you come</strong>。解压得到图片</p>
+<p>猜测LSB隐写</p>
+<p><img src="/image-20220313171718397.png"></p>
+
+
+<p>得到flag：**<code>ACTF&#123;llL llsb_i3_e3asY&#125;</code>**</p>
+<h1 id="Misc-8"><a href="#Misc-8" class="headerlink" title="Misc 8"></a>Misc 8</h1><p>[ACTF新生赛2020]剑龙</p>
+<h2 id="知识点-7"><a href="#知识点-7" class="headerlink" title="知识点"></a>知识点</h2><ul>
+<li>AAencode编码（颜文字）</li>
+<li>steghide隐写</li>
+<li>DES加解密</li>
+<li>stegosaurus（pyc）隐写</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --exclude-sizes 1B,243KB</span><br></pre></td></tr></table></figure>
+<h2 id="解题思路-6"><a href="#解题思路-6" class="headerlink" title="解题思路"></a>解题思路</h2><p>解开hint文件夹得到一个图片与文本</p>
+<p>文本中是颜文字；<a href="http://www.hiencode.com/aaencode.html">在线解码</a></p>
+<p>得到</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">welcom3!</span><br></pre></td></tr></table></figure>
 
-<ul>
-<li><strong>–exclude-texts</strong></li>
+<p>在图片信息中可以看</p>
+<p><img src="/image-20220313172549463.png"></p>
+
+
+<p>key：<code>**@#$%^&amp;%%$)**</code></p>
+<p>hh.jpg是<strong>steghide</strong>隐写</p>
+<p><img src="/image-20220313183441314.png"></p>
+
+
+<figure class="highlight tex"><table><tr><td class="code"><pre><span class="line">U2FsdGVkX1/7KeHVl5984OsGUVSanPfPednHpK9lKvp0kdrxO4Tj/Q==</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://www.sojson.com/encrypt_des.html">DES解密</a></p>
+<p>得到：<strong>think about stegosaurus</strong></p>
+<p>对文件进行file命令，发现是python文件 <strong><code>O_O: python 3.6 byte-compiled</code></strong></p>
+<p>运行命令</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">./stegosaurus -x O_O.pyc </span><br></pre></td></tr></table></figure>
+
+<p><img src="/image-20220313190100195.png"></p>
+
+
+<p>得到flag：**<code>flag&#123;3teg0Sauru3_!1&#125;</code>** </p>
+<h1 id="Misc-9"><a href="#Misc-9" class="headerlink" title="Misc 9"></a>Misc 9</h1><p>[ACTF新生赛2020]明文攻击</p>
+<h2 id="知识点-8"><a href="#知识点-8" class="headerlink" title="知识点"></a>知识点</h2><ul>
+<li>CRC爆破</li>
 </ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --exclude-texts &quot;403 Forbidden&quot;</span><br></pre></td></tr></table></figure>
+<h2 id="解题思路-7"><a href="#解题思路-7" class="headerlink" title="解题思路"></a>解题思路</h2><p>提示明文攻击</p>
+<p>先看图片，在图片尾有flag.txt，补上<code>50 4B</code></p>
+<p><img src="/image-20220313202715767.png"></p>
 
-<ul>
-<li><strong>–exclude-regexps</strong></li>
+
+<p>新建成压缩包</p>
+<p>对比两个包</p>
+<p><img src="/image-20220313203046943.png"></p>
+
+
+<p>两个包的CRC是一样的</p>
+<p>进行爆破</p>
+<p><img src="/image-20220313203155571.png"></p>
+
+
+<h1 id="Misc-10"><a href="#Misc-10" class="headerlink" title="Misc 10"></a>Misc 10</h1><p>[ACTF新生赛2020]近在眼前</p>
+<h2 id="知识点-9"><a href="#知识点-9" class="headerlink" title="知识点"></a>知识点</h2><ul>
+<li>base64隐写</li>
 </ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --exclude-regexps &quot;^Error$&quot;</span><br></pre></td></tr></table></figure>
+<h2 id="解题思路-8"><a href="#解题思路-8" class="headerlink" title="解题思路"></a>解题思路</h2><p>脚本</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">base64chars = <span class="string">&#x27;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/&#x27;</span></span><br><span class="line"></span><br><span class="line">flag = <span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;C:/Users/zxy13/Desktop/2022311/10/近在眼前/ComeOn!.txt&#x27;</span>, <span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> f.readlines():</span><br><span class="line">        line = line[:-<span class="number">1</span>]</span><br><span class="line">        num = line.count(<span class="string">&#x27;=&#x27;</span>)</span><br><span class="line">        <span class="keyword">if</span> num == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        lastchar = line[-(num + <span class="number">1</span>)]</span><br><span class="line"></span><br><span class="line">        <span class="comment"># print(line,num,lastchar)</span></span><br><span class="line">        myindex = base64chars.index(lastchar)</span><br><span class="line">        <span class="comment"># print(myindex)</span></span><br><span class="line">        bin_str = <span class="built_in">bin</span>(myindex)[<span class="number">2</span>:].zfill(<span class="number">6</span>)</span><br><span class="line">        <span class="comment"># print(bin_str)</span></span><br><span class="line">        flag += bin_str[<span class="number">6</span> - <span class="number">2</span> * num:]</span><br><span class="line">        <span class="comment"># print(bin_str[6-2*num:])</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;&#x27;</span>.join([<span class="built_in">chr</span>(<span class="built_in">int</span>(flag[i:i + <span class="number">8</span>], <span class="number">2</span>)) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(flag), <span class="number">8</span>)]))</span><br></pre></td></tr></table></figure>
 
-<ul>
-<li><strong>–exclude-redirects</strong></li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --exclude-redirects &quot;https://(.*).okta.com/*&quot;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>-exclude-content</strong></li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --exclude-content /error.html</span><br></pre></td></tr></table></figure>
-
-<h2 id="原始请求"><a href="#原始请求" class="headerlink" title="原始请求"></a>原始请求</h2><p><strong>dirsearch</strong> 允许您从文件中导入原始请求。内容看起来像这样：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">GET /admin HTTP/1.1</span><br><span class="line">Host: admin.example.com</span><br><span class="line">Cache-Control: max-age=0</span><br><span class="line">Accept: */*</span><br></pre></td></tr></table></figure>
-
-<h2 id="请求方法"><a href="#请求方法" class="headerlink" title="请求方法"></a>请求方法</h2><p>既然扫描网站，我们也可以选择使用 GET 或者 POST 方法</p>
-<p>但是在 post 方法中，POST 是万维网使用的 HTTP 支持的请求方法。POST 请求方法在设计上要求 Web 服务器接受包含在请求消息正文中的数据，最有可能存储它。它通常与 GET HTTP 方法一起使用，该方法在名称或值对中用于将表单数据附加到 URL。如果您使用 GET，则 URL 长度将受到限制。这使用户能够提交书签的结果。</p>
-<p>现在，我们正在使用此命令在 [-m] 参数的帮助下探索另一面。</p>
-<p>正如我们所知，与我们之前执行的 GET 请求方法相比，这些结果是不同且独特的。它显示了一些不同的网页和网页目录。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -u http://testphp.vulnweb.com/ -m POST</span><br></pre></td></tr></table></figure>
-
-<h2 id="延迟请求"><a href="#延迟请求" class="headerlink" title="延迟请求"></a>延迟请求</h2><p>根据规则，或者限制，延迟自己的请求，免除造成不必要的网络拥堵</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -u http://testphp.vulnweb.com/ -s 10</span><br></pre></td></tr></table></figure>
-
-<h2 id="词表格式"><a href="#词表格式" class="headerlink" title="词表格式"></a>词表格式</h2><p>支持的词表格式：大写、小写、大写</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">小写</span><br><span class="line">admin</span><br><span class="line">index.html</span><br><span class="line">大写</span><br><span class="line">ADMIN</span><br><span class="line">INDEX.HTML</span><br><span class="line">首部</span><br><span class="line">Admin</span><br><span class="line">Index.html</span><br></pre></td></tr></table></figure>
-
-<h2 id="排除扩展"><a href="#排除扩展" class="headerlink" title="排除扩展"></a>排除扩展</h2><ul>
-<li>使用**-X | –exclude-extensions**带有扩展名列表将删除单词列表中包含给定扩展名的所有路径</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -u https://target -X jsp</span><br></pre></td></tr></table></figure>
-
-<p>例子</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">admin.php</span><br><span class="line">test.jsp</span><br><span class="line"></span><br><span class="line">扫描后：</span><br><span class="line">admin.php</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>如果要排除所有扩展名，除了您在<code>-e</code>标志中选择的扩展名，请使用**–only-selected**</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e html -u https://target --only-selected</span><br></pre></td></tr></table></figure>
-
-<p>例子</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">index.html</span><br><span class="line">admin.php</span><br><span class="line">扫描后</span><br><span class="line">index.html</span><br></pre></td></tr></table></figure>
-
-<h2 id="扫描子目录"><a href="#扫描子目录" class="headerlink" title="扫描子目录"></a>扫描子目录</h2><ul>
-<li><strong>从 URL，您可以使用–subdirs</strong>扫描子目录列表。</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --subdirs admin/,folder/,/</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>它的反向版本是**–exclude-subdirs**，它可以防止 dirsearch 递归扫描给定的子目录。</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --recursive --exclude-subdirs image/,css/</span><br></pre></td></tr></table></figure>
-
-<h2 id="代理"><a href="#代理" class="headerlink" title="代理"></a>代理</h2><p>dirsearch 支持 SOCKS 和 HTTP 代理，有两个选项：代理服务器或代理服务器列表。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --proxy 127.0.0.1:8080</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --proxy socks5://10.10.0.1:8080</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --proxylist proxyservers.txt</span><br></pre></td></tr></table></figure>
-
-<h2 id="报告"><a href="#报告" class="headerlink" title="报告"></a>报告</h2><p>支持的报告格式：<strong>simple</strong>、<strong>plain</strong>、<strong>json</strong>、<strong>xml</strong>、<strong>md</strong>、<strong>csv</strong>、 <strong>html</strong></p>
-<p>将扫描变成报告输出出来</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php -l URLs.txt --format plain -o report.txt</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php -u https://target --format html -o target.json</span><br></pre></td></tr></table></figure>
-
-<h2 id="没色扫描"><a href="#没色扫描" class="headerlink" title="没色扫描"></a>没色扫描</h2><p>扫描结果是没有颜色的，看个人喜好，毕竟有人喜欢花里胡哨</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -u http://testphp.vulnweb.com/ --no-color</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="扫描方法"><a href="#扫描方法" class="headerlink" title="扫描方法"></a>扫描方法</h2><ul>
-<li>服务器有请求限制？这很糟糕，但随意绕过它，通过随机代理<code>--proxy-list</code></li>
-<li>想要找出配置文件或备份？尝试<code>--suffixes ~</code>并<code>--prefixes .</code></li>
-<li>只想查找文件夹&#x2F;目录？为什么不结合<code>--remove-extensions</code>和<code>--suffixes /</code>！</li>
-<li>使用 CIDR 进行暴力破解时，混合使用<code>--cidr</code>、和 将减少大部分噪音 + 假阴性<code>-F``-q</code></li>
-<li>扫描 URL 列表，但不想看到 429 泛滥？<code>--skip-on-status 429</code>将帮助您在返回 429 时跳过目标</li>
-<li>服务器包含会减慢扫描速度的大文件？您<em>可能</em>想使用<code>HEAD</code>HTTP 方法而不是<code>GET</code></li>
-<li>蛮力 CIDR 很慢？可能您忘记减少请求超时和请求重试。建议:<code>--timeout 3 --retries 1</code></li>
-</ul>
+<p>运行得到</p>
+<p><code>**ACTF&#123;6aseb4_f33!&#125;**</code></p>
 ]]></content>
       <categories>
-        <category>web渗透</category>
+        <category>杂项</category>
       </categories>
       <tags>
-        <tag>web</tag>
-        <tag>工具</tag>
+        <tag>Misc</tag>
       </tags>
   </entry>
   <entry>
