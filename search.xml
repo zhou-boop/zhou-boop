@@ -1507,4 +1507,49 @@
         <tag>web</tag>
       </tags>
   </entry>
+  <entry>
+    <title>win10内网穿透</title>
+    <url>/2022/win10%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>这是我在探索服务器路上的一次记录，为了就是先去了解服务器。方便自己尝试，这篇文章也是参考许多大佬的文章。希望可以给你提供一点帮助。</p>
+<span id="more"></span>
+
+<h1 id="前提条件"><a href="#前提条件" class="headerlink" title="前提条件"></a>前提条件</h1><ul>
+<li>Windows镜像</li>
+<li>VM16虚拟机</li>
+<li>花生壳8</li>
+<li>宝塔</li>
+</ul>
+<h1 id="开始搭建"><a href="#开始搭建" class="headerlink" title="开始搭建"></a>开始搭建</h1><p>虚拟机安安装就不嘴碎了，估计网上有许多教材，自己参考大佬再写。</p>
+<h2 id="Step-1"><a href="#Step-1" class="headerlink" title="Step 1"></a>Step 1</h2><p>安装Window10虚拟机，我选择专业版与自定义安装。</p>
+<h2 id="Step-2"><a href="#Step-2" class="headerlink" title="Step 2"></a>Step 2</h2><p>对虚拟机内的windows进行端口配置</p>
+<p>打开控制面板中系统和安全，打开防火墙设置，然后打开高级设置。</p>
+<p><img src="/2022/win10%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/image-20220326192438-cgxcimc.png" alt="image.png"></p>
+<p>选择“入站规则” —&gt; “新建规则”</p>
+<p><img src="/2022/win10%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/image-20220326192919-b07jjg4.png" alt="image.png"></p>
+<p>选择TCP，开放端口可以自己设置。</p>
+<p><img src="/2022/win10%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/image-20220326192848-ai6dfyx.png" alt="image.png"></p>
+<p>接下来默认就可以了。</p>
+<h2 id="Step-3"><a href="#Step-3" class="headerlink" title="Step 3"></a>Step 3</h2><p>下载宝塔面板 ：<a href="https://www.bt.cn/">宝塔官网</a></p>
+<p>安装完成注册，打开宝塔面板</p>
+<p><img src="/2022/win10%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/image-20220326193333-87xordg.png" alt="image.png"></p>
+<p>红框里保持默认，尽量不要修改。</p>
+<p>安装进去网站后，安装Nginx套件就好了。</p>
+<h2 id="Step-4"><a href="#Step-4" class="headerlink" title="Step 4"></a>Step 4</h2><p>安装注册花生壳，自己注册后就会得到一个域名</p>
+<p><img src="/2022/win10%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/image-20220326193702-hpmbecv.png" alt="image.png"></p>
+<p>然后新建一个自定义映射</p>
+<p><img src="/2022/win10%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/image-20220326193914-5x22eh1.png" alt="image.png"></p>
+<p>映射成功就好了。</p>
+<h2 id="Step-5"><a href="#Step-5" class="headerlink" title="Step 5"></a>Step 5</h2><p>在宝塔里面添加站点</p>
+<p><img src="/2022/win10%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/image-20220326194149-fcey653.png" alt="image.png"></p>
+<p>默认就好。剩下就是你自己写站点了。</p>
+]]></content>
+      <categories>
+        <category>服务器</category>
+      </categories>
+      <tags>
+        <tag>内网穿透</tag>
+        <tag>虚拟机</tag>
+        <tag>服务器</tag>
+      </tags>
+  </entry>
 </search>
